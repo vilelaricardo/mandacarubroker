@@ -76,7 +76,7 @@ DELETE /stocks/{id}
 ## Requisitos
 - Java 11 ou superior
 - Maven
-- Banco de dados (por exemplo, MySQL, PostgreSQL)
+- Banco de dados
 
 ## Tecnologias Utilizadas
 - Spring Boot
@@ -85,7 +85,7 @@ DELETE /stocks/{id}
 - PostgreSQL
 
 ## Contribuições
-Contribuições são bem-vindas! Sinta-se à vontade para abrir problemas (issues) ou enviar pull requests.
+Contribuições são bem-vindas!
 
 ## Licença
 Este projeto está licenciado sob a [Licença MIT](LICENSE).
