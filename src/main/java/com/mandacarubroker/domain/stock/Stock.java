@@ -1,12 +1,16 @@
 package com.mandacarubroker.domain.stock;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Table(name ="stock")
+@Table(name ="stock") //entity nao precisa
 @Entity(name="stock")
 @Data
 @NoArgsConstructor
@@ -16,7 +20,6 @@ public class Stock {
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     private String symbol;
     private String companyName;
     private double price;
