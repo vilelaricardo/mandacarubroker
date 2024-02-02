@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${MANDACARU_POSTGRES_DB}
+      POSTGRES_USER: ${MANDACARU_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${MANDACARU_POSTGRES_PASSWORD}
+    ports:
+      - "${MANDACARU_POSTGRES_PORT}:5432"
