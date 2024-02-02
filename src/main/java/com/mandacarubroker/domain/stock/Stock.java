@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Table(name ="stock") //entity nao precisa
+@Table(name ="stock")
 @Entity(name="stock")
 @Data
 @NoArgsConstructor
@@ -27,22 +27,16 @@ public class Stock {
     public Stock(RequestStockDTO requestStockDTO){
         this.symbol = requestStockDTO.symbol();
         this.companyName = requestStockDTO.companyName();
-        this.price = changePrice(requestStockDTO.price(), true);
+        this.price = changePrice(requestStockDTO.price());
     }
 
-    public double changePrice(double amount, boolean increase) {
-        if (increase) {
-            if (amount < this.price) {
-                return increasePrice(amount);
-            } else {
-                return decreasePrice(amount);
-            }
+    public double changePrice(double amount) {
+        if (amount > this.price) {
+            return increasePrice(amount);
+        } else if (amount < this.price) {
+            return decreasePrice(amount);
         } else {
-            if (amount > this.price) {
-                return increasePrice(amount);
-            } else {
-                return this.decreasePrice(amount);
-            }
+            return amount;
         }
     }
 
@@ -53,5 +47,4 @@ public class Stock {
     public double decreasePrice(double amount) {
         return this.price - amount;
     }
-
 }

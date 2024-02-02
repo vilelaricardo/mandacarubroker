@@ -3,13 +3,13 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class StockService {
 
     private final StockRepository stockRepository;
+    private static final String NOT_FOUND_MSG = "Stock Not Found";
 
     public StockService(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
@@ -26,29 +27,31 @@ public class StockService {
         return stockRepository.findAll();
     }
 
-    public Optional<Stock> getStockById(String id) {
-        return stockRepository.findById(id);
+    public Stock getStockById(String id) {
+        return stockRepository.findById(id).orElseThrow(()->new EntityNotFoundException(NOT_FOUND_MSG));
     }
 
     public Stock createStock(RequestStockDTO data) {
-        Stock newStock = new Stock(data);
         validateRequestStockDTO(data);
+        Stock newStock = new Stock(data);
         return stockRepository.save(newStock);
     }
 
-    public Optional<Stock> updateStock(String id, Stock updatedStock) {
+    public Stock updateStock(String id, RequestStockDTO updatedStock) {
+        validateRequestStockDTO(updatedStock);
         return stockRepository.findById(id)
                 .map(stock -> {
-                    stock.setSymbol(updatedStock.getSymbol());
-                    stock.setCompanyName(updatedStock.getCompanyName());
-                    double newPrice = stock.changePrice(updatedStock.getPrice(), true);
+                    stock.setSymbol(updatedStock.symbol());
+                    stock.setCompanyName(updatedStock.companyName());
+                    double newPrice = stock.changePrice(updatedStock.price());
                     stock.setPrice(newPrice);
-
                     return stockRepository.save(stock);
-                });
+                }).orElseThrow(()->new EntityNotFoundException(NOT_FOUND_MSG));
     }
-
     public void deleteStock(String id) {
+        if (!stockRepository.existsById(id)){
+            throw new EntityNotFoundException(NOT_FOUND_MSG);
+        }
         stockRepository.deleteById(id);
     }
 
@@ -64,11 +67,5 @@ public class StockService {
             errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
             throw new ConstraintViolationException(errorMessage.toString(), violations);
         }
-    }
-
-    public void validateAndCreateStock(RequestStockDTO data) {
-        validateRequestStockDTO(data);
-        Stock novaAcao = new Stock(data);
-        stockRepository.save(novaAcao);
     }
 }
