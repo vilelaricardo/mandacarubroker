@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/stocks")
@@ -25,29 +26,30 @@ public class StockController {
     }
 
     @GetMapping
-    public List<Stock> getAllStocks() {
-        return stockService.getAllStocks();
+    public ResponseEntity<List<Stock>> getAllStocks() {
+        return ResponseEntity.ok(stockService.getAllStocks());
     }
 
     @GetMapping("/{id}")
-    public Stock getStockById(@PathVariable String id) {
-        return stockService.getStockById(id).orElse(null);
+    public ResponseEntity<Stock> getStockById(@PathVariable String id) {
+        return ResponseEntity.ok(stockService.getStockById(id));
     }
 
     @PostMapping
     public ResponseEntity<Stock> createStock(@RequestBody RequestStockDTO data) {
         Stock createdStock = stockService.createStock(data);
-        return ResponseEntity.ok(createdStock);
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().build().toUri()).body(createdStock);
     }
 
     @PutMapping("/{id}")
-    public Stock updateStock(@PathVariable String id, @RequestBody Stock updatedStock) {
-        return stockService.updateStock(id, updatedStock).orElse(null);
+    public ResponseEntity<Stock> updateStock(@PathVariable String id, @RequestBody RequestStockDTO updatedStock) {
+        return ResponseEntity.ok(stockService.updateStock(id, updatedStock));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStock(@PathVariable String id) {
+    public ResponseEntity<Void> deleteStock(@PathVariable String id) {
         stockService.deleteStock(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

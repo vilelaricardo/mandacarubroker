@@ -43,7 +43,7 @@ public class StockService {
                 .map(stock -> {
                     stock.setSymbol(updatedStock.symbol());
                     stock.setCompanyName(updatedStock.companyName());
-                    double newPrice = stock.changePrice(updatedStock.price());
+                    double newPrice = stock.changePrice(updatedStock.price(),true);
                     stock.setPrice(newPrice);
                     return stockRepository.save(stock);
                 }).orElseThrow(()->new EntityNotFoundException(NOT_FOUND_MSG));
