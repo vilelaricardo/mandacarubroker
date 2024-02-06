@@ -192,6 +192,11 @@
       <property name="optional" value="true"/>
     </module>
 
+    <!-- https://github.com/checkstyle/checkstyle/issues/2579-->
+    <module name="SuppressionXpathSingleFilter">
+      <property name="checks" value="HideUtilityClassConstructor"/>
+      <property name="query" value="//*[MODIFIERS//*[@text = 'UtilityClass' or @text='NoArgsConstructor' or @text = 'SpringBootApplication']]/descendant-or-self::node()"/>
+    </module>
   </module>
 
 </module>
