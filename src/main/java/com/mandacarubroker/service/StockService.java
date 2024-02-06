@@ -7,7 +7,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
-import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +47,7 @@ public class StockService {
                     return stockRepository.save(stock);
                 }).orElseThrow(()->new EntityNotFoundException(NOT_FOUND_MSG));
     }
+
     public void deleteStock(String id) {
         if (!stockRepository.existsById(id)){
             throw new EntityNotFoundException(NOT_FOUND_MSG);
@@ -57,15 +57,16 @@ public class StockService {
 
     public static void validateRequestStockDTO(RequestStockDTO data) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(data);
+        Set<ConstraintViolation<RequestStockDTO>> violations = factory.getValidator().validate(data);
         if (!violations.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
             for (ConstraintViolation<RequestStockDTO> violation : violations) {
                 errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
             }
             errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
+            factory.close();
             throw new ConstraintViolationException(errorMessage.toString(), violations);
         }
+        factory.close();
     }
 }
