@@ -14,8 +14,8 @@ import jakarta.validation.constraints.Pattern;
 * */
 public record RequestStockDataTransferObject(
   @Pattern(
-    regexp = "[A-Za-z]{3}[0-9]{1}",
-    message = "Symbol must be 3 letters followed by 1 number"
+    regexp = "[A-Za-z]{4}\\d",
+    message = "Symbol must be 4 letters followed by 1 number"
   )
   String symbol,
   @NotBlank(message = "Company name cannot be blank")
