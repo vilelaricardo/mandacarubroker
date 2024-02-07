@@ -31,10 +31,10 @@ public final class StockService {
         return stockRepository.findById(id);
     }
 
-    public Stock createStock(final RequestStockDTO data) {
-        Stock novaAcao = new Stock(data);
-        validateRequestStockDTO(data);
-        return stockRepository.save(novaAcao);
+    public Stock createStock(final RequestStockDTO requestStockDTO) {
+        Stock newStock = new Stock(requestStockDTO);
+        validateRequestStockDTO(requestStockDTO);
+        return stockRepository.save(newStock);
     }
 
     public Optional<Stock> updateStock(final String id, final Stock updatedStock) {
@@ -53,10 +53,10 @@ public final class StockService {
         stockRepository.deleteById(id);
     }
 
-    public static void validateRequestStockDTO(final RequestStockDTO data) {
+    public static void validateRequestStockDTO(final RequestStockDTO requestStockDTO) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(data);
+        Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(requestStockDTO);
 
         if (!violations.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
@@ -71,10 +71,9 @@ public final class StockService {
         }
     }
 
-    public void validateAndCreateStock(final RequestStockDTO data) {
-        validateRequestStockDTO(data);
-
-        Stock novaAcao = new Stock(data);
-        stockRepository.save(novaAcao);
+    public void validateAndCreateStock(final RequestStockDTO requestStockDTO) {
+        validateRequestStockDTO(requestStockDTO);
+        Stock newStock = new Stock(requestStockDTO);
+        stockRepository.save(newStock);
     }
 }

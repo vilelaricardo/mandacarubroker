@@ -19,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/stocks")
 public class StockController {
-
     private final StockService stockService;
 
     public StockController(final StockService receivedStockService) {
@@ -37,8 +36,8 @@ public class StockController {
     }
 
     @PostMapping
-    public ResponseEntity<Stock> createStock(@RequestBody final RequestStockDTO data) {
-        Stock createdStock = stockService.createStock(data);
+    public ResponseEntity<Stock> createStock(@RequestBody final RequestStockDTO requestStockDTO) {
+        Stock createdStock = stockService.createStock(requestStockDTO);
         return ResponseEntity.ok(createdStock);
     }
 
