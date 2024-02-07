@@ -3,7 +3,12 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
-import jakarta.validation.*;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,30 +16,28 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class StockService {
-
-
+public final class StockService {
     private final StockRepository stockRepository;
 
-    public StockService(StockRepository stockRepository) {
-        this.stockRepository = stockRepository;
+    public StockService(final StockRepository recievedStockRepository) {
+        this.stockRepository = recievedStockRepository;
     }
 
     public List<Stock> getAllStocks() {
         return stockRepository.findAll();
     }
 
-    public Optional<Stock> getStockById(String id) {
+    public Optional<Stock> getStockById(final String id) {
         return stockRepository.findById(id);
     }
 
-    public Stock createStock(RequestStockDTO data) {
+    public Stock createStock(final RequestStockDTO data) {
         Stock novaAcao = new Stock(data);
         validateRequestStockDTO(data);
         return stockRepository.save(novaAcao);
     }
 
-    public Optional<Stock> updateStock(String id, Stock updatedStock) {
+    public Optional<Stock> updateStock(final String id, final Stock updatedStock) {
         return stockRepository.findById(id)
                 .map(stock -> {
                     stock.setSymbol(updatedStock.getSymbol());
@@ -46,11 +49,11 @@ public class StockService {
                 });
     }
 
-    public void deleteStock(String id) {
+    public void deleteStock(final String id) {
         stockRepository.deleteById(id);
     }
 
-    public static void validateRequestStockDTO(RequestStockDTO data) {
+    public static void validateRequestStockDTO(final RequestStockDTO data) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(data);
@@ -68,7 +71,7 @@ public class StockService {
         }
     }
 
-    public void validateAndCreateStock(RequestStockDTO data) {
+    public void validateAndCreateStock(final RequestStockDTO data) {
         validateRequestStockDTO(data);
 
         Stock novaAcao = new Stock(data);
