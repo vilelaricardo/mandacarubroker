@@ -102,9 +102,9 @@ class StockControllerTest {
         String content = result.getResponse().getContentAsString();
         Stock createdStock = objectMapper.readValue(content, Stock.class);
 
-        assertEquals(createdStock.getSymbol(), stockSymbol);
-        assertEquals(createdStock.getCompanyName(), stockCompanyName);
-        assertEquals(createdStock.getPrice(), stockPrice);
+        assertEquals(stockSymbol, createdStock.getSymbol());
+        assertEquals(stockCompanyName, createdStock.getCompanyName());
+        assertEquals(stockPrice, createdStock.getPrice());
     }
 
     @Test
@@ -164,9 +164,9 @@ class StockControllerTest {
         String content = result.getResponse().getContentAsString();
         Stock updatedStock = objectMapper.readValue(content, Stock.class);
 
-        assertEquals(updatedStock.getCompanyName(), stock.getCompanyName());
-        assertEquals(updatedStock.getSymbol(), stock.getSymbol());
-        assertEquals(updatedStock.getPrice(), stock.getPrice());
+        assertEquals(stock.getCompanyName(), updatedStock.getCompanyName());
+        assertEquals(stock.getSymbol(), updatedStock.getSymbol());
+        assertEquals(stock.getPrice(), updatedStock.getPrice());
     }
 
     @Test
