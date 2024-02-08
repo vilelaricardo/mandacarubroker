@@ -1,3 +1,12 @@
+DROP TABLE IF EXISTS stock;
+
+CREATE TABLE stock (
+      id VARCHAR PRIMARY KEY,
+      symbol VARCHAR NOT NULL,
+      company_name VARCHAR NOT NULL,
+      price FLOAT NOT NULL
+);
+
 INSERT INTO stock ("id", "symbol", "company_name", "price")
 VALUES
     ('b2d13c5a-3df0-4673-b3e6-49244f395ac9', 'AP1', 'Apple Inc.', 100.00),
