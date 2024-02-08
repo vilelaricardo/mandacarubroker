@@ -1,8 +1,7 @@
 package com.mandacarubroker.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.client.RequestMatcher;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -64,7 +64,7 @@ class StockControllerTest {
     }
 
     @Test
-    void itShouldReturnNotFoundWhenStockDoesNotExists() throws Exception {
+    void itShouldReturnNotFoundWhenGetStockDoesNotExists() throws Exception {
         RequestBuilder requestBuilder = get("/stocks/dummy-stock-id");
         ResultMatcher matchStatus = status().isNotFound();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
@@ -105,9 +105,8 @@ class StockControllerTest {
     }
 
     @Test
-    void itShouldHandleInvalidStockSymbol() throws Exception {
-        RequestStockDTO stockDTO = new RequestStockDTO("MDD2", "Fake Company", 0.01);
-        String stockJsonString = objectMapper.writeValueAsString(stockDTO);
+    void itShouldHandlePostInvalidStockSymbol() throws Exception {
+        String stockJsonString = "{\"symbol\":\"MDDAAA2\",\"companyName\":\"Fake Company\",\"price\":0.01}";
 
         RequestBuilder requestBuilder = post("/stocks")
                 .contentType("application/json")
@@ -117,13 +116,101 @@ class StockControllerTest {
     }
 
     @Test
-    void itShouldHandleInvalidStockPrice() throws Exception {
+    void itShouldHandlePostInvalidStockPrice() throws Exception {
         String stockJsonString = "{\"symbol\":\"MD2\",\"companyName\":\"Mandacaru Inc.\",\"price\":\"40A\"}";
 
         RequestBuilder requestBuilder = post("/stocks")
                 .contentType("application/json")
                 .content(stockJsonString);
         ResultMatcher matchStatus = status().isBadRequest();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+    }
+
+    @Test
+    void itShouldReturnOkStatusAfterSucessfulPost() throws Exception {
+        Stock stock = service.getAllStocks().get(0);
+        stock.setCompanyName("New Company Name");
+        String stockJsonString = objectMapper.writeValueAsString(stock);
+
+        RequestBuilder requestBuilder = post("/stocks")
+                .contentType("application/json")
+                .content(stockJsonString);
+        ResultMatcher matchStatus = status().isOk();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+    }
+
+    @Test
+    void itShouldReturnStockDataAfterSucessfulPut() throws Exception {
+        Stock stock = service.getAllStocks().get(0);
+
+        String newCompanyName = "Mandacaru Inc.";
+        String newSymbol = "MD2";
+        Double newPrice = 100.00;
+
+        stock.setCompanyName(newCompanyName);
+        stock.setSymbol(newSymbol);
+        stock.setPrice(newPrice);
+
+        String stockJsonString = objectMapper.writeValueAsString(stock);
+
+        RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
+                .contentType("application/json")
+                .content(stockJsonString);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        String content = result.getResponse().getContentAsString();
+        Stock updatedStock = objectMapper.readValue(content, Stock.class);
+
+        assertEquals(updatedStock.getCompanyName(), stock.getCompanyName());
+        assertEquals(updatedStock.getSymbol(), stock.getSymbol());
+        assertEquals(updatedStock.getPrice(), stock.getPrice());
+    }
+
+    @Test
+    void itShouldReturnNotFoundWhenPutStockDoesNotExists() throws Exception {
+        RequestBuilder requestBuilder = put("/stocks/dummy-stock-id");
+        ResultMatcher matchStatus = status().isNotFound();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+    }
+
+    @Test
+    void itShouldHandlePutInvalidStockSymbol() throws Exception {
+        Stock stock = service.getAllStocks().get(0);
+        stock.setSymbol("MDD2");
+        String stockJsonString = objectMapper.writeValueAsString(stock);
+
+        RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
+                .contentType("application/json")
+                .content(stockJsonString);
+        ResultMatcher matchStatus = status().isBadRequest();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+    }
+
+    @Test
+    void itShouldHandlePutInvalidStockPrice() throws Exception {
+        Stock stock = service.getAllStocks().get(0);
+        String stockJsonString = "{\"symbol\":\"MD2\",\"companyName\":\"Mandacaru Inc.\",\"price\":\"40A\"}";
+
+        RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
+                .contentType("application/json")
+                .content(stockJsonString);
+        ResultMatcher matchStatus = status().isBadRequest();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+    }
+
+    // Should not be able to edit STOCK ID
+    @Test
+    void itShouldNotBeAbleToPutStockId() throws Exception {
+        Stock stock = service.getAllStocks().get(0);
+        String originalId = stock.getId();
+        stock.setId("novo-id");
+
+        String stockJsonString = objectMapper.writeValueAsString(stock);
+
+        RequestBuilder requestBuilder = post("/stocks/" + stock.getId())
+                .contentType("application/json")
+                .content(stockJsonString);
+        ResultMatcher matchStatus = status().isMethodNotAllowed();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
     }
 }
