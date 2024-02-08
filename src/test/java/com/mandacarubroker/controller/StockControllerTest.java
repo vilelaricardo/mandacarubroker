@@ -17,6 +17,11 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class StockControllerTest {
@@ -39,10 +44,21 @@ class StockControllerTest {
 
     @Test
     void itShouldBeAbleToGetAllStocks() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/stocks");
-        ResultMatcher resultMatcher = MockMvcResultMatchers.status().isOk();
+        RequestBuilder requestBuilder = get("/stocks");
+        ResultMatcher resultMatcher = status().isOk();
         List<Stock> allStocks = service.getAllStocks();
         mockMvc.perform(requestBuilder).andExpect(resultMatcher).equals(allStocks);
     }
-}
 
+    @Test
+    void itShouldBeAbleToGetStockById() throws Exception {
+        List<Stock> allStocks = service.getAllStocks();
+        Stock stock = allStocks.get(0);
+        String stockJsonString = objectMapper.writeValueAsString(stock);
+
+        RequestBuilder requestBuilder = get("/stocks/" + stock.getId());
+        ResultMatcher matchStatus = status().isOk();
+        ResultMatcher matchResponse = content().json(stockJsonString);
+        mockMvc.perform(requestBuilder).andExpectAll(matchStatus, matchResponse);
+    }
+}
