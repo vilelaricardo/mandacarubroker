@@ -37,12 +37,12 @@ public final class StockService {
         return stockRepository.save(newStock);
     }
 
-    public Optional<Stock> updateStock(final String id, final Stock updatedStock) {
+    public Optional<Stock> updateStock(final String id, final RequestStockDTO updatedStockDTO) {
         return stockRepository.findById(id)
                 .map(stock -> {
-                    stock.setSymbol(updatedStock.getSymbol());
-                    stock.setCompanyName(updatedStock.getCompanyName());
-                    stock.setPrice(updatedStock.getPrice());
+                    stock.setSymbol(updatedStockDTO.symbol());
+                    stock.setCompanyName(updatedStockDTO.companyName());
+                    stock.setPrice(updatedStockDTO.price());
                     return stockRepository.save(stock);
                 });
     }
