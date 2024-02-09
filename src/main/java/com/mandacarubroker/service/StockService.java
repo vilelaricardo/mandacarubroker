@@ -69,10 +69,4 @@ public final class StockService {
             throw new ConstraintViolationException(errorMessage.toString(), violations);
         }
     }
-
-    public void validateAndCreateStock(final RequestStockDTO requestStockDTO) {
-        validateRequestStockDTO(requestStockDTO);
-        Stock newStock = new Stock(requestStockDTO);
-        stockRepository.save(newStock);
-    }
 }
