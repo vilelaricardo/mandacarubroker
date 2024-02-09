@@ -75,7 +75,7 @@ class StockControllerTest {
 
     @Test
     void itShouldReturnCreatedStatusAfterSucessfulPost() throws Exception {
-        RequestStockDTO stockDTO = new RequestStockDTO("MD2", "Mandacaru Inc.", 0.01);
+        RequestStockDTO stockDTO = new RequestStockDTO("MDDC2", "Mandacaru Inc.", 0.01);
         String stockJsonString = objectMapper.writeValueAsString(stockDTO);
 
         RequestBuilder requestBuilder = post("/stocks")
@@ -87,7 +87,7 @@ class StockControllerTest {
 
     @Test
     void itShouldReturnStockDataAfterSucessfulPost() throws Exception {
-        String stockSymbol = "MD2";
+        String stockSymbol = "MDDC2";
         String stockCompanyName = "Mandacaru Inc.";
         Double stockPrice = 9.99;
 
@@ -111,6 +111,8 @@ class StockControllerTest {
     void itShouldHandlePostInvalidStockSymbol() throws Exception {
         String stockJsonString = "{\"symbol\":\"MDDAAA2\",\"companyName\":\"Fake Company\",\"price\":0.01}";
 
+        System.out.println(stockJsonString);
+
         RequestBuilder requestBuilder = post("/stocks")
                 .contentType("application/json")
                 .content(stockJsonString);
@@ -120,7 +122,7 @@ class StockControllerTest {
 
     @Test
     void itShouldHandlePostInvalidStockPrice() throws Exception {
-        String stockJsonString = "{\"symbol\":\"MD2\",\"companyName\":\"Mandacaru Inc.\",\"price\":\"40A\"}";
+        String stockJsonString = "{\"symbol\":\"MDDC2\",\"companyName\":\"Mandacaru Inc.\",\"price\":\"40A\"}";
 
         RequestBuilder requestBuilder = post("/stocks")
                 .contentType("application/json")
@@ -130,31 +132,15 @@ class StockControllerTest {
     }
 
     @Test
-    void itShouldReturnOkStatusAfterSucessfulPost() throws Exception {
-        Stock stock = service.getAllStocks().get(0);
-        stock.setCompanyName("New Company Name");
-        String stockJsonString = objectMapper.writeValueAsString(stock);
-
-        RequestBuilder requestBuilder = post("/stocks")
-                .contentType("application/json")
-                .content(stockJsonString);
-        ResultMatcher matchStatus = status().isOk();
-        mockMvc.perform(requestBuilder).andExpect(matchStatus);
-    }
-
-    @Test
     void itShouldReturnStockDataAfterSucessfulPut() throws Exception {
         Stock stock = service.getAllStocks().get(0);
 
         String newCompanyName = "Mandacaru Inc.";
-        String newSymbol = "MD2";
-        Double newPrice = 100.00;
+        String newSymbol = "MDDC2";
+        double newPrice = 100.00;
 
-        stock.setCompanyName(newCompanyName);
-        stock.setSymbol(newSymbol);
-        stock.setPrice(newPrice);
-
-        String stockJsonString = objectMapper.writeValueAsString(stock);
+        RequestStockDTO stockDTO = new RequestStockDTO(newSymbol, newCompanyName, newPrice);
+        String stockJsonString = objectMapper.writeValueAsString(stockDTO);
 
         RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
                 .contentType("application/json")
@@ -164,9 +150,22 @@ class StockControllerTest {
         String content = result.getResponse().getContentAsString();
         Stock updatedStock = objectMapper.readValue(content, Stock.class);
 
-        assertEquals(stock.getCompanyName(), updatedStock.getCompanyName());
-        assertEquals(stock.getSymbol(), updatedStock.getSymbol());
-        assertEquals(stock.getPrice(), updatedStock.getPrice());
+        assertEquals(newCompanyName, updatedStock.getCompanyName());
+        assertEquals(newSymbol, updatedStock.getSymbol());
+        assertEquals(newPrice, updatedStock.getPrice());
+    }
+
+    @Test
+    void itShouldReturnOkStatusAfterSucessfulPut() throws Exception {
+        Stock stock = service.getAllStocks().get(0);
+        RequestStockDTO stockDTO = new RequestStockDTO("MDDC2", "Mandacaru Inc.", 100.00);
+        String stockJsonString = objectMapper.writeValueAsString(stockDTO);
+
+        RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
+                .contentType("application/json")
+                .content(stockJsonString);
+        ResultMatcher matchStatus = status().isOk();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
     }
 
     @Test
@@ -179,7 +178,7 @@ class StockControllerTest {
     @Test
     void itShouldHandlePutInvalidStockSymbol() throws Exception {
         Stock stock = service.getAllStocks().get(0);
-        stock.setSymbol("MDD2");
+        stock.setSymbol("D2");
         String stockJsonString = objectMapper.writeValueAsString(stock);
 
         RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
@@ -192,7 +191,7 @@ class StockControllerTest {
     @Test
     void itShouldHandlePutInvalidStockPrice() throws Exception {
         Stock stock = service.getAllStocks().get(0);
-        String stockJsonString = "{\"symbol\":\"MD2\",\"companyName\":\"Mandacaru Inc.\",\"price\":\"40A\"}";
+        String stockJsonString = "{\"symbol\":\"MDDC2\",\"companyName\":\"Mandacaru Inc.\",\"price\":\"40A\"}";
 
         RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
                 .contentType("application/json")
@@ -204,12 +203,11 @@ class StockControllerTest {
     @Test
     void itShouldNotBeAbleToPutStockId() throws Exception {
         Stock stock = service.getAllStocks().get(0);
-        String originalId = stock.getId();
         stock.setId("novo-id");
 
         String stockJsonString = objectMapper.writeValueAsString(stock);
 
-        RequestBuilder requestBuilder = post("/stocks/" + stock.getId())
+        RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
                 .contentType("application/json")
                 .content(stockJsonString);
         ResultMatcher matchStatus = status().isMethodNotAllowed();
@@ -229,7 +227,7 @@ class StockControllerTest {
     }
 
     @Test
-    void itShouldHandleDeleteInvalidStock() throws Exception {
+    void itShouldNotBeAbleToDeleteInvalidStock() throws Exception {
         RequestBuilder requestBuilder = delete("/stocks/dummy-stock-id");
         ResultMatcher matchStatus = status().isNotFound();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);

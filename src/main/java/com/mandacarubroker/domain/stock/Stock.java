@@ -27,23 +27,27 @@ public class Stock {
     public Stock(final RequestStockDTO requestStockDTO) {
         this.symbol = requestStockDTO.symbol();
         this.companyName = requestStockDTO.companyName();
-        this.price = changePrice(requestStockDTO.price(), true);
+        this.price = requestStockDTO.price();
+    }
+
+    public void setPrice(final double newPrice) {
+        if (newPrice <= 0) {
+            throw new IllegalArgumentException("Stock price cannot be negative or zero");
+        }
+
+        this.price = newPrice;
     }
 
     public double changePrice(final double amount, final boolean increase) {
-        if (increase) {
-            if (amount < this.price) {
-                return increasePrice(amount);
-            } else {
-                return decreasePrice(amount);
-            }
-        } else {
-            if (amount > this.price) {
-                return increasePrice(amount);
-            } else {
-                return this.decreasePrice(amount);
-            }
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than zero");
         }
+
+        if (increase) {
+            return increasePrice(amount);
+        }
+
+        return decreasePrice(amount);
     }
 
     public double increasePrice(final double amount) {

@@ -42,8 +42,8 @@ public class StockController {
     }
 
     @PutMapping("/{id}")
-    public Stock updateStock(@PathVariable final String id, @RequestBody final Stock updatedStock) {
-        return stockService.updateStock(id, updatedStock).orElse(null);
+    public Stock updateStock(@PathVariable final String id, @RequestBody final RequestStockDTO updatedStockDTO) {
+        return stockService.updateStock(id, updatedStockDTO).orElse(null);
     }
 
     @DeleteMapping("/{id}")

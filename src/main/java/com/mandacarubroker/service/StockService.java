@@ -37,14 +37,13 @@ public final class StockService {
         return stockRepository.save(newStock);
     }
 
-    public Optional<Stock> updateStock(final String id, final Stock updatedStock) {
+    public Optional<Stock> updateStock(final String id, final RequestStockDTO updatedStockDTO) {
+        validateRequestStockDTO(updatedStockDTO);
         return stockRepository.findById(id)
                 .map(stock -> {
-                    stock.setSymbol(updatedStock.getSymbol());
-                    stock.setCompanyName(updatedStock.getCompanyName());
-                    double newPrice = stock.changePrice(updatedStock.getPrice(), true);
-                    stock.setPrice(newPrice);
-
+                    stock.setSymbol(updatedStockDTO.symbol());
+                    stock.setCompanyName(updatedStockDTO.companyName());
+                    stock.setPrice(updatedStockDTO.price());
                     return stockRepository.save(stock);
                 });
     }
@@ -69,11 +68,5 @@ public final class StockService {
 
             throw new ConstraintViolationException(errorMessage.toString(), violations);
         }
-    }
-
-    public void validateAndCreateStock(final RequestStockDTO requestStockDTO) {
-        validateRequestStockDTO(requestStockDTO);
-        Stock newStock = new Stock(requestStockDTO);
-        stockRepository.save(newStock);
     }
 }
