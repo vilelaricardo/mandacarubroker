@@ -31,7 +31,7 @@ public class Stock {
     }
 
     public void setPrice(final double newPrice) {
-        if (price <= 0) {
+        if (newPrice <= 0) {
             throw new IllegalArgumentException("Stock price cannot be negative or zero");
         }
 
