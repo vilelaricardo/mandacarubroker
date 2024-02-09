@@ -38,6 +38,7 @@ public final class StockService {
     }
 
     public Optional<Stock> updateStock(final String id, final RequestStockDTO updatedStockDTO) {
+        validateRequestStockDTO(updatedStockDTO);
         return stockRepository.findById(id)
                 .map(stock -> {
                     stock.setSymbol(updatedStockDTO.symbol());
