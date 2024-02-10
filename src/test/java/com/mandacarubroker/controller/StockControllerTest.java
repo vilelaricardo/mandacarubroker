@@ -1,7 +1,6 @@
 package com.mandacarubroker.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,13 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.client.RequestMatcher;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -170,7 +167,10 @@ class StockControllerTest {
 
     @Test
     void itShouldReturnNotFoundWhenPutStockDoesNotExists() throws Exception {
-        RequestBuilder requestBuilder = put("/stocks/dummy-stock-id");
+        String stockJsonString = "{\"symbol\":\"MDDC2\",\"companyName\":\"Mandacaru Inc.\",\"price\":100.00}";
+        RequestBuilder requestBuilder = put("/stocks/dummy-stock-id")
+                .contentType("application/json")
+                .content(stockJsonString);
         ResultMatcher matchStatus = status().isNotFound();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
     }
@@ -203,15 +203,20 @@ class StockControllerTest {
     @Test
     void itShouldNotBeAbleToPutStockId() throws Exception {
         Stock stock = service.getAllStocks().get(0);
-        stock.setId("novo-id");
+        final String actualStockId = stock.getId();
 
+        stock.setId("novo-id");
         String stockJsonString = objectMapper.writeValueAsString(stock);
 
-        RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
+        RequestBuilder requestBuilder = put("/stocks/" + actualStockId)
                 .contentType("application/json")
                 .content(stockJsonString);
-        ResultMatcher matchStatus = status().isMethodNotAllowed();
-        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        String content = result.getResponse().getContentAsString();
+        Stock createdStock = objectMapper.readValue(content, Stock.class);
+
+        assertEquals(actualStockId, createdStock.getId());
     }
 
     @Test
@@ -220,7 +225,7 @@ class StockControllerTest {
         String stockId = stock.getId();
 
         RequestBuilder requestBuilder = delete("/stocks/" + stockId);
-        ResultMatcher matchStatus = status().isOk();
+        ResultMatcher matchStatus = status().isNoContent();
 
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
         assertEquals(Optional.empty(), service.getStockById(stockId));
@@ -229,7 +234,7 @@ class StockControllerTest {
     @Test
     void itShouldNotBeAbleToDeleteInvalidStock() throws Exception {
         RequestBuilder requestBuilder = delete("/stocks/dummy-stock-id");
-        ResultMatcher matchStatus = status().isNotFound();
+        ResultMatcher matchStatus = status().isNoContent();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
     }
 }

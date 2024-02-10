@@ -4,11 +4,7 @@ import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,23 +23,23 @@ public final class StockService {
         return stockRepository.findAll();
     }
 
-    public Optional<Stock> getStockById(final String id) {
-        return stockRepository.findById(id);
+    public Optional<Stock> getStockById(final String stockId) {
+        return stockRepository.findById(stockId);
     }
 
-    public Stock createStock(final RequestStockDTO requestStockDTO) {
-        Stock newStock = new Stock(requestStockDTO);
+    public Stock createStock(@Valid final RequestStockDTO requestStockDTO) {
         validateRequestStockDTO(requestStockDTO);
+        Stock newStock = new Stock(requestStockDTO);
         return stockRepository.save(newStock);
     }
 
-    public Optional<Stock> updateStock(final String id, final RequestStockDTO updatedStockDTO) {
-        validateRequestStockDTO(updatedStockDTO);
-        return stockRepository.findById(id)
+    public Optional<Stock> updateStock(final String stockId, final RequestStockDTO requestStockDTO) {
+        validateRequestStockDTO(requestStockDTO);
+        return stockRepository.findById(stockId)
                 .map(stock -> {
-                    stock.setSymbol(updatedStockDTO.symbol());
-                    stock.setCompanyName(updatedStockDTO.companyName());
-                    stock.setPrice(updatedStockDTO.price());
+                    stock.setSymbol(requestStockDTO.symbol());
+                    stock.setCompanyName(requestStockDTO.companyName());
+                    stock.setPrice(requestStockDTO.price());
                     return stockRepository.save(stock);
                 });
     }
