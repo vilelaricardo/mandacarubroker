@@ -4,6 +4,8 @@ import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.service.StockService;
 
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/stocks")
@@ -31,23 +34,37 @@ public class StockController {
     }
 
     @GetMapping("/{id}")
-    public Stock getStockById(@PathVariable final String id) {
-        return stockService.getStockById(id).orElse(null);
+    public ResponseEntity<Stock> getStockById(@PathVariable final String id) {
+        Optional<Stock> stock = stockService.getStockById(id);
+
+        if (stock.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(stock.get());
     }
 
     @PostMapping
-    public ResponseEntity<Stock> createStock(@RequestBody final RequestStockDTO requestStockDTO) {
+    public ResponseEntity<Stock> createStock(@Valid @RequestBody final RequestStockDTO requestStockDTO) {
         Stock createdStock = stockService.createStock(requestStockDTO);
-        return ResponseEntity.ok(createdStock);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdStock);
     }
 
+
     @PutMapping("/{id}")
-    public Stock updateStock(@PathVariable final String id, @RequestBody final RequestStockDTO updatedStockDTO) {
-        return stockService.updateStock(id, updatedStockDTO).orElse(null);
+    public ResponseEntity<Stock> updateStock(@PathVariable final String id, @Valid @RequestBody final RequestStockDTO updatedStockDTO) {
+        Optional<Stock> updatedStock = stockService.updateStock(id, updatedStockDTO);
+
+        if (updatedStock.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updatedStock.get());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStock(@PathVariable final String id) {
+    public ResponseEntity deleteStock(@PathVariable final String id) {
         stockService.deleteStock(id);
+        return ResponseEntity.noContent().build();
     }
 }

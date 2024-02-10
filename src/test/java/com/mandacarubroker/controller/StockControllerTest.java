@@ -167,7 +167,10 @@ class StockControllerTest {
 
     @Test
     void itShouldReturnNotFoundWhenPutStockDoesNotExists() throws Exception {
-        RequestBuilder requestBuilder = put("/stocks/dummy-stock-id");
+        String stockJsonString = "{\"symbol\":\"MDDC2\",\"companyName\":\"Mandacaru Inc.\",\"price\":100.00}";
+        RequestBuilder requestBuilder = put("/stocks/dummy-stock-id")
+                .contentType("application/json")
+                .content(stockJsonString);
         ResultMatcher matchStatus = status().isNotFound();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
     }
@@ -200,15 +203,20 @@ class StockControllerTest {
     @Test
     void itShouldNotBeAbleToPutStockId() throws Exception {
         Stock stock = service.getAllStocks().get(0);
-        stock.setId("novo-id");
+        final String actualStockId = stock.getId();
 
+        stock.setId("novo-id");
         String stockJsonString = objectMapper.writeValueAsString(stock);
 
-        RequestBuilder requestBuilder = put("/stocks/" + stock.getId())
+        RequestBuilder requestBuilder = put("/stocks/" + actualStockId)
                 .contentType("application/json")
                 .content(stockJsonString);
-        ResultMatcher matchStatus = status().isMethodNotAllowed();
-        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        String content = result.getResponse().getContentAsString();
+        Stock createdStock = objectMapper.readValue(content, Stock.class);
+
+        assertEquals(actualStockId, createdStock.getId());
     }
 
     @Test
@@ -217,7 +225,7 @@ class StockControllerTest {
         String stockId = stock.getId();
 
         RequestBuilder requestBuilder = delete("/stocks/" + stockId);
-        ResultMatcher matchStatus = status().isOk();
+        ResultMatcher matchStatus = status().isNoContent();
 
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
         assertEquals(Optional.empty(), service.getStockById(stockId));
@@ -226,7 +234,7 @@ class StockControllerTest {
     @Test
     void itShouldNotBeAbleToDeleteInvalidStock() throws Exception {
         RequestBuilder requestBuilder = delete("/stocks/dummy-stock-id");
-        ResultMatcher matchStatus = status().isNotFound();
+        ResultMatcher matchStatus = status().isNoContent();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
     }
 }

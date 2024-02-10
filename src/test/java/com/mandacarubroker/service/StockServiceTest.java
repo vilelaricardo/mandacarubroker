@@ -125,7 +125,7 @@ class StockServiceTest {
     void itShouldNotBeAbleToCreateStockWithNegativePrice() {
         RequestStockDTO newStockDTO = new RequestStockDTO(validSymbol, validCompanyName, negativePrice);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(ConstraintViolationException.class, () -> {
             service.createStock(newStockDTO);
         });
 
@@ -136,7 +136,7 @@ class StockServiceTest {
     void itShouldNotBeAbleToCreateStockWithZeroPrice() {
         RequestStockDTO newStockDTO = new RequestStockDTO(validSymbol, validCompanyName, zeroPrice);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(ConstraintViolationException.class, () -> {
             service.createStock(newStockDTO);
         });
 
