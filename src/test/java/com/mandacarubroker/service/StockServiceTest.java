@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -191,7 +190,7 @@ class StockServiceTest {
     void itShouldNotBeAbleToUpdateStockWithNegativePrice() {
         Stock stock = service.getAllStocks().get(0);
         RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, validCompanyName, negativePrice);
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(ConstraintViolationException.class, () -> {
             service.updateStock(stock.getId(), stockDTO);
         });
         assertNoStockWasCreated();
@@ -201,7 +200,7 @@ class StockServiceTest {
     void itShouldNotBeAbleToUpdateStockWithZeroPrice() {
         Stock stock = service.getAllStocks().get(0);
         RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, validCompanyName, zeroPrice);
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(ConstraintViolationException.class, () -> {
             service.updateStock(stock.getId(), stockDTO);
         });
         assertNoStockWasCreated();
