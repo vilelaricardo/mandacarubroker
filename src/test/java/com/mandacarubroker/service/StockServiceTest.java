@@ -159,9 +159,10 @@ class StockServiceTest {
     @Test
     void itShouldNotBeAbleToUpdateStockWithEmptySymbol() {
         Stock stock = service.getAllStocks().get(0);
+        String stockId = stock.getId();
         RequestStockDTO stockDTO = new RequestStockDTO(emptySymbol, validCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, stockDTO);
         });
         assertNoStockWasCreated();
     }
@@ -169,9 +170,10 @@ class StockServiceTest {
     @Test
     void itShouldNotBeAbleToUpdateStockWithInvalidSymbol() {
         Stock stock = service.getAllStocks().get(0);
+        String stockId = stock.getId();
         RequestStockDTO stockDTO = new RequestStockDTO(invalidSymbol, validCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, stockDTO);
         });
         assertNoStockWasCreated();
     }
@@ -179,9 +181,10 @@ class StockServiceTest {
     @Test
     void itShouldNotBeAbleToUpdateStockWithEmptyCompanyName() {
         Stock stock = service.getAllStocks().get(0);
+        String stockId = stock.getId();
         RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, emptyCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, stockDTO);
         });
         assertNoStockWasCreated();
     }
@@ -189,9 +192,10 @@ class StockServiceTest {
     @Test
     void itShouldNotBeAbleToUpdateStockWithNegativePrice() {
         Stock stock = service.getAllStocks().get(0);
+        String stockId = stock.getId();
         RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, validCompanyName, negativePrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, stockDTO);
         });
         assertNoStockWasCreated();
     }
@@ -199,9 +203,10 @@ class StockServiceTest {
     @Test
     void itShouldNotBeAbleToUpdateStockWithZeroPrice() {
         Stock stock = service.getAllStocks().get(0);
+        String stockId = stock.getId();
         RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, validCompanyName, zeroPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, stockDTO);
         });
         assertNoStockWasCreated();
     }
