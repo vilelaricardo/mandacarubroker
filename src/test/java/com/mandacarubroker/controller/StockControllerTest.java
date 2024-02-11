@@ -237,13 +237,19 @@ class StockControllerTest {
     void itShouldBeAbleToDeleteStock() throws Exception {
         RequestBuilder requestBuilder = delete(urlRequestStockById);
         ResultMatcher matchStatus = status().isNoContent();
-
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
         assertEquals(Optional.empty(), service.getStockById(stockId));
     }
 
     @Test
-    void itShouldNotBeAbleToDeleteInvalidStock() throws Exception {
+    void itShouldReturnNoContentStatusWhenDeleteStock() throws Exception {
+        RequestBuilder requestBuilder = delete(urlRequestStockById);
+        ResultMatcher matchStatus = status().isNoContent();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+    }
+
+    @Test
+    void itShouldReturnNoContentStatusWhenDeleteStockDoesNotExists() throws Exception {
         RequestBuilder requestBuilder = delete(urlRequestInvalidStock);
         ResultMatcher matchStatus = status().isNoContent();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
