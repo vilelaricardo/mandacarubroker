@@ -30,7 +30,10 @@ class StockServiceTest {
     @Autowired
     private StockService service;
 
+    private Stock stock;
     private double stockSize;
+    private String stockId;
+    private String invalidStockId = "dummy-stock-id";
     private final String validSymbol = "AAPL1";
     private final String emptySymbol = "";
     private final String invalidSymbol = "AAPL@";
@@ -43,6 +46,8 @@ class StockServiceTest {
     @BeforeEach
     void setUp() {
         stockSize = service.getAllStocks().size();
+        stock = service.getAllStocks().get(0);
+        stockId = stock.getId();
     }
 
     @AfterEach
@@ -53,6 +58,27 @@ class StockServiceTest {
         assertEquals(stockSize, service.getAllStocks().size());
     }
 
+    void assertStockWasCreated() {
+        assertEquals(stockSize + 1, service.getAllStocks().size());
+    }
+
+    void assertStockWasDeleted() {
+        assertEquals(stockSize - 1, service.getAllStocks().size());
+    }
+
+    void assertStocksAreEqual(final Stock expected, final Stock actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getSymbol(), actual.getSymbol());
+        assertEquals(expected.getCompanyName(), actual.getCompanyName());
+        assertEquals(expected.getPrice(), actual.getPrice());
+    }
+
+    void assertRequestStockDTOEqualsStock(final RequestStockDTO expected, final Stock actual) {
+        assertEquals(expected.symbol(), actual.getSymbol());
+        assertEquals(expected.companyName(), actual.getCompanyName());
+        assertEquals(expected.price(), actual.getPrice());
+    }
+
     @Test
     void itShouldBeAbleToGetAllStocks() {
         List<Stock> stocks = service.getAllStocks();
@@ -61,164 +87,136 @@ class StockServiceTest {
 
     @Test
     void itShouldBeAbleToGetStockById() {
-        List<Stock> stocks = service.getAllStocks();
-        Stock stock = stocks.get(0);
-        Optional<Stock> foundStock = service.getStockById(stock.getId());
-
-        assertEquals(stock.getId(), foundStock.get().getId());
-        assertEquals(stock.getSymbol(), foundStock.get().getSymbol());
-        assertEquals(stock.getCompanyName(), foundStock.get().getCompanyName());
-        assertEquals(stock.getPrice(), foundStock.get().getPrice());
+        Stock foundStock = service.getStockById(stockId).get();
+        assertStocksAreEqual(stock, foundStock);
     }
 
     @Test
     void itShouldRetunEmptyWhenStockIsNotFound() {
-        Optional<Stock> foundStock = service.getStockById("dummy-stock-id");
+        Optional<Stock> foundStock = service.getStockById(invalidStockId);
         assertEquals(Optional.empty(), foundStock);
     }
 
     @Test
     void itShouldBeAbleToCreateStock() {
-        RequestStockDTO newStockDTO = new RequestStockDTO(validSymbol, validCompanyName, validPrice);
-        Stock createdStock = service.createStock(newStockDTO);
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, validCompanyName, validPrice);
+        Stock createdStock = service.createStock(requestStockDTO);
 
-        assertEquals(stockSize + 1, service.getAllStocks().size());
-        assertEquals(validSymbol, createdStock.getSymbol());
-        assertEquals(validCompanyName, createdStock.getCompanyName());
-        assertEquals(validPrice, createdStock.getPrice());
+        assertStockWasCreated();
+        assertRequestStockDTOEqualsStock(requestStockDTO, createdStock);
     }
 
     @Test
     void itShouldNotBeAbleToCreateStockWithEmptySymbol() {
-        RequestStockDTO newStockDTO = new RequestStockDTO(emptySymbol, validCompanyName, validPrice);
-
+        RequestStockDTO requestStockDTO = new RequestStockDTO(emptySymbol, validCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.createStock(newStockDTO);
+            service.createStock(requestStockDTO);
         });
-
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToCreateStockWithInvalidSymbol() {
-        RequestStockDTO newStockDTO = new RequestStockDTO(invalidSymbol, validCompanyName, validPrice);
-
+        RequestStockDTO requestStockDTO = new RequestStockDTO(invalidSymbol, validCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.createStock(newStockDTO);
+            service.createStock(requestStockDTO);
         });
-
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToCreateStockWithEmptyCompanyName() {
-        RequestStockDTO newStockDTO = new RequestStockDTO(validSymbol, emptyCompanyName, validPrice);
-
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, emptyCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.createStock(newStockDTO);
+            service.createStock(requestStockDTO);
         });
-
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToCreateStockWithNegativePrice() {
-        RequestStockDTO newStockDTO = new RequestStockDTO(validSymbol, validCompanyName, negativePrice);
-
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, validCompanyName, negativePrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.createStock(newStockDTO);
+            service.createStock(requestStockDTO);
         });
-
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToCreateStockWithZeroPrice() {
-        RequestStockDTO newStockDTO = new RequestStockDTO(validSymbol, validCompanyName, zeroPrice);
-
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, validCompanyName, zeroPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.createStock(newStockDTO);
+            service.createStock(requestStockDTO);
         });
-
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldBeAbleToUpdateStock() {
-        Stock stock = service.getAllStocks().get(0);
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, validCompanyName, validPrice);
+        Stock updatedStock = service.updateStock(stockId, requestStockDTO).get();
 
-        RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, validCompanyName, validPrice);
-        Optional<Stock> updatedStock = service.updateStock(stock.getId(), stockDTO);
-
-        assertEquals(validCompanyName, updatedStock.get().getCompanyName());
-        assertEquals(validSymbol, updatedStock.get().getSymbol());
-        assertEquals(validPrice, updatedStock.get().getPrice());
+        assertRequestStockDTOEqualsStock(requestStockDTO, updatedStock);
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToUpdateStockWithEmptySymbol() {
-        Stock stock = service.getAllStocks().get(0);
-        RequestStockDTO stockDTO = new RequestStockDTO(emptySymbol, validCompanyName, validPrice);
+        RequestStockDTO requestStockDTO = new RequestStockDTO(emptySymbol, validCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, requestStockDTO);
         });
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToUpdateStockWithInvalidSymbol() {
-        Stock stock = service.getAllStocks().get(0);
-        RequestStockDTO stockDTO = new RequestStockDTO(invalidSymbol, validCompanyName, validPrice);
+        RequestStockDTO requestStockDTO = new RequestStockDTO(invalidSymbol, validCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, requestStockDTO);
         });
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToUpdateStockWithEmptyCompanyName() {
-        Stock stock = service.getAllStocks().get(0);
-        RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, emptyCompanyName, validPrice);
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, emptyCompanyName, validPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, requestStockDTO);
         });
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToUpdateStockWithNegativePrice() {
-        Stock stock = service.getAllStocks().get(0);
-        RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, validCompanyName, negativePrice);
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, validCompanyName, negativePrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, requestStockDTO);
         });
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldNotBeAbleToUpdateStockWithZeroPrice() {
-        Stock stock = service.getAllStocks().get(0);
-        RequestStockDTO stockDTO = new RequestStockDTO(validSymbol, validCompanyName, zeroPrice);
+        RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, validCompanyName, zeroPrice);
         assertThrows(ConstraintViolationException.class, () -> {
-            service.updateStock(stock.getId(), stockDTO);
+            service.updateStock(stockId, requestStockDTO);
         });
         assertNoStockWasCreated();
     }
 
     @Test
     void itShouldBeAbleToDeleteStock() {
-        Stock stock = service.getAllStocks().get(0);
-        service.deleteStock(stock.getId());
+        service.deleteStock(stockId);
+        Optional<Stock> deletedStock = service.getStockById(stockId);
 
-        Optional<Stock> deletedStock = service.getStockById(stock.getId());
         assertEquals(Optional.empty(), deletedStock);
-        assertEquals(stockSize - 1, service.getAllStocks().size());
+        assertStockWasDeleted();
     }
 
     @Test
     void itShouldNotBeAbleToDeleteStockThatDoesNotExists() {
-        service.deleteStock("dummy-stock-id");
+        service.deleteStock(invalidStockId);
         assertNoStockWasCreated();
     }
 }

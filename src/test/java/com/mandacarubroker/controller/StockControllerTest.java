@@ -1,7 +1,10 @@
 package com.mandacarubroker.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -237,13 +240,19 @@ class StockControllerTest {
     void itShouldBeAbleToDeleteStock() throws Exception {
         RequestBuilder requestBuilder = delete(urlRequestStockById);
         ResultMatcher matchStatus = status().isNoContent();
-
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
         assertEquals(Optional.empty(), service.getStockById(stockId));
     }
 
     @Test
-    void itShouldNotBeAbleToDeleteInvalidStock() throws Exception {
+    void itShouldReturnNoContentStatusWhenDeleteStock() throws Exception {
+        RequestBuilder requestBuilder = delete(urlRequestStockById);
+        ResultMatcher matchStatus = status().isNoContent();
+        mockMvc.perform(requestBuilder).andExpect(matchStatus);
+    }
+
+    @Test
+    void itShouldReturnNoContentStatusWhenDeleteStockDoesNotExists() throws Exception {
         RequestBuilder requestBuilder = delete(urlRequestInvalidStock);
         ResultMatcher matchStatus = status().isNoContent();
         mockMvc.perform(requestBuilder).andExpect(matchStatus);
