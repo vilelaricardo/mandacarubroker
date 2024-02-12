@@ -4,12 +4,12 @@ import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
 
-import jakarta.validation.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
+import static com.mandacarubroker.validation.RecordValidation.validateRequestDTO;
 
 @Service
 public final class StockService {
@@ -27,14 +27,14 @@ public final class StockService {
         return stockRepository.findById(stockId);
     }
 
-    public Stock createStock(@Valid final RequestStockDTO requestStockDTO) {
-        validateRequestStockDTO(requestStockDTO);
+    public Stock createStock(final RequestStockDTO requestStockDTO) {
+        validateRequestDTO(requestStockDTO);
         Stock newStock = new Stock(requestStockDTO);
         return stockRepository.save(newStock);
     }
 
     public Optional<Stock> updateStock(final String stockId, final RequestStockDTO requestStockDTO) {
-        validateRequestStockDTO(requestStockDTO);
+        validateRequestDTO(requestStockDTO);
         return stockRepository.findById(stockId)
                 .map(stock -> {
                     stock.setSymbol(requestStockDTO.symbol());
@@ -46,23 +46,5 @@ public final class StockService {
 
     public void deleteStock(final String id) {
         stockRepository.deleteById(id);
-    }
-
-    public static void validateRequestStockDTO(final RequestStockDTO requestStockDTO) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<RequestStockDTO>> violations = validator.validate(requestStockDTO);
-
-        if (!violations.isEmpty()) {
-            StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
-
-            for (ConstraintViolation<RequestStockDTO> violation : violations) {
-                errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
-            }
-
-            errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
-
-            throw new ConstraintViolationException(errorMessage.toString(), violations);
-        }
     }
 }
