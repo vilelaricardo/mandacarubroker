@@ -6,13 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-class PriceChangeException extends RuntimeException {
-    public PriceChangeException(String message) {
-        super(message);
-    }
-}
-
-
 @Table(name ="stock")
 @Entity(name="stock")
 @Data
@@ -35,10 +28,10 @@ public class Stock {
     }
 
     public double changePrice(double amount) {
-        if (!(amount < 0) && amount != 0){
-            return this.price = amount;
+        if (amount <= 0){
+            throw new PriceChangeException("Invalid price change request. Amount must be positive and non-zero.");
         }
-        throw new PriceChangeException("Invalid price change request. Amount must be positive and non-zero.");
+        return this.price = amount;
     }
 
 }
