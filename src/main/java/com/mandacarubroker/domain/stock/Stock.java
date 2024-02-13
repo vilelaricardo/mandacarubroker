@@ -6,6 +6,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+class PriceChangeException extends RuntimeException {
+    public PriceChangeException(String message) {
+        super(message);
+    }
+}
+
+
 @Table(name ="stock")
 @Entity(name="stock")
 @Data
@@ -24,31 +31,14 @@ public class Stock {
     public Stock(RequestStockDTO requestStockDTO){
         this.symbol = requestStockDTO.symbol();
         this.companyName = requestStockDTO.companyName();
-        this.price = changePrice(requestStockDTO.price(), true);
+        this.price = changePrice(requestStockDTO.price());
     }
 
-    public double changePrice(double amount, boolean increase) {
-        if (increase) {
-            if (amount < this.price) {
-                return increasePrice(amount);
-            } else {
-                return decreasePrice(amount);
-            }
-        } else {
-            if (amount > this.price) {
-                return increasePrice(amount);
-            } else {
-                return this.decreasePrice(amount);
-            }
+    public double changePrice(double amount) {
+        if (!(amount < 0) && amount != 0){
+            return this.price = amount;
         }
-    }
-
-    public double increasePrice(double amount) {
-        return this.price + amount;
-    }
-
-    public double decreasePrice(double amount) {
-        return this.price - amount;
+        throw new PriceChangeException("Invalid price change request. Amount must be positive and non-zero.");
     }
 
 }
