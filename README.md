@@ -1,8 +1,8 @@
 # MandaCaru Broker API
 
 ## Descrição
-A Mandacaru Broker API é uma aplicação Spring Boot que fornece operações CRUD (Create, Read, Update, Delete) para gerenciar informações sobre ações (stocks).
-Uma Stock tem a seguinte estrutura:  
+A Mandacaru Broker API é uma aplicação Spring Boot que fornece operações CRUD (Create, Read, Update, Delete) para gerenciar informações sobre ações (stocks).  
+**Uma Stock tem a seguinte estrutura:**  
 + Id
 + symbol : abreviação da stock (composta de 3 letras e 1 número)
 + companyName : descreve o nome da empresa
@@ -86,9 +86,9 @@ POST /stocks
   "price": 50.0
 }
 ```
-**Header:**<br>
+**Header:**  
 Retorna o caminho do recurso criado
-```http request
+```http
 Location : /stocks/e8d0ca18-7a9e-46d8-b610-b30cb1769c49
 ```
 **Htpp status: 201 created**
