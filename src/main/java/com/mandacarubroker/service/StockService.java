@@ -39,7 +39,7 @@ public class StockService {
                 .map(stock -> {
                     stock.setSymbol(updatedStock.getSymbol());
                     stock.setCompanyName(updatedStock.getCompanyName());
-                    double newPrice = stock.changePrice(updatedStock.getPrice(), true);
+                    double newPrice = stock.changePrice(updatedStock.getPrice());
                     stock.setPrice(newPrice);
 
                     return stockRepository.save(stock);
