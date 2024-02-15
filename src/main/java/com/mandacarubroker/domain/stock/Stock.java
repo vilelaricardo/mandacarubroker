@@ -37,24 +37,4 @@ public class Stock {
 
         this.price = newPrice;
     }
-
-    public double changePrice(final double amount, final boolean increase) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be greater than zero");
-        }
-
-        if (increase) {
-            return increasePrice(amount);
-        }
-
-        return decreasePrice(amount);
-    }
-
-    public double increasePrice(final double amount) {
-        return this.price + amount;
-    }
-
-    public double decreasePrice(final double amount) {
-        return this.price - amount;
-    }
 }

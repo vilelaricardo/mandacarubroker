@@ -36,38 +36,4 @@ class StockTest {
             stock.setPrice(0);
         });
     }
-
-
-    @Test
-    void itShouldIncreasePriceOnStockPriceIncrease() {
-        final Stock stock = new Stock("stock-id", "symbol", "companyName", 100.0);
-        final double amount = 10.0;
-        final boolean increase = true;
-
-        final double result = stock.changePrice(amount, increase);
-
-        assertEquals(110, result);
-    }
-
-    @Test
-    void itShouldDecreasePriceOnStockPriceDecrease() {
-        final Stock stock = new Stock("stock-id", "symbol", "companyName", 100.0);
-        final double amount = 10.0;
-        final boolean increase = false;
-
-        final double result = stock.changePrice(amount, increase);
-
-        assertEquals(90, result);
-    }
-
-    @Test
-    void itShouldNotBeAbleToReceiveNegativeAmountForPriceChange() {
-        final Stock stock = new Stock("stock-id", "symbol", "companyName", 100.0);
-        final double amount = -10.0;
-        final boolean increase = false;
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            stock.changePrice(amount, increase);
-        });
-    }
 }
