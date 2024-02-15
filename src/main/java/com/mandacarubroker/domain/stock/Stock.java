@@ -38,7 +38,7 @@ public class Stock {
   public Stock(RequestStockDataTransferObject requestStock) {
     this.symbol = requestStock.symbol();
     this.companyName = requestStock.companyName();
-    this.price = changePrice(requestStock.price(), true);
+    this.price = requestStock.price();
   }
 
   /**
@@ -49,26 +49,26 @@ public class Stock {
    *
    **/
   public double changePrice(double amount, boolean increase) {
+    if (amount < 0) {
+      throw new IllegalArgumentException("The amount value cannot be negative.");
+    }
+
     if (increase) {
-      if (amount < this.price) {
-        return increasePrice(amount);
-      } else {
-        return decreasePrice(amount);
-      }
+      return increasePrice(amount);
     } else {
-      if (amount > this.price) {
-        return increasePrice(amount);
+      if (amount < this.price) {
+        return decreasePrice(amount);
       } else {
-        return this.decreasePrice(amount);
+        return 0.00;
       }
     }
   }
 
-  public double increasePrice(double amount) {
+  private double increasePrice(double amount) {
     return this.price + amount;
   }
 
-  public double decreasePrice(double amount) {
+  private double decreasePrice(double amount) {
     return this.price - amount;
   }
 }
