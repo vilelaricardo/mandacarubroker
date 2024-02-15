@@ -88,6 +88,10 @@ A coleção a seguir compreende todas as rotas configuradas, juntamente com seus
 
 [Link para download](https://drive.google.com/file/d/1G9hVXLiOBNB_Zi5lONOyz7CmCpJ7u6J_/view?usp=sharing)
 
+## Testes
+Este repositório foi submetido a uma análise estática utilizando as ferramentas Checkstyle, SonarQube e SonarLint. Além disso, possui casos de teste implementados em testes unitários, organizados por classes, bem como um teste de integração que verifica as operações CRUD da API.
+
+
 ## Uso
 1. Clone o repositório: `git clone https://github.com/seu-usuario/MandaCaruBrokerAPI.git`
 2. Importe o projeto em sua IDE preferida.
@@ -104,6 +108,12 @@ A coleção a seguir compreende todas as rotas configuradas, juntamente com seus
 - Spring Boot
 - Spring Data JPA
 - Maven
+- JUnit
+- Mockito
+- JaCoCo
+- Checkstyle
+- SonarQube
+- SonarLint
 - PostgresSQL
 
 ## Contribuições
