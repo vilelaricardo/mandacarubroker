@@ -3,7 +3,11 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
-import jakarta.validation.*;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.Validator;
+import jakarta.validation.Validation;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,21 +33,30 @@ public class StockService {
     }
 
     public Stock createStock(RequestStockDTO data) {
-        Stock novaAcao = new Stock(data);
         validateRequestStockDTO(data);
-        return stockRepository.save(novaAcao);
+
+        Stock newStock = new Stock(data);
+        return stockRepository.save(newStock);
     }
 
     public Optional<Stock> updateStock(String id, Stock updatedStock) {
-        return stockRepository.findById(id)
-                .map(stock -> {
-                    stock.setSymbol(updatedStock.getSymbol());
-                    stock.setCompanyName(updatedStock.getCompanyName());
-                    double newPrice = stock.changePrice(updatedStock.getPrice(), true);
-                    stock.setPrice(newPrice);
+        RequestStockDTO data = new RequestStockDTO(
+                updatedStock.getSymbol(),
+                updatedStock.getCompanyName(),
+                updatedStock.getPrice());
+        validateRequestStockDTO(data);
 
-                    return stockRepository.save(stock);
-                });
+        Optional<Stock> result = stockRepository.findById(id);
+        if (result.isPresent()) {
+            Stock stock = result.get();
+            stock.setSymbol(updatedStock.getSymbol());
+            stock.setCompanyName(updatedStock.getCompanyName());
+            double newPrice = stock.changePrice(updatedStock.getPrice(), true);
+            stock.setPrice(newPrice);
+            stockRepository.save(stock);
+        }
+
+        return result;
     }
 
     public void deleteStock(String id) {
@@ -61,17 +74,8 @@ public class StockService {
             for (ConstraintViolation<RequestStockDTO> violation : violations) {
                 errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
             }
-
             errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
-
             throw new ConstraintViolationException(errorMessage.toString(), violations);
         }
-    }
-
-    public void validateAndCreateStock(RequestStockDTO data) {
-        validateRequestStockDTO(data);
-
-        Stock novaAcao = new Stock(data);
-        stockRepository.save(novaAcao);
     }
 }
