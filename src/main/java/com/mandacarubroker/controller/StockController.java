@@ -3,6 +3,8 @@ package com.mandacarubroker.controller;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.service.StockService;
+import jakarta.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/stocks")
@@ -36,9 +38,10 @@ public class StockController {
     }
 
     @PostMapping
-    public ResponseEntity<Stock> createStock(@RequestBody RequestStockDTO data) {
+    public ResponseEntity<Stock> createStock(@RequestBody RequestStockDTO data, HttpServletRequest http) {
         Stock createdStock = stockService.createStock(data);
-        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().build().toUri()).body(createdStock);
+        URI uri = UriComponentsBuilder.fromUriString(http.getRequestURI()).path("/{id}").buildAndExpand(createdStock.getId()).toUri();
+        return ResponseEntity.created(uri).body(createdStock);
     }
 
     @PutMapping("/{id}")
