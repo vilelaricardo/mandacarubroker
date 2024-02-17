@@ -50,7 +50,11 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>com.puppycrawl.tools</groupId>
+			<artifactId>checkstyle</artifactId>
+			<version>10.13.0</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.cache</groupId>
 			<artifactId>cache-api</artifactId>
@@ -69,6 +73,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+
 	</dependencies>
 
 	<build>
