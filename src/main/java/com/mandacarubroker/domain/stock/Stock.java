@@ -33,13 +33,13 @@ public class Stock {
     }
 
     public double changePrice(double amount, boolean increase) {
-        if (increase && amount < this.price) {
-            return this.increasePrice(amount);
+        if (!increase && amount < this.price) {
+            return this.decreasePrice(amount);
         }
-        if (!increase && amount > this.price) {
-            return this.increasePrice(amount);
+        if (increase && amount < 0) {
+            return this.decreasePrice(amount);
         }
-        return this.decreasePrice(amount);
+        return this.increasePrice(amount);
     }
 
     public double increasePrice(double amount) {
