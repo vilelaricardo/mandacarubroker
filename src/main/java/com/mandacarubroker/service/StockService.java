@@ -74,12 +74,11 @@ public class StockService {
                 .map(stock -> {
                     stock.setSymbol(updatedStock.getSymbol());
                     stock.setCompanyName(updatedStock.getCompanyName());
-                    double newPrice = stock.changePrice(updatedStock.getPrice(), true);
-                    stock.setPrice(newPrice);
+                    stock.setPrice(updatedStock.getPrice());
+
                     return stockRepository.save(stock);
                 });
     }
-
     /**
      * Exclui uma ação pelo seu ID.
      *
