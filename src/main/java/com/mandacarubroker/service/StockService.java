@@ -75,6 +75,7 @@ public class StockService {
                     stock.setSymbol(updatedStock.getSymbol());
                     stock.setCompanyName(updatedStock.getCompanyName());
                     stock.setPrice(updatedStock.getPrice());
+                    
                     return stockRepository.save(stock);
                 });
     }
