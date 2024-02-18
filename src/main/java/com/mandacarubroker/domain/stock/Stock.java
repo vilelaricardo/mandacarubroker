@@ -1,10 +1,11 @@
 package com.mandacarubroker.domain.stock;
 
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,78 +20,44 @@ import lombok.NoArgsConstructor;
 public class Stock {
 
     /**
-     * Identificador único do estoque.
+
+     O identificador único para a ação.
+     Este campo é anotado com {@code @Id} e {@code @GeneratedValue} para indicar que
+     representa a chave primária da entidade de ação. A estratégia {@code GenerationType.UUID}
+     é usada para gerar um UUID único como identificador.
+
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     /**
-     * Símbolo do estoque.
+     *
+     * O símbolo único associado à ação.
      */
     private String symbol;
 
     /**
-     * Nome da empresa do estoque.
+     * O nome da empresa associada à ação.
      */
     private String companyName;
-
     /**
-     * Preço do estoque.
+     * O preço atual da ação.
      */
     private double price;
 
     /**
-     * Construtor que inicializa os campos da classe com base em um objeto RequestStockDTO.
+     * Constrói um novo objeto Stock com base no RequestStockDTO fornecido.
      *
-     * @param requestStockDTO Objeto contendo os dados do estoque.
+     * Este construtor inicializa um novo objeto Stock. Ele extrai o símbolo,
+     * o nome da empresa e o preço do RequestStockDTO e define os atributos correspondentes do Stock.
+     *
+     * @param requestStockDTO O RequestStockDTO contendo os dados para inicializar o Stock.
      */
     public Stock(final RequestStockDTO requestStockDTO) {
         this.symbol = requestStockDTO.symbol();
         this.companyName = requestStockDTO.companyName();
-        this.price = changePrice(requestStockDTO.price(), true);
+        this.price = requestStockDTO.price();
     }
 
-    /**
-     * Método que altera o preço do estoque com base no valor e na direção da mudança.
-     *
-     * @param amount   Valor da mudança de preço.
-     * @param increase Se verdadeiro, aumenta o preço; se falso, diminui o preço.
-     * @return O novo preço do estoque após a mudança.
-     */
-    public double changePrice(final double amount, final boolean increase) {
-        if (increase) {
-            if (amount < this.price) {
-                return increasePrice(amount);
-            } else {
-                return decreasePrice(amount);
-            }
-        } else {
-            if (amount > this.price) {
-                return increasePrice(amount);
-            } else {
-                return this.decreasePrice(amount);
-            }
-        }
-    }
 
-    /**
-     * Método para aumentar o preço do estoque em uma quantidade específica.
-     *
-     * @param amount Quantidade a ser adicionada ao preço atual.
-     * @return O novo preço do estoque após o aumento.
-     */
-    public double increasePrice(final double amount) {
-        return this.price + amount;
-    }
-
-    /**
-     * Método para diminuir o preço do estoque em uma quantidade específica.
-     *
-     * @param amount Quantidade a ser subtraída do preço atual.
-     * @return O novo preço do estoque após a diminuição.
-     */
-    public double decreasePrice(final double amount) {
-        return this.price - amount;
-    }
 }
