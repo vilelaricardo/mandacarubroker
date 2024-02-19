@@ -3,6 +3,7 @@ package com.mandacarubroker.controller;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.service.StockService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Controlador para manipulação de estoques.
@@ -64,7 +66,7 @@ public class StockController {
     @PostMapping
     public ResponseEntity<Stock> createStock(@RequestBody final RequestStockDTO data) {
         final Stock createdStock = stockService.createStock(data);
-        return ResponseEntity.ok(createdStock);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdStock);
     }
 
     /**
@@ -75,8 +77,13 @@ public class StockController {
      * @return O estoque atualizado, se a atualização for bem-sucedida; caso contrário, null
      */
     @PutMapping("/{id}")
-    public Stock updateStock(@PathVariable final String id, @RequestBody final Stock updatedStock) {
-        return stockService.updateStock(id, updatedStock).orElse(null);
+    public ResponseEntity<Stock> updateStock(@PathVariable final String id, @RequestBody final Stock updatedStock) {
+        Optional<Stock> responseStock = stockService.updateStock(id, updatedStock);
+        if (responseStock.isPresent()) {
+            return ResponseEntity.ok(responseStock.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**

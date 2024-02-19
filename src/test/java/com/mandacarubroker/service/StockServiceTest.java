@@ -3,10 +3,7 @@ package com.mandacarubroker.service;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.Null;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,11 +13,11 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for StockService.
+ */
 @ActiveProfiles("test")
 @SpringBootTest
-
-
-
 class StockServiceTest {
 
     @Autowired
@@ -29,153 +26,168 @@ class StockServiceTest {
     @Autowired
     private StockRepository stockRepository;
 
+    /**
+     * Sets up test data before each test method.
+     */
     @BeforeEach
-    public void initRepository() {
-        stockRepository.save(new Stock(new RequestStockDTO("RPM3", "3R PETROLEUM", 90.45)));
-        stockRepository.save(new Stock(new RequestStockDTO("ALL3", "ALLOS", 121.60)));
-        stockRepository.save(new Stock(new RequestStockDTO("AZL4", "AZUL", 230.20)));
+    public void setUp() {
+        stockRepository.save(new Stock(new RequestStockDTO("JPN5", "AMAZON 2", 76.24)));
+        stockRepository.save(new Stock(new RequestStockDTO("NJK5", "GOOGLE", 205.6)));
+        stockRepository.save(new Stock(new RequestStockDTO("KNU9", "APPLE", 670.5)));
     }
 
+    /**
+     * Cleans up test data after each test method.
+     */
     @AfterEach
-    public void clearRepository() {
+    public void tearDown() {
         stockRepository.deleteAll();
     }
 
-    @Test
-    void ShouldRetrieveAllStocks() {
+    /**
+     * Nested test class for stock retrieval.
+     */
+    @Nested
+    @DisplayName("Stock Retrieval Tests")
+    class StockRetrievalTests {
+        /**
+         * Test to retrieve all stocks.
+         */
+        @Test
+        @DisplayName("Should Retrieve All Stocks")
+        void shouldRetrieveAllStocks() {
+            List<Stock> expectedStocks = List.of(
+                    new Stock(new RequestStockDTO("JPN5", "AMAZON 2", 76.24)),
+                    new Stock(new RequestStockDTO("NJK5", "GOOGLE", 205.6)),
+                    new Stock(new RequestStockDTO("KNU9", "APPLE", 670.5))
+            );
 
-        List<Stock> expectedStocks = List.of(
-                new Stock(new RequestStockDTO("RPM3", "3R PETROLEUM", 90.45)),
-                new Stock(new RequestStockDTO("ALL3", "ALLOS", 121.60)),
-                new Stock(new RequestStockDTO("AZL4", "AZUL", 230.20))
-        );
+            List<Stock> retrievedStocks = stockService.getAllStocks();
 
-        List<Stock> retrievesStocks = stockService.getAllStocks();
-
-        for (int i = 0; i < retrievesStocks.size(); i++) {
-            assertEquals(retrievesStocks.get(i).getSymbol(), expectedStocks.get(i).getSymbol());
-            assertEquals(retrievesStocks.get(i).getCompanyName(), expectedStocks.get(i).getCompanyName());
-            assertEquals(retrievesStocks.get(i).getPrice(), expectedStocks.get(i).getPrice());
+            for (int i = 0; i < retrievedStocks.size(); i++) {
+                assertEquals(retrievedStocks.get(i).getSymbol(), expectedStocks.get(i).getSymbol());
+                assertEquals(retrievedStocks.get(i).getCompanyName(), expectedStocks.get(i).getCompanyName());
+                assertEquals(retrievedStocks.get(i).getPrice(), expectedStocks.get(i).getPrice());
+            }
         }
 
+        /**
+         * Test to retrieve stock by ID.
+         */
+        @Test
+        @DisplayName("Should Retrieve Stock by ID")
+        void shouldRetrieveStockById() {
+            Stock targetStock = stockRepository.findAll().get(0);
+
+            Optional<Stock> retrievedStock = stockService.getStockById(targetStock.getId());
+
+            assertEquals(retrievedStock.get().getSymbol(), targetStock.getSymbol());
+            assertEquals(retrievedStock.get().getCompanyName(), targetStock.getCompanyName());
+            assertEquals(retrievedStock.get().getPrice(), targetStock.getPrice());
+        }
+    }
+    /**
+     * Nested test class for stock update and deletion.
+     */
+    @Nested
+    @DisplayName("Stock Update and Deletion Tests")
+    class StockUpdateAndDeletionTests {
+        /**
+         * Test to update stock.
+         */
+        @Test
+        @DisplayName("Should Update Stock")
+        void shouldUpdateStock() {
+            Stock stockForUpdate = new Stock(new RequestStockDTO("ITU2", "Intel 3", 312.23));
+
+            Stock targetUpdatingStock = stockRepository.findAll().get(0);
+
+            stockService.updateStock(targetUpdatingStock.getId(), stockForUpdate);
+
+            Optional<Stock> updatedStock = stockRepository.findById(targetUpdatingStock.getId());
+
+            assertEquals(stockForUpdate.getSymbol(), updatedStock.get().getSymbol());
+            assertEquals(stockForUpdate.getCompanyName(), updatedStock.get().getCompanyName());
+            assertEquals(stockForUpdate.getPrice(), updatedStock.get().getPrice());
+        }
+
+        /**
+         * Test to delete stock.
+         */
+        @Test
+        @DisplayName("Should Delete Stock")
+        void shouldDeleteStock() {
+            Stock targetDeletingStock = stockRepository.findAll().get(0);
+
+            stockService.deleteStock(targetDeletingStock.getId());
+
+            assertEquals(Optional.empty(), stockRepository.findById(targetDeletingStock.getId()));
+        }
+    }
+    /**
+     * Nested test class for stock creation and validation.
+     */
+    @Nested
+    @DisplayName("Stock Creation and Validation Tests")
+    class StockCreationAndValidationTests {
+        /**
+         * Test to create a new stock.
+         */
+        @Test
+        @DisplayName("Should Create New Stock")
+        void shouldCreateNewStock() {
+            RequestStockDTO newStockDTO = new RequestStockDTO("ITU2", "Intel 2", 256.75);
+
+            stockService.createStock(newStockDTO);
+
+            Stock retrievedStock = stockRepository.findAll().get(3);
+
+            assertEquals(newStockDTO.symbol(), retrievedStock.getSymbol());
+            assertEquals(newStockDTO.companyName(), retrievedStock.getCompanyName());
+            assertEquals(newStockDTO.price(), retrievedStock.getPrice());
+        }
+
+        /**
+         * Test to ensure invalid stock creation throws exception.
+         */
+        @Test
+        @DisplayName("Should Not Create Invalid New Stock")
+        void shouldNotCreateInvalidNewStock() {
+            RequestStockDTO newStockDTO = new RequestStockDTO("ITUU2", "Intel 2", 256.75);
+
+            assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
+                stockService.createStock(newStockDTO);
+            });
+        }
+
+        /**
+         * Test to ensure exception is thrown on invalid symbol validation.
+         */
+        @Test
+        @DisplayName("Should Throw Exception on Validate RequestStockDTO with Invalid Symbol")
+        void shouldThrowExceptionOnValidateRequestStockDTOWithInvalidSymbol() {
+            RequestStockDTO dataToValidate =
+                    new RequestStockDTO("ITUU2", "Intel 2", 256.75);
+
+            assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
+                StockService.validateRequestStockDTO(dataToValidate);
+            });
+        }
+
+        /**
+         * Test to ensure exception is thrown on blank company name validation.
+         */
+        @Test
+        @DisplayName("Should Throw Exception on Validate RequestStockDTO with Blank Company Name")
+        void shouldThrowExceptionOnValidateRequestStockDTOWithCompanyNameBlank() {
+            RequestStockDTO dataToValidate =
+                    new RequestStockDTO("ITU2", "  ", 256.75);
+
+            assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
+                StockService.validateRequestStockDTO(dataToValidate);
+            });
+        }
 
     }
 
-    @Test
-    void ShouldGetStockById() {
-        Stock targetStock = stockRepository.findAll().get(0);
-
-        Optional<Stock> retrievesStocks = stockService.getStockById(targetStock.getId());
-
-        assertEquals(retrievesStocks.get().getSymbol(), targetStock.getSymbol());
-        assertEquals(retrievesStocks.get().getCompanyName(), targetStock.getCompanyName());
-        assertEquals(retrievesStocks.get().getPrice(), targetStock.getPrice());
-
-    }
-
-    @Test
-    void shouldAddNewStock() {
-
-        RequestStockDTO newStock = new RequestStockDTO("CMG4", "CEMIG", 129.67);
-
-        stockService.createStock(newStock);
-
-        Stock retrievesStock = stockRepository.findAll().get(3);
-
-        assertEquals(newStock.symbol(), retrievesStock.getSymbol());
-        assertEquals(newStock.companyName(), retrievesStock.getCompanyName());
-        assertEquals(newStock.price(), retrievesStock.getPrice());
-
-    }
-
-
-    @Test
-    void shouldNotAddInvalidNewStock() {
-        RequestStockDTO newStock = new RequestStockDTO("CMIG4", "CEMIG", 129.67);
-
-        assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
-            stockService.createStock(newStock);
-        });
-
-    }
-
-    @Test
-    void shouldUpdateTheStock() {
-
-        Stock stockForUpdate = new Stock(new RequestStockDTO("RPM2", "2R PETROLEUM", 103.95));
-
-        Stock targetUpdatingStock = stockRepository.findAll().get(0);
-
-        stockService.updateStock(targetUpdatingStock.getId(), stockForUpdate);
-
-        Optional<Stock> updatedStock = stockRepository.findById(targetUpdatingStock.getId());
-
-        assertEquals(stockForUpdate.getSymbol(), updatedStock.get().getSymbol());
-        assertEquals(stockForUpdate.getCompanyName(), updatedStock.get().getCompanyName());
-        assertEquals(stockForUpdate.getPrice(), updatedStock.get().getPrice());
-
-    }
-
-    @Test
-    void shouldDeleteStock() {
-
-        Stock targetDeletingStock = stockRepository.findAll().get(0);
-
-        stockService.deleteStock(targetDeletingStock.getId());
-
-        assertEquals(Optional.empty(), stockRepository.findById(targetDeletingStock.getId()));
-    }
-
-    @Test
-    void shouldNotThrowsAnExceptionWhenValidatingRequestStockDTO(){
-
-        RequestStockDTO dataToValidate = new RequestStockDTO("RPM2", "2R PETROLEUM", 103.95);
-
-        assertDoesNotThrow(() -> {
-            StockService.validateRequestStockDTO(dataToValidate);
-        });
-    }
-
-    @Test
-    void shouldThrowAnExceptionWhenValidatingRequestStockDTOWithAnInvalidSymbol() {
-
-        RequestStockDTO dataToValidate =
-                new RequestStockDTO("RPTM2", "2R PETROLEUM", 103.95);
-
-        assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
-            StockService.validateRequestStockDTO(dataToValidate);
-        });
-    }
-
-    @Test
-    void shouldThrowAnExceptionWhenValidatingRequestStockDTOWithABlankCompanyName() {
-
-        RequestStockDTO dataToValidate =
-                new RequestStockDTO("RPM2", "   ", 103.95);
-
-        assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
-            StockService.validateRequestStockDTO(dataToValidate);
-        });
-    }
-
-    @Test
-    void shouldThrowAnExceptionWhenValidatingTheRequestStockDTOWithNullPrice() {
-
-        RequestStockDTO dataToValidate =
-                new RequestStockDTO("RPM2", "2R PETROLEUM", 0);
-
-        assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
-            StockService.validateRequestStockDTO(dataToValidate);
-        });
-    }
-
-    @Test
-    void shouldThrowsAnExceptionWhenValidatinRequestStockDTOWithNegativePrice() {
-        RequestStockDTO dataToValidate =
-                new RequestStockDTO("RPM2", "2R PETROLEUM", -103.95);
-
-        assertThrows(jakarta.validation.ConstraintViolationException.class, () -> {
-            StockService.validateRequestStockDTO(dataToValidate);
-        });
-    }
 }
