@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: mandacarudb
+      POSTGRES_USER: jaopaulomilitao
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - 5432:5432

@@ -2,13 +2,16 @@ package com.mandacarubroker;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
-public class MandacarubrokerApplication {
+@SpringBootApplication public class MandacarubrokerApplication {
 
-	public static void main(String[] args) {
+	/**
+	 * Método principal para iniciar a aplicação.
+	 *
+	 * @param args Os argumentos da linha de comando passados para a aplicação
+	 */
+public static void main(final String[] args) {
 		SpringApplication.run(MandacarubrokerApplication.class, args);
-	}
+}
 
 }
