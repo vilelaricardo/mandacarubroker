@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Get a list of staged files
+staged_files=$(git diff --staged --name-only)
+
+# Run Checkstyle only on staged files
+for file in $staged_files; do
+    echo "Running Checkstyle on $file"
+
+    # Run Checkstyle on the staged file
+    mvn checkstyle:check -Dcheckstyle.config.location=config/checkstyle.xml -DconsoleOutput=True -DfailOnViolation=True -Dincludes=$file
+    status=$?
+
+    # Check if there are any violations
+    if [ $status -ne 0 ]; then
+        echo "Checkstyle violations found in $file. Please fix them before committing."
+        exit 1
+    fi
+done
