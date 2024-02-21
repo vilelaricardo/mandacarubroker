@@ -22,6 +22,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/stocks")
 public class StockController {
+
+
+
     private final StockService stockService;
 
     public StockController(final StockService receivedStockService) {
