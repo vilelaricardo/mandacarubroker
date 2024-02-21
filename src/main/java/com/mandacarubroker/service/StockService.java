@@ -1,11 +1,12 @@
 package com.mandacarubroker.service;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
+import com.mandacarubroker.dto.RequestStockDTO;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
+import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,7 @@ public class StockService {
   }
 
   /**
-   * Recupera uma ação pelo identificador.
+   * Recupera uma ação pelo identificador ID.
    *
    * @param id ID da ação
    * @return ação encontrada, ou Optional.empty() se não encontrada
@@ -50,9 +51,9 @@ public class StockService {
    * @throws ConstraintViolationException se a validação dos dados falhar
    */
   public Stock createStock(RequestStockDTO data) {
-    Stock novaAcao = new Stock(data);
+    Stock newStock = new Stock(data);
     validateRequestStockDTO(data);
-    return stockRepository.save(novaAcao);
+    return stockRepository.save(newStock);
   }
 
   /**
@@ -64,14 +65,13 @@ public class StockService {
    */
   public Optional<Stock> updateStock(String id, Stock updatedStock) {
     return stockRepository.findById(id)
-        .map(stock -> {
-          stock.setSymbol(updatedStock.getSymbol());
-          stock.setCompanyName(updatedStock.getCompanyName());
-          double newPrice = stock.changePrice(updatedStock.getPrice(), true);
-          stock.setPrice(newPrice);
+            .map(stock -> {
+              stock.setSymbol(updatedStock.getSymbol());
+              stock.setCompanyName(updatedStock.getCompanyName());
+              stock.setPrice(updatedStock.getPrice()); // Substitui o preço
 
-          return stockRepository.save(stock);
-        });
+              return stockRepository.save(stock);
+            });
   }
 
   /**
@@ -116,7 +116,7 @@ public class StockService {
   public void validateAndCreateStock(RequestStockDTO data) {
     validateRequestStockDTO(data);
 
-    Stock novaAcao = new Stock(data);
-    stockRepository.save(novaAcao);
+    Stock newStock = new Stock(data);
+    stockRepository.save(newStock);
   }
 }

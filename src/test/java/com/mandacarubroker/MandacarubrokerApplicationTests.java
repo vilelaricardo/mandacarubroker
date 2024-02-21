@@ -9,5 +9,4 @@ class MandacarubrokerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
