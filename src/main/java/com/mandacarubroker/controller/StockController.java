@@ -1,9 +1,11 @@
 package com.mandacarubroker.controller;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
+import com.mandacarubroker.dto.RequestStockDTO;
 import com.mandacarubroker.service.StockService;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/stocks")
 public class StockController {
 
-  private final StockService stockService;
+  @Autowired
+  private final StockService stockService; // Vínculo CONTROLLER com SERVICES
 
   public StockController(StockService stockService) {
     this.stockService = stockService;
   }
 
   /**
-   * Obtém todas as ações existentes.
+   * Método para RECUPERAR TODAS as ações existentes.
    *
    * @return Lista de ações.
    */
@@ -54,7 +57,7 @@ public class StockController {
    * @param data DTO com os dados da nova ação.
    * @return Ação criada.
    */
-  @PostMapping
+  @PostMapping // Vínculo do método "createStock" com o método "HTTP - POST"
   public ResponseEntity<Stock> createStock(@RequestBody RequestStockDTO data) {
     Stock createdStock = stockService.createStock(data);
     return ResponseEntity.ok(createdStock);
@@ -78,7 +81,8 @@ public class StockController {
    * @param id ID da ação.
    */
   @DeleteMapping("/{id}")
-  public void deleteStock(@PathVariable String id) {
+  public ResponseEntity<String> deleteStock(@PathVariable String id) {
     stockService.deleteStock(id);
+    return ResponseEntity.ok("Item " + id + " deletado com sucesso!");
   }
 }

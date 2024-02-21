@@ -1,5 +1,6 @@
 package com.mandacarubroker.domain.stock;
 
+import com.mandacarubroker.dto.RequestStockDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,40 @@ public class Stock {
   private String companyName;
   private double price;
 
+  // ---------- GETTERS ---------- //
+  public String getId() {
+    return id;
+  }
+
+  public String getSymbol() {
+    return symbol;
+  }
+
+  public String getCompanyName() {
+    return companyName;
+  }
+
+  public double getPrice() {
+    return price;
+  }
+
+  // ---------- SETTERS ---------- //
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setSymbol(String symbol) {
+    this.symbol = symbol;
+  }
+
+  public void setCompanyName(String companyName) {
+    this.companyName = companyName;
+  }
+
+  public void setPrice(double price) {
+    this.price = price;
+  }
+
   /**
    * Construtor que cria uma instância de Stock a partir de um RequestStockDTO.
    *
@@ -49,25 +84,13 @@ public class Stock {
    */
   public double changePrice(double amount, boolean increase) {
     if (increase) {
-      if (amount < this.price) {
-        return increasePrice(amount);
-      } else {
-        return decreasePrice(amount);
-      }
+      return this.price + amount;
     } else {
       if (amount > this.price) {
-        return increasePrice(amount);
+        return this.price;
       } else {
-        return this.decreasePrice(amount);
+        return this.price - amount;
       }
     }
-  }
-
-  public double increasePrice(double amount) {
-    return this.price + amount;
-  }
-
-  public double decreasePrice(double amount) {
-    return this.price - amount;
   }
 }
