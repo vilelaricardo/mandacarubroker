@@ -1,0 +1,35 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Copy .env file
+        run: cp .env.test .env
+
+      - name: Export environment variables
+        run: export $(grep -v '^#' .env | xargs)
+
+      - name: Build with Maven
+        run: mvn clean install -Dmaven.test.skip=true -X
+
+      - name: Start Docker
+        run: docker-compose up -d db
+
+      - name: Run tests
+        run: mvn test -X
+
+      - name: Stop Docker
+        run: docker-compose down
