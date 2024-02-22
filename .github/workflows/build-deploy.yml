@@ -17,6 +17,12 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -X
 
+      - name: Start Docker
+        run: docker-compose up -d
+
       - name: Run tests
         run: mvn test
+
+      - name: Stop Docker
+        run: docker-compose down
       
