@@ -27,7 +27,7 @@ jobs:
         run: docker-compose up -d db
 
       - name: Run tests
-        run: mvn test -X -DMANDACARU_POSTGRES_PORT=$MANDACARU_POSTGRES_PORT -DMANDACARU_POSTGRES_DB=$MANDACARU_POSTGRES_DB -DMANDACARU_POSTGRES_USER=$MANDACARU_POSTGRES_USER -DMANDACARU_POSTGRES_PASSWORD=$MANDACARU_POSTGRES_PASSWORD
+        run: mvn test -X
 
       - name: Stop Docker
         run: docker-compose down
