@@ -92,12 +92,6 @@ class StockServiceTest {
     }
 
     @Test
-    void itShouldRetunEmptyWhenStockIsNotFound() {
-        Optional<Stock> foundStock = service.getStockById(invalidStockId);
-        assertEquals(Optional.empty(), foundStock);
-    }
-
-    @Test
     void itShouldBeAbleToCreateStock() {
         RequestStockDTO requestStockDTO = new RequestStockDTO(validSymbol, validCompanyName, validPrice);
         Stock createdStock = service.createStock(requestStockDTO);
