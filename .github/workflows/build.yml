@@ -1,14 +1,52 @@
-name: Build + Code Analysis
+name: Build
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:
+      - main
 
 jobs:
-  build:
-    name: Build and analyze
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run Checkstyle
+        run: mvn checkstyle:check -Dcheckstyle.config.location=config/checkstyle.xml -DconsoleOutput=True -DfailOnViolation=True
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Copy .env file
+        run: cp .env.test .env
+
+      - name: Export environment variables
+        run: export $(grep -v '^#' .env | xargs)
+
+      - name: Build with Maven
+        run: mvn clean install -Dmaven.test.skip=true -X
+
+      - name: Start Docker
+        run: docker-compose up -d db
+
+      - name: Run tests
+        run: mvn test -X
+
+      - name: Stop Docker
+        run: docker-compose down
+
+  sonarcloud:
+    name: SonarCloud Quality Gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -44,7 +82,7 @@ jobs:
       - name: Start Docker
         run: docker-compose up -d db
 
-      - name: Build and analyze
+      - name: SonarCloud Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
