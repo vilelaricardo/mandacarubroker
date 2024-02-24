@@ -2,7 +2,6 @@ package com.mandacarubroker.controller;
 
 import com.mandacarubroker.domain.user.RequestUserDTO;
 import com.mandacarubroker.domain.user.ResponseUserDTO;
-import com.mandacarubroker.domain.user.User;
 import com.mandacarubroker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -20,12 +19,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<ResponseUserDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id) {
+    public ResponseEntity<ResponseUserDTO> getUserById(@PathVariable String id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 

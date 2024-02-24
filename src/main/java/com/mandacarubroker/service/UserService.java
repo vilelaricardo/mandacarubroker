@@ -16,12 +16,14 @@ public class UserService {
     private final UserRepository userRepository;
     private static final String NOT_FOUND_MSG = "User Not Found";
     
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<ResponseUserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream().map(ResponseUserDTO::new).toList();
     }
 
-    public User getUserById(String id) {
-        return userRepository.findById(id).orElseThrow(()->new EntityNotFoundException(NOT_FOUND_MSG));
+    public ResponseUserDTO getUserById(String id) {
+        return userRepository.findById(id).map(ResponseUserDTO::new)
+                .orElseThrow(()->new EntityNotFoundException(NOT_FOUND_MSG));
     }
 
     public ResponseUserDTO createUser(RequestUserDTO data) {
