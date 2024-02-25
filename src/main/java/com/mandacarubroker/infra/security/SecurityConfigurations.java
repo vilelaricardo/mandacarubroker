@@ -24,6 +24,14 @@ public class SecurityConfigurations {
     this.securityFilter = securityFilter;
   }
 
+  private static final String[] AUTH_WHITELIST = {
+      // -- Swagger UI v3
+      "/v3/api-docs/**",
+      "/swagger-ui/**",
+      // -- System
+      "/auth/login"
+  };
+
   @SuppressWarnings("checkstyle:MissingJavadocMethod")
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -33,7 +41,7 @@ public class SecurityConfigurations {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         )
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/auth/login").permitAll()
+            .requestMatchers(AUTH_WHITELIST).permitAll()
             .requestMatchers("/auth/**").hasRole(AuthUserRole.ADMIN.getRole())
             .anyRequest().authenticated()
         )
