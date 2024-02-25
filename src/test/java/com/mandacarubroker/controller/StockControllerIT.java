@@ -34,14 +34,14 @@ class StockControllerIT {
     @Autowired
     private StockRepository stockRepository;
     private Stock stock;
-    private int totalStocks;
+    private Long totalStocks;
     private String existingId;
 
     @BeforeEach
     void setup(){
         stock= new Stock("1","ABC1","ABC COMPANY",50.0);
         Stock savedStock = stockRepository.save(stock);
-        totalStocks=11;
+        totalStocks=stockRepository.count();
         existingId = savedStock.getId();
     }
     @Test
