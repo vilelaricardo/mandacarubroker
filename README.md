@@ -137,9 +137,14 @@ Este repositório foi submetido a uma análise estática utilizando as ferrament
 
 ## Passo-a-passo de como configurar o ambiente
 
-1. Clone o repositório: `git clone https://github.com/seu-usuario/MandaCaruBrokerAPI.git`
+1. Clone o repositório: `git clone https://github.com/I-Lima/Mandacaru-Broker-API.git`
 2. Importe o projeto em sua IDE preferida.
-3. Configure o banco de dados e as propriedades de aplicação conforme necessário.
+3. Para executar o banco de dados no Docker, utilize o comando a seguir:
+
+   ```bash
+   docker-compose up -d
+    ```
+
 4. Execute o aplicativo Spring Boot.
 5. Acesse a API em `http://localhost:8080`.
 
@@ -148,6 +153,7 @@ Este repositório foi submetido a uma análise estática utilizando as ferrament
 - Java 11 ou superior
 - Maven
 - Banco de dados
+- Docker
 
 ## Tecnologias Utilizadas
 
@@ -161,6 +167,8 @@ Este repositório foi submetido a uma análise estática utilizando as ferrament
 - SonarQube
 - SonarLint
 - PostgresSQL
+- Docker
+- Docker Compose
 
 ## Contribuições
 
