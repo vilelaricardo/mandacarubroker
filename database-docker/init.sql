@@ -1,0 +1,1 @@
+CREATE DATABASE mandacaru_broker;
