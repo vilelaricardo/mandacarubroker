@@ -2,7 +2,7 @@ package com.mandacarubroker.unitTest.service;
 
 import com.mandacarubroker.domain.stock.RequestStockDataTransferObject;
 import com.mandacarubroker.domain.stock.Stock;
-import com.mandacarubroker.domain.stock.StockRepository;
+import com.mandacarubroker.repository.StockRepository;
 import com.mandacarubroker.service.StockService;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
