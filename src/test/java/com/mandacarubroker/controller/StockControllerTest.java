@@ -27,8 +27,6 @@ class StockControllerTest {
         this.mockMvc.perform(get("/stocks")).andDo(print()).andExpect(status().isOk());
     }
 
-    
-
     @Test
     void getStockById() throws Exception {
         String id = "4948d1c1-ecd5-4840-bd19-70d955ae2fda";
