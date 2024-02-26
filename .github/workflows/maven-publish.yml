@@ -4,8 +4,6 @@
 name: Maven Package
 
 on: pull_request
-  release:
-    types: [created]
 
 jobs:
   build:
