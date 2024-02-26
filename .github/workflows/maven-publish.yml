@@ -3,7 +3,7 @@
 
 name: Maven Package
 
-on:
+on: pull_request
   release:
     types: [created]
 
