@@ -32,7 +32,7 @@ public class TokenService {
       Algorithm algorithm = Algorithm.HMAC256(secret);
       return JWT.create()
           .withIssuer("mandacaru-broker-api")
-          .withSubject(user.getLogin())
+          .withSubject(user.getUsername())
           .withExpiresAt(generateExpirationDate())
           .sign(algorithm);
     } catch (JWTCreationException e) {

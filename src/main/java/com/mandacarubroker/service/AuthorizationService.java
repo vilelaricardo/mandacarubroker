@@ -23,7 +23,7 @@ public class AuthorizationService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    return authUserRepository.findByLogin(username);
+    return authUserRepository.findByUsername(username);
   }
 
   /**
@@ -34,7 +34,7 @@ public class AuthorizationService implements UserDetailsService {
    **/
   public void create(RegisterDataTransferObject data) {
     String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-    AuthUser newUser = new AuthUser(data.login(), encryptedPassword, data.role());
+    AuthUser newUser = new AuthUser(data.username(), encryptedPassword, data.role());
 
     this.authUserRepository.save(newUser);
   }

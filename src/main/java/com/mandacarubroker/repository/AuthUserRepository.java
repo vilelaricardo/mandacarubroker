@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  **/
 @Repository
 public interface AuthUserRepository extends JpaRepository<AuthUser, String> {
-  AuthUser findByLogin(String login);
+  AuthUser findByUsername(String username);
 }

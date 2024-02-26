@@ -31,7 +31,7 @@ public class AuthUser implements UserDetails {
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
 
-  private String login;
+  private String username;
   @Getter
   private String password;
 
@@ -41,13 +41,13 @@ public class AuthUser implements UserDetails {
   /**
    * The method set the variables.
    *
-   * @param login user login
+   * @param username user login
    * @param password password
    * @param role role
    *
    **/
-  public AuthUser(String login, String password, AuthUserRole role) {
-    this.login = login;
+  public AuthUser(String username, String password, AuthUserRole role) {
+    this.username = username;
     this.password = password;
     this.role = role;
   }
@@ -66,7 +66,7 @@ public class AuthUser implements UserDetails {
 
   @Override
   public String getUsername() {
-    return login;
+    return username;
   }
 
   @Override
