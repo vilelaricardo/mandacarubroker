@@ -26,6 +26,7 @@ class StockControllerTest {
     void getAllStockRequestStatusOk() throws Exception {
         this.mockMvc.perform(get("/stocks")).andDo(print()).andExpect(status().isOk());
     }
+
     
 
     @Test
