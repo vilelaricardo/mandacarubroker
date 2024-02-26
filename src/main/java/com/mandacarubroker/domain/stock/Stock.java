@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Table(name ="stock")
+@Table(name ="tb_stock")
 @Entity(name="stock")
 @Data
 @NoArgsConstructor

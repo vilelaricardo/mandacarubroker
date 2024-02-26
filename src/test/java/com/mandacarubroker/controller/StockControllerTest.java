@@ -1,6 +1,7 @@
 package com.mandacarubroker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mandacarubroker.controller.exceptions.StandardError;
 import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.service.StockService;
@@ -12,8 +13,12 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.time.Instant;
 import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -31,6 +36,8 @@ class StockControllerTest {
     private ObjectMapper objectMapper;
     private Stock stock;
     private String existingId,nonExistingId;
+    private StandardError errorNotFound;
+    private final String NOT_FOUND_MSG = "Stock Not Found";
 
     @BeforeEach
     void setup(){
@@ -38,6 +45,8 @@ class StockControllerTest {
         existingId = "1";
         nonExistingId = "none";
 
+        errorNotFound = new StandardError(Instant.now(), HttpStatus.NOT_FOUND.value(),"Entity Not Found",NOT_FOUND_MSG,
+                UriComponentsBuilder.fromPath("/stocks/{id}").buildAndExpand(nonExistingId).toUriString());
     }
 
     @Test
@@ -59,9 +68,14 @@ class StockControllerTest {
 
     @Test
     void findByIdShouldReturnNotFoundStatus() throws Exception {
-        when(stockService.getStockById(nonExistingId)).thenThrow(EntityNotFoundException.class);
+        when(stockService.getStockById(nonExistingId)).thenThrow(new EntityNotFoundException("Stock Not Found"));
         mockMvc.perform(get("/stocks/{id}",nonExistingId).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.instant").exists())
+                .andExpect(jsonPath("$.status").value(errorNotFound.status()))
+                .andExpect(jsonPath("$.error").value(errorNotFound.error()))
+                .andExpect(jsonPath("$.message").value(errorNotFound.message()))
+                .andExpect(jsonPath("$.path").value(errorNotFound.path()));
     }
 
     @Test
@@ -113,10 +127,15 @@ class StockControllerTest {
     void updateShouldReturnNotFoundStatus() throws Exception {
         RequestStockDTO validDto = new RequestStockDTO(stock.getSymbol(),stock.getCompanyName(),stock.getPrice());
         String jsonObject = objectMapper.writeValueAsString(validDto);
-        when(stockService.updateStock(nonExistingId,validDto)).thenThrow(EntityNotFoundException.class);
+        when(stockService.updateStock(nonExistingId,validDto)).thenThrow(new EntityNotFoundException(NOT_FOUND_MSG));
 
         mockMvc.perform(put("/stocks/{id}",nonExistingId).content(jsonObject).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.instant").exists())
+                .andExpect(jsonPath("$.status").value(errorNotFound.status()))
+                .andExpect(jsonPath("$.error").value(errorNotFound.error()))
+                .andExpect(jsonPath("$.message").value(errorNotFound.message()))
+                .andExpect(jsonPath("$.path").value(errorNotFound.path()));
     }
 
     @Test
@@ -129,9 +148,13 @@ class StockControllerTest {
 
     @Test
     void deleteShouldReturnNotFound() throws Exception {
-        doThrow(EntityNotFoundException.class).when(stockService).deleteStock(nonExistingId);
+        doThrow(new EntityNotFoundException(NOT_FOUND_MSG)).when(stockService).deleteStock(nonExistingId);
         mockMvc.perform(delete("/stocks/{id}",nonExistingId))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string(blankOrNullString()));
+                .andExpect(jsonPath("$.instant").exists())
+                .andExpect(jsonPath("$.status").value(errorNotFound.status()))
+                .andExpect(jsonPath("$.error").value(errorNotFound.error()))
+                .andExpect(jsonPath("$.message").value(errorNotFound.message()))
+                .andExpect(jsonPath("$.path").value(errorNotFound.path()));
     }
 }
