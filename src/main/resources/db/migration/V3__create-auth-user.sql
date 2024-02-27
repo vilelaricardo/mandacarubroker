@@ -1,6 +1,6 @@
 INSERT INTO auth_users (
     id,
-    login,
+    username,
     password,
     role
 ) VALUES (

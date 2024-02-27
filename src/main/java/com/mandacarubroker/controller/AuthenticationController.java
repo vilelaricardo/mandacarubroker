@@ -52,7 +52,7 @@ public class AuthenticationController {
   public ResponseEntity<LoginResponseDataTransferObject> login(
       @RequestBody @Valid AuthenticationDataTransferObject data
   ) {
-    var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+    var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
     var auth = authenticationManager.authenticate(usernamePassword);
     var token = tokenService.generateSystemToken((AuthUser) auth.getPrincipal());
 
@@ -83,7 +83,7 @@ public class AuthenticationController {
   })
   @PostMapping("/register")
   public ResponseEntity<ResponseStatus> register(@RequestBody @Valid RegisterDataTransferObject data) {
-    if (this.authUserRepository.findByLogin(data.login()) != null) {
+    if (this.authUserRepository.findByUsername(data.username()) != null) {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
