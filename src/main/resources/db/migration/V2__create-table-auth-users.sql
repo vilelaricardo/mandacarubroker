@@ -1,0 +1,6 @@
+CREATE TABLE auth_users (
+    id VARCHAR PRIMARY KEY UNIQUE NOT NULL,
+    login VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL,
+    role VARCHAR NOT NULL
+);
