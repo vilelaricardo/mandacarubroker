@@ -7,6 +7,9 @@ import com.mandacarubroker.domain.authuser.RegisterDataTransferObject;
 import com.mandacarubroker.infra.security.TokenService;
 import com.mandacarubroker.repository.AuthUserRepository;
 import com.mandacarubroker.service.AuthorizationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("checkstyle:MissingJavadocType")
 @RestController
@@ -45,6 +42,12 @@ public class AuthenticationController {
   }
 
   @SuppressWarnings("checkstyle:MissingJavadocMethod")
+  @Operation(summary = "Log in to the system", method = "POST")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "login successful"),
+      @ApiResponse(responseCode = "400", description = "Invalid credentials"),
+      @ApiResponse(responseCode = "401", description = "No register"),
+  })
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDataTransferObject> login(
       @RequestBody @Valid AuthenticationDataTransferObject data
@@ -73,8 +76,13 @@ public class AuthenticationController {
   }
 
   @SuppressWarnings("checkstyle:MissingJavadocMethod")
+  @Operation(summary = "Register in the system", method = "POST")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Register successful"),
+      @ApiResponse(responseCode = "409", description = "Already registered user")
+  })
   @PostMapping("/register")
-  public ResponseEntity<String> register(@RequestBody @Valid RegisterDataTransferObject data) {
+  public ResponseEntity<ResponseStatus> register(@RequestBody @Valid RegisterDataTransferObject data) {
     if (this.authUserRepository.findByUsername(data.username()) != null) {
       return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
@@ -84,6 +92,10 @@ public class AuthenticationController {
     return ResponseEntity.ok().build();
   }
 
+  @Operation(summary = "Delete registration in the system", method = "POST")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Delete successful"),
+  })
   @DeleteMapping("/{id}")
   public void deleteAuthUser(@PathVariable String id) {
     authorizationService.delete(id);
