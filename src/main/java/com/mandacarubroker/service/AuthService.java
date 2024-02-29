@@ -13,13 +13,14 @@ import static com.mandacarubroker.validation.RecordValidation.validateRequestDTO
 @Service
 public class AuthService {
     private final UserRepository userRepository;
+
     private final PasswordHashingService passwordHashingService;
     private final TokenService tokenService;
 
-    public AuthService(final UserRepository receivedUserRepository) {
-        this.userRepository = receivedUserRepository;
-        this.passwordHashingService = new PasswordHashingService();
-        this.tokenService = new TokenService();
+    public AuthService(final UserRepository receivedUserRepostory, final PasswordHashingService receivedPasswordHashingService, final TokenService receivedTokenService) {
+        this.userRepository = receivedUserRepostory;
+        this.passwordHashingService = receivedPasswordHashingService;
+        this.tokenService = receivedTokenService;
     }
 
     public Optional<ResponseAuthUserDTO> login(final RequestAuthUserDTO requestAuthUserDTO) {
