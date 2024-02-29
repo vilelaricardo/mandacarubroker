@@ -47,7 +47,7 @@ public class UserService {
                 });
     }
 
-    public Optional<User> deposit(String userId, double amount) {
+    public Optional<User> deposit(final String userId, final double amount) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();

@@ -41,7 +41,7 @@ public class User {
         this.balance = requestUserDTO.balance();
     }
 
-    public void deposit(double amount) {
+    public void deposit(final double amount) {
         if (amount > 0) {
             this.balance += amount;
         } else {
