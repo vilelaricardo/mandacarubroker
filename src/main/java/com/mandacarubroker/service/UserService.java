@@ -47,6 +47,17 @@ public class UserService {
                 });
     }
 
+    public Optional<User> deposit(String userId, double amount) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.deposit(amount); // Chama o método deposit da classe User
+            return Optional.of(userRepository.save(user));
+        } else {
+            return Optional.empty(); // Usuário não encontrado
+        }
+    }
+
     public void deleteUser(final String id) {
         userRepository.deleteById(id);
     }

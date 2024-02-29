@@ -60,6 +60,16 @@ public class UserController {
         return ResponseEntity.ok(updatedUser.get());
     }
 
+    @PutMapping("/{id}/deposit")
+    public ResponseEntity<User> deposit(@PathVariable final String id, @RequestBody final double amount) {
+        Optional<User> updatedUser = userService.deposit(id, amount);
+        if (updatedUser.isPresent()) {
+            return ResponseEntity.ok(updatedUser.get());
+        } else {
+            return ResponseEntity.notFound().build(); // Usuário não encontrado
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable final String id) {
         userService.deleteUser(id);
