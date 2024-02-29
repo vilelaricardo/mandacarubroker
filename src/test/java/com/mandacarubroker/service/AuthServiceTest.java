@@ -4,6 +4,7 @@ import com.mandacarubroker.domain.auth.RequestAuthUserDTO;
 import com.mandacarubroker.domain.user.RequestUserDTO;
 import com.mandacarubroker.domain.user.User;
 import com.mandacarubroker.domain.user.UserRepository;
+import com.mandacarubroker.security.SecuritySecretsMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -44,10 +45,13 @@ class AuthServiceTest {
 
     @BeforeEach
     void setUp() {
+        SecuritySecretsMock.mockStatic();
+
         userRepository = Mockito.mock(UserRepository.class);
         validUser = new User(validRequestUserDTO);
         Mockito.when(userRepository.findByUsername(validUsername)).thenReturn(validUser);
         Mockito.when(userRepository.findByUsername(invalidUsername)).thenReturn(null);
+
         authService = new AuthService(userRepository);
     }
 
@@ -68,7 +72,7 @@ class AuthServiceTest {
                 validPassword
         );
 
-        Optional<User> user = authService.login(validRequestAuthUserDTO);
+        Optional<User> user = authService.getUserGivenCredentials(validRequestAuthUserDTO);
         assertEquals(true, user.isPresent());
         assertUsersAreEqual(validUser, user.get());
     }
@@ -79,7 +83,7 @@ class AuthServiceTest {
                 validUsername,
                 "invalidPassword"
         );
-        Optional<User> user = authService.login(invalidRequestAuthUserDTO);
+        Optional<User> user = authService.getUserGivenCredentials(invalidRequestAuthUserDTO);
         assertEquals(false, user.isPresent());
     }
 
@@ -89,7 +93,7 @@ class AuthServiceTest {
                 invalidUsername,
                 validPassword
         );
-        Optional<User> user = authService.login(invalidRequestAuthUserDTO);
+        Optional<User> user = authService.getUserGivenCredentials(invalidRequestAuthUserDTO);
         assertEquals(false, user.isPresent());
     }
 }
