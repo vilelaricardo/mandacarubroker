@@ -51,10 +51,10 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.deposit(amount);
+            user.deposit(amount); // Chama o método deposit da classe User
             return Optional.of(userRepository.save(user));
         } else {
-            return Optional.empty(); 
+            return Optional.empty(); // Usuário não encontrado
         }
     }
 

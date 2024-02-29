@@ -66,7 +66,7 @@ public class UserController {
         if (updatedUser.isPresent()) {
             return ResponseEntity.ok(updatedUser.get());
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build(); // Usuário não encontrado
         }
     }
 
