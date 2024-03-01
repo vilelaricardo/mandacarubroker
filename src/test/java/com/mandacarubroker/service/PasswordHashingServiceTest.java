@@ -9,7 +9,7 @@ class PasswordHashingServiceTest {
     @Test
     void itShouldBeAbleToHashAndMatchRightPassword() {
         final PasswordHashingService underTest = new PasswordHashingService();
-        final String hashedPassword = underTest.hashPassword("password");
+        final String hashedPassword = underTest.encode("password");
         final boolean matches = underTest.matches("password", hashedPassword);
         assertTrue(matches);
     }
@@ -17,7 +17,7 @@ class PasswordHashingServiceTest {
     @Test
     void itShouldNotMatchWrongPassword() {
         final PasswordHashingService underTest = new PasswordHashingService();
-        final String hashedPassword = underTest.hashPassword("password");
+        final String hashedPassword = underTest.encode("password");
         final boolean matches = underTest.matches("wrongPassword", hashedPassword);
         assertFalse(matches);
     }
