@@ -39,11 +39,20 @@ public class User implements UserDetails {
         this.balance = requestUserDTO.balance();
     }
 
+    @Column(name = "role", columnDefinition = "VARCHAR DEFAULT 'USER'")
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private Role getRole() {
+        if (role == null) {
+            role = Role.USER;
+        }
+
+        return role;
+    }
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
+        return this.getRole().getAuthorities();
     }
 
     public String getPassword() {
