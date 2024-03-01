@@ -1,10 +1,6 @@
 package com.mandacarubroker.domain.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,8 +39,11 @@ public class User implements UserDetails {
         this.balance = requestUserDTO.balance();
     }
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return role.getAuthorities();
     }
 
     public String getPassword() {
