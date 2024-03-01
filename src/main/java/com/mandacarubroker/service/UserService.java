@@ -4,6 +4,9 @@ import com.mandacarubroker.domain.user.RequestUserDTO;
 import com.mandacarubroker.domain.user.ResponseUserDTO;
 import com.mandacarubroker.domain.user.User;
 import com.mandacarubroker.domain.user.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.Optional;
 import static com.mandacarubroker.validation.RecordValidation.validateRequestDTO;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordHashingService passwordHashingService = new PasswordHashingService();
 
@@ -26,8 +29,7 @@ public class UserService {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getBirthDate(),
-                user.getBalance()
-        );
+                user.getBalance());
     }
 
     public List<ResponseUserDTO> getAllUsers() {
@@ -50,7 +52,7 @@ public class UserService {
 
     private User hashPassword(final User user) {
         final String rawPassword = user.getPassword();
-        final String hashedPassword = passwordHashingService.hashPassword(rawPassword);
+        final String hashedPassword = passwordHashingService.encode(rawPassword);
         user.setPassword(hashedPassword);
         return user;
     }
@@ -66,7 +68,7 @@ public class UserService {
         validateRequestDTO(requestUserDTO);
 
         final String rawPassword = requestUserDTO.password();
-        final String hashedPassword = passwordHashingService.hashPassword(rawPassword);
+        final String hashedPassword = passwordHashingService.encode(rawPassword);
 
         return userRepository.findById(userId)
                 .map(user -> {
@@ -85,6 +87,21 @@ public class UserService {
     public void deleteUser(final String id) {
         userRepository.deleteById(id);
     }
+
+    public UserDetails loadUserByUsername(final String username) {
+        if (username == null || username.isEmpty()) {
+            throw new UsernameNotFoundException("Username is required");
+        }
+
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return user;
+    }
+
     public boolean verifyDuplicateUsername(final String userName) {
         User alreadyExistingUser = userRepository.findByUsername(userName);
         return alreadyExistingUser != null;

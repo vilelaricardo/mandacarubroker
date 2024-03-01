@@ -32,7 +32,7 @@ class AuthControllerTest {
     private final String invalidUsername = "invalidUsername";
     private final String validPassword = "password";
     private final String invalidPassword = "invalidPassword";
-    private final String validHashedPassword = passwordHashingService.hashPassword(validPassword);
+    private final String validHashedPassword = passwordHashingService.encode(validPassword);
     private final String validFirstName = "Lara";
     private final String validLastName = "Souza";
     private final LocalDate validBirthDate = LocalDate.of(1997,4,5);

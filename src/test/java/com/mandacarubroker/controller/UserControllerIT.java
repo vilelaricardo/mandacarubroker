@@ -1,6 +1,7 @@
 package com.mandacarubroker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.mandacarubroker.domain.user.RequestUserDTO;
 import com.mandacarubroker.domain.user.ResponseUserDTO;
 import com.mandacarubroker.domain.user.User;
@@ -26,11 +27,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class UserControllerIT {
-
     @Autowired
     private UserRepository userRepository;
 
@@ -48,7 +47,7 @@ class UserControllerIT {
     private final String validPassword = "#pass555";
     private final String validFirstName = "Lara";
     private final String validLastName = "Souza";
-    private final LocalDate validBirthDate = LocalDate.of(2006,2,28);
+    private final LocalDate validBirthDate = LocalDate.of(2006, 2, 28);
     private final double validBalance = 90.50;
     private final RequestUserDTO invalidEmailUserDTO = new RequestUserDTO(
             "marcosloiola@.yahoo.com",
@@ -57,8 +56,7 @@ class UserControllerIT {
             "Marcos",
             "Loiola",
             LocalDate.of(2002, 2, 26),
-            0.25
-    );
+            0.25);
     private final RequestUserDTO invalidPasswordUserDTO = new RequestUserDTO(
             "marcosloiola@yahoo.com",
             "Marcos23",
@@ -66,8 +64,7 @@ class UserControllerIT {
             "Marcos",
             "Loiola",
             LocalDate.of(2002, 2, 26),
-            0.25
-    );
+            0.25);
     private final RequestUserDTO invalidAgeUserDTO = new RequestUserDTO(
             "marcosloiola@yahoo.com",
             "Marcos23",
@@ -75,8 +72,7 @@ class UserControllerIT {
             "Marcos",
             "Loiola",
             LocalDate.of(2006, 3, 2),
-            0.25
-    );
+            0.25);
 
     private final RequestUserDTO invalidBalanceUserDTO = new RequestUserDTO(
             "marcosloiola@yahoo.com",
@@ -85,8 +81,7 @@ class UserControllerIT {
             "Marcos",
             "Loiola",
             LocalDate.of(2001, 3, 2),
-            -0.001
-    );
+            -0.001);
 
     private final RequestUserDTO validUserDTO = new RequestUserDTO(
             validEmail,
@@ -95,8 +90,7 @@ class UserControllerIT {
             validFirstName,
             validLastName,
             validBirthDate,
-            validBalance
-    );
+            validBalance);
 
     private final String urlRequestInvalidUser = "/users/dummy-user-id";
     private User user;
@@ -113,19 +107,18 @@ class UserControllerIT {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getBirthDate(),
-                user.getBalance()
-        );
+                user.getBalance());
     }
 
     @AfterEach
     void tearDown() {
         User alreadyExistentUser = userRepository.findByUsername(validUsername);
-        if(alreadyExistentUser != null){
+        if (alreadyExistentUser != null) {
             service.deleteUser(alreadyExistentUser.getId());
         }
     }
 
-    void assertResponseUserDTO(final RequestUserDTO userRequestDTO, final ResponseUserDTO receivedUser){
+    void assertResponseUserDTO(final RequestUserDTO userRequestDTO, final ResponseUserDTO receivedUser) {
         assertEquals(userRequestDTO.firstName(), receivedUser.firstName());
         assertEquals(userRequestDTO.lastName(), receivedUser.lastName());
         assertEquals(userRequestDTO.birthDate(), receivedUser.birthDate());
