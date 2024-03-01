@@ -11,8 +11,19 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static com.mandacarubroker.domain.user.Permission.*;
-import static org.springframework.http.HttpMethod.*;
+import static com.mandacarubroker.domain.user.Permission.STOCKS_CREATE;
+import static com.mandacarubroker.domain.user.Permission.STOCKS_DELETE;
+import static com.mandacarubroker.domain.user.Permission.STOCKS_READ;
+import static com.mandacarubroker.domain.user.Permission.STOCKS_UPDATE;
+import static com.mandacarubroker.domain.user.Permission.USER_CREATE;
+import static com.mandacarubroker.domain.user.Permission.USER_DELETE;
+import static com.mandacarubroker.domain.user.Permission.USER_READ;
+import static com.mandacarubroker.domain.user.Permission.USER_UPDATE;
+
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -35,6 +46,16 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(WHITE_LIST_URL).permitAll();
+                    req.requestMatchers(GET, "/stocks").hasAuthority(STOCKS_READ.getPermission());
+                    req.requestMatchers(GET, "/stocks/**").hasAuthority(STOCKS_READ.getPermission());
+                    req.requestMatchers(POST, "/stocks").hasAuthority(STOCKS_CREATE.getPermission());
+                    req.requestMatchers(PUT, "/stocks/**").hasAuthority(STOCKS_UPDATE.getPermission());
+                    req.requestMatchers(PUT, "/stocks/**").hasAuthority(STOCKS_DELETE.getPermission());
+                    req.requestMatchers(POST, "/users").hasAuthority(USER_CREATE.getPermission());
+                    req.requestMatchers(GET, "/users").hasAuthority(USER_READ.getPermission());
+                    req.requestMatchers(GET, "/users/**").hasAuthority(USER_READ.getPermission());
+                    req.requestMatchers(PUT, "/users/**").hasAuthority(USER_UPDATE.getPermission());
+                    req.requestMatchers(DELETE, "/users/**").hasAuthority(USER_DELETE.getPermission());
                     req.anyRequest().authenticated();
                 })
                 .authenticationProvider(authenticationProvider)
