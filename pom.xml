@@ -18,6 +18,7 @@
 		<sonar.organization>mandacaru-broker</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<powermock.version>2.0.2</powermock.version>
+		<spring.security.version>6.2.2</spring.security.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -46,17 +47,17 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>6.2.2</version>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>6.2.2</version>
+			<version>${spring.security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>6.2.2</version>
+			<version>${spring.security.version}</version>
 		</dependency>
 
 		<dependency>
