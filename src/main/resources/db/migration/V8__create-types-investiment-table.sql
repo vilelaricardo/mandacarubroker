@@ -1,0 +1,4 @@
+CREATE TABLE types_investments (
+    id VARCHAR PRIMARY KEY UNIQUE NOT NULL,
+    name VARCHAR NOT NULL UNIQUE
+);
