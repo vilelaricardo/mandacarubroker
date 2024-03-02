@@ -1,0 +1,10 @@
+CREATE TABLE users (
+    id VARCHAR PRIMARY KEY UNIQUE NOT NULL,
+    username VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL,
+    birth_data TIMESTAMP NOT NULL,
+    balance DOUBLE PRECISION
+);
