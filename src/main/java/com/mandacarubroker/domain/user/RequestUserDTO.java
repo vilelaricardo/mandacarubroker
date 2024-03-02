@@ -2,14 +2,18 @@ package com.mandacarubroker.domain.user;
 
 import com.mandacarubroker.validations.BirthDateValidate;
 import com.mandacarubroker.validations.UniqueValidate;
-import jakarta.validation.constraints.*;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.DecimalMin;
 import java.time.LocalDate;
 
 public record RequestUserDTO(
         @NotBlank @Size(min = 4, max = 20, message = "Username size must be between 4 and 20 characters.") @Pattern(regexp = "[A-Za-z]{3}\\d", message = "Username must have letters and numbers and cannot have symbols.") @UniqueValidate
         String username,
-        @NotBlank @Size(min = 8, message = "Password cannot be less of 8 characters long") @Pattern(regexp = "^(?=.[a-zA-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must have letters, numbers and special characters")
+        @NotBlank @Size(min = 8, message = "Password cannot be less of 8 characters long") @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@$!%?&])[A-Za-z\\d@$!%*?&]{8,}$"
+        , message = "Password must have letters, numbers and special characters")
         String password,
         @NotBlank @Email @UniqueValidate
         String email,

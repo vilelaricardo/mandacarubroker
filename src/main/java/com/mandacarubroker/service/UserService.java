@@ -1,18 +1,15 @@
 package com.mandacarubroker.service;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
 import com.mandacarubroker.domain.user.RequestUserDTO;
 import com.mandacarubroker.domain.user.ResponseUserDTO;
 import com.mandacarubroker.domain.user.User;
 import com.mandacarubroker.domain.user.UserRepository;
+import com.mandacarubroker.validations.CustomValidator;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
-import jakarta.validation.ValidatorFactory;
+import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private static final String NOT_FOUND_MSG = "User Not Found";
+    private static final CustomValidator customValidator = new CustomValidator();
 
     public List<ResponseUserDTO> getAllUsers() {
         return userRepository.findAll()
@@ -39,20 +37,34 @@ public class UserService {
         return new ResponseUserDTO(userRepository.save(newUser));
     }
 
+//    public static void validateRequestUserDTO(RequestUserDTO data) {
+//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+//        Set<ConstraintViolation<RequestUserDTO>> violations = factory.getValidator().validate(data);
+//        if (!violations.isEmpty()) {
+//            StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
+//            for (ConstraintViolation<RequestUserDTO> violation : violations) {
+//                errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
+//            }
+//            errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
+//            factory.close();
+//            throw new ConstraintViolationException(errorMessage.toString(), violations);
+//        }
+//        factory.close();
+//    }
+
     public static void validateRequestUserDTO(RequestUserDTO data) {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Set<ConstraintViolation<RequestUserDTO>> violations = factory.getValidator().validate(data);
+        Validator validator = customValidator.getValidator(); // Use injected CustomValidator
+        Set<ConstraintViolation<RequestUserDTO>> violations = validator.validate(data);
         if (!violations.isEmpty()) {
             StringBuilder errorMessage = new StringBuilder("Validation failed. Details: ");
             for (ConstraintViolation<RequestUserDTO> violation : violations) {
                 errorMessage.append(String.format("[%s: %s], ", violation.getPropertyPath(), violation.getMessage()));
             }
             errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
-            factory.close();
             throw new ConstraintViolationException(errorMessage.toString(), violations);
         }
-        factory.close();
     }
+
 
     public ResponseUserDTO updateUser(String id, RequestUserDTO updatedUser) {
         validateRequestUserDTO(updatedUser);
