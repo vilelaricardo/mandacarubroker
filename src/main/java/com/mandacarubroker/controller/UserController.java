@@ -4,14 +4,13 @@ import com.mandacarubroker.domain.user.RequestUserDTO;
 import com.mandacarubroker.domain.user.ResponseUserDTO;
 import com.mandacarubroker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import java.net.URI;
-import java.util.List;
-
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,14 +30,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseUserDTO> createUser(@Valid @RequestBody RequestUserDTO data, HttpServletRequest http) {
+    public ResponseEntity<ResponseUserDTO> createUser(@RequestBody RequestUserDTO data, HttpServletRequest http) {
         ResponseUserDTO createdUser = userService.createUser(data);
         URI uri = UriComponentsBuilder.fromUriString(http.getRequestURI()).path("/{id}").buildAndExpand(createdUser.id()).toUri();
         return ResponseEntity.created(uri).body(createdUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseUserDTO> updateUser(@PathVariable String id, @RequestBody @Valid RequestUserDTO updatedUser) {
+    public ResponseEntity<ResponseUserDTO> updateUser(@PathVariable String id, @RequestBody RequestUserDTO updatedUser) {
         return ResponseEntity.ok(userService.updateUser(id, updatedUser));
     }
 
