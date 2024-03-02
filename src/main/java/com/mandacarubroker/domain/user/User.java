@@ -1,10 +1,13 @@
 package com.mandacarubroker.domain.user;
 
+import jakarta.persistence.Table;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,8 +46,20 @@ public class User implements UserDetails {
         this.balance = requestUserDTO.balance();
     }
 
+    @Column(name = "role", columnDefinition = "VARCHAR DEFAULT 'USER'")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    private Role getRole() {
+        if (role == null) {
+            role = Role.USER;
+        }
+
+        return role;
+    }
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.getRole().getAuthorities();
     }
 
     public String getPassword() {
