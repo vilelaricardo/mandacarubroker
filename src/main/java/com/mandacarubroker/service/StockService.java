@@ -40,9 +40,9 @@ public class StockService {
   *
   **/
   public Stock createStock(RequestStockDataTransferObject data) {
-    Stock novaAcao = new Stock(data);
+    Stock newStock = new Stock(data);
     validateRequestStockDataTransferObject(data);
-    return stockRepository.save(novaAcao);
+    return stockRepository.save(newStock);
   }
 
   /**
@@ -58,6 +58,7 @@ public class StockService {
               stock.setSymbol(updatedStock.getSymbol());
               stock.setCompanyName(updatedStock.getCompanyName());
               stock.setPrice(updatedStock.getPrice());
+              stock.setAmount(updatedStock.getAmount());
 
               return stockRepository.save(stock);
             });

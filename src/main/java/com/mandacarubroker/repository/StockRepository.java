@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 **/
 @Repository
 public interface StockRepository extends JpaRepository<Stock, String> {
+  public Stock getBySymbol(String symbol);
 }

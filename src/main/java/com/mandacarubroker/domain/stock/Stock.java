@@ -28,6 +28,7 @@ public class Stock {
   private String symbol;
   private String companyName;
   private double price;
+  private Integer amount;
 
   /**
    * The method set the variables.
@@ -39,6 +40,7 @@ public class Stock {
     this.symbol = requestStock.symbol();
     this.companyName = requestStock.companyName();
     this.price = requestStock.price();
+    this.amount = requestStock.amount();
   }
 
   /**
