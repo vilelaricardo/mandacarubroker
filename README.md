@@ -68,7 +68,7 @@ DELETE /stocks/{id}
 
 ## Uso
 1. Clone o repositório: `git clone https://github.com/kayopro/mandacarubroker01`
-2. Importe o projeto em sua IDE preferida.
+2. Importe o projeto em sua IDE preferida (Recomendo o Intellij).
 3. Configure o banco de dados e as propriedades de aplicação conforme necessário.
 4. Execute o aplicativo Spring Boot.
 5. Acesse a API em `http://localhost:8080`.
@@ -76,7 +76,7 @@ DELETE /stocks/{id}
 ## Requisitos
 - Java 11 ou superior
 - Maven
-- Banco de dados
+- Banco de dados: Utilizamos o PostgreSQL
 
 ## Tecnologias Utilizadas
 - Spring Boot
