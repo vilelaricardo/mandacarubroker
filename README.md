@@ -67,7 +67,7 @@ DELETE /stocks/{id}
 
 
 ## Uso
-1. Clone o repositório: `git clone https://github.com/seu-usuario/MandaCaruBrokerAPI.git`
+1. Clone o repositório: `git clone https://github.com/kayopro/mandacarubroker01`
 2. Importe o projeto em sua IDE preferida.
 3. Configure o banco de dados e as propriedades de aplicação conforme necessário.
 4. Execute o aplicativo Spring Boot.
