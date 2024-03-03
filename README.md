@@ -76,7 +76,7 @@ DELETE /stocks/{id}
 ## Requisitos
 - Java 11 ou superior
 - Maven
-- Banco de dados
+- Banco de dados: Utilizamos o PostgreSQL
 
 ## Tecnologias Utilizadas
 - Spring Boot
