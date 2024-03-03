@@ -1,7 +1,7 @@
 package com.mandacarubroker.controller;
 
-import com.mandacarubroker.domain.user.RequestUserDTO;
-import com.mandacarubroker.domain.user.ResponseUserDTO;
+import com.mandacarubroker.dtos.RequestUserDTO;
+import com.mandacarubroker.dtos.ResponseUserDTO;
 import com.mandacarubroker.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;

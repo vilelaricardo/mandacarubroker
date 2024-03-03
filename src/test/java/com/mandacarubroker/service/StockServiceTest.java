@@ -1,6 +1,6 @@
 package com.mandacarubroker.service;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
+import com.mandacarubroker.dtos.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.domain.stock.StockRepository;
 import jakarta.persistence.EntityNotFoundException;
