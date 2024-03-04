@@ -8,8 +8,8 @@ import java.sql.Timestamp;
  * @param name The treasury name
  * @param amount The amount
  * @param type The treasury type
- * @param maturity_date The final data
- * @param interest_rate The interest rate
+ * @param maturityDate The final data
+ * @param interestRate The interest rate
  * @param price The price
  *
  * */
@@ -17,7 +17,7 @@ public record RegisterDataTransferObject(
     String name,
     Integer amount,
     String type,
-    Timestamp maturity_date,
-    Float interest_rate,
+    Timestamp maturityDate,
+    Float interestRate,
     Float price
 ) {}

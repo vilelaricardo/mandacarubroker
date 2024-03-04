@@ -1,10 +1,6 @@
 package com.mandacarubroker.domain.etf;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +21,8 @@ public class ETF {
   private String id;
   private String name;
   private String symbol;
-  private String company_name;
+  @Column(name = "company_name")
+  private String companyName;
   private Integer amount;
   private Float price;
 
@@ -37,7 +34,7 @@ public class ETF {
    **/
   public ETF(RegisterDataTransferObject data) {
     this.name = data.name();
-    this.company_name = data.company_name();
+    this.companyName = data.companyName();
     this.symbol = data.symbol();
     this.amount = data.amount();
     this.price = data.price();

@@ -1,10 +1,6 @@
 package com.mandacarubroker.domain.realestatesfunds;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +21,8 @@ public class RealEstatesFunds {
   private String id;
   private String name;
   private String symbol;
-  private String company_name;
+  @Column(name = "company_name")
+  private String companyName;
   private String type;
   private Integer amount;
   private Float price;
@@ -38,7 +35,7 @@ public class RealEstatesFunds {
    **/
   public RealEstatesFunds(RegisterDataTransferObject data) {
     this.name = data.name();
-    this.company_name = data.company_name();
+    this.companyName = data.companyName();
     this.symbol = data.symbol();
     this.type = data.type();
     this.amount = data.amount();

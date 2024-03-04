@@ -1,10 +1,7 @@
 package com.mandacarubroker.domain.treasury;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,8 +24,10 @@ public class Treasury {
   private String name;
   private Integer amount;
   private String type;
-  private Timestamp maturity_date;
-  private Float interest_rate;
+  @Column(name = "maturity_date")
+  private Timestamp maturityDate;
+  @Column(name = "interest_rate")
+  private Float interestRate;
   private Float price;
 
   /**
@@ -41,8 +40,8 @@ public class Treasury {
     this.name = data.name();
     this.amount = data.amount();
     this.type = data.type();
-    this.maturity_date = data.maturity_date();
-    this.interest_rate = data.interest_rate();
+    this.maturityDate = data.maturityDate();
+    this.interestRate = data.interestRate();
     this.price = data.price();
   }
 
