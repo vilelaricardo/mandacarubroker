@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController {
   private final UsersRepository usersRepository;
   private final UsersService usersService;
-  private final AuthenticationManager authenticationManager;
-  private final TokenService tokenService;
 
   @SuppressWarnings("checkstyle:MissingJavadocType")
   public UsersController(
@@ -39,8 +37,6 @@ public class UsersController {
   ) {
     this.usersRepository = usersRepository;
     this.usersService = usersService;
-    this.authenticationManager = authenticationManager;
-    this.tokenService = tokenService;
   }
 
   @SuppressWarnings("checkstyle:MissingJavadocType")

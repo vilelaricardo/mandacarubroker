@@ -1,5 +1,6 @@
 package com.mandacarubroker.domain.users;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,9 +32,12 @@ public class Users {
   @Getter
   private String password;
   private String email;
-  private String first_name;
-  private String last_name;
-  private Timestamp birth_data;
+  @Column(name = "first_name")
+  private String firstName;
+  @Column(name = "last_name")
+  private String lastName;
+  @Column(name = "birth_data")
+  private Timestamp birthData;
   private Double balance;
 
   /**
@@ -42,10 +46,10 @@ public class Users {
   public Users(RegisterDataTransferObject data, String password) {
     this.username = data.username();
     this.password = password;
-    this.first_name = data.first_name();
-    this.last_name = data.last_name();
+    this.firstName = data.firstName();
+    this.lastName = data.lastName();
     this.email = data.email();
-    this.birth_data = data.birth_data();
+    this.birthData = data.birthData();
     this.balance = data.balance();
   }
 }

@@ -69,9 +69,9 @@ public class UsersService {
           user.setUsername(updatedData.getUsername());
           user.setPassword(encryptedPassword);
           user.setEmail(updatedData.getEmail());
-          user.setFirst_name(updatedData.getFirst_name());
-          user.setLast_name(updatedData.getLast_name());
-          user.setBirth_data(updatedData.getBirth_data());
+          user.setFirstName(updatedData.getFirstName());
+          user.setLastName(updatedData.getLastName());
+          user.setBirthData(updatedData.getBirthData());
           user.setBalance(updatedData.getBalance());
 
           return this.usersRepository.save(user);

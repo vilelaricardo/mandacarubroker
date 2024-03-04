@@ -11,9 +11,9 @@ import java.sql.Timestamp;
  * @param username user login
  * @param password user password
  * @param email user email
- * @param first_name user first name
- * @param last_name user last name
- * @param birth_data user birth data
+ * @param firstName user first name
+ * @param lastName user last name
+ * @param birthData user birth data
  * @param balance user balance
  *
  * */
@@ -25,11 +25,11 @@ public record RegisterDataTransferObject(
     @NotBlank(message = "The email cannot be blank")
     String email,
     @NotBlank(message = "The first name cannot be blank")
-    String first_name,
+    String firstName,
     @NotBlank(message = "The last name cannot be blank")
-    String last_name,
+    String lastName,
     @NotNull(message = "The birth data cannot be blank")
     @Past
-    Timestamp birth_data,
+    Timestamp birthData,
     Double balance
 ) {}
