@@ -5,10 +5,8 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 
 public class BirthDateValidator implements ConstraintValidator<BirthDateValidate, LocalDate> {
-    private final UserRepository userRepository;
 
-    public BirthDateValidator(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public BirthDateValidator() {
     }
 
     @Override
