@@ -1,0 +1,8 @@
+CREATE TABLE etf (
+    id VARCHAR PRIMARY KEY UNIQUE NOT NULL,
+    name VARCHAR NOT NULL,
+    company_name VARCHAR NOT NULL,
+    symbol VARCHAR NOT NULL UNIQUE,
+    amount INTEGER NOT NULL,
+    price FLOAT NOT NULL
+);

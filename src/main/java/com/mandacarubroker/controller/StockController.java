@@ -3,12 +3,12 @@ package com.mandacarubroker.controller;
 
 import com.mandacarubroker.domain.stock.RequestStockDataTransferObject;
 import com.mandacarubroker.domain.stock.Stock;
+import com.mandacarubroker.repository.StockRepository;
 import com.mandacarubroker.service.StockService;
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class StockController {
 
   private final StockService stockService;
+  private final StockRepository stockRepository;
 
-  public StockController(StockService stockService) {
+  public StockController(
+      StockService stockService,
+      StockRepository stockRepository
+  ) {
     this.stockService = stockService;
+    this.stockRepository = stockRepository;
   }
 
   @Operation(summary = "Get all stock registers", method = "POST")
@@ -56,6 +61,10 @@ public class StockController {
   })
   @PostMapping
   public ResponseEntity<Stock> createStock(@RequestBody RequestStockDataTransferObject data) {
+    var isRegistered = stockRepository.getBySymbol(data.symbol());
+    if (isRegistered != null) {
+      ResponseEntity.badRequest().build();
+    }
     Stock createdStock = stockService.createStock(data);
     return ResponseEntity.ok(createdStock);
   }

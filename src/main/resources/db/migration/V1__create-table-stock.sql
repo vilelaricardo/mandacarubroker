@@ -1,6 +1,7 @@
 CREATE TABLE stock(
-                      id VARCHAR PRIMARY KEY,
-                      symbol VARCHAR NOT NULL,
-                      company_name VARCHAR NOT NULL,
-                      price FLOAT NOT NULL
+  id VARCHAR PRIMARY KEY UNIQUE NOT NULL,
+  symbol VARCHAR NOT NULL UNIQUE,
+  company_name VARCHAR NOT NULL,
+  price FLOAT NOT NULL,
+  amount INTEGER NOT NULL
 );
