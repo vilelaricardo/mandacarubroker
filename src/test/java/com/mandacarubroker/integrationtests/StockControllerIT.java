@@ -1,4 +1,4 @@
-package com.mandacarubroker.controller;
+package com.mandacarubroker.integrationtests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mandacarubroker.MandacaruBrokerApplication;
