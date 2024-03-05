@@ -22,5 +22,6 @@ public record RequestStockDataTransferObject(
   @NotBlank(message = "The company name cannot be blank")
   String companyName,
   @NotNull(message = "The price cannot be null")
-  Double price
+  Double price,
+  Integer amount
 ) {}
