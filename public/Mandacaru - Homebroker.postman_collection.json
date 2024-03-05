@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "1321c6eb-013a-44f0-8ef4-aad457ff2ae1",
 		"name": "Mandacaru - Homebroker",
-		"description": "<img src=\"https://content.pstmn.io/0d7d7d00-7fc4-42c0-bdf8-5a1d5dbe5c9f/TGlua2VkSW4gY292ZXIgLSAxLnBuZw==\" width=\"1584\" height=\"378\">\n\nThis collection presents the available routes in the Mandacaru Broker API application.\n\nThe following variables are used:\n\n- **SYSTEM_TOKEN:** The token received upon logging into the system.\n- **STOCK_ID:** The ID of a stock record.\n- **USER_ID:** The ID of a user record.\n- **INVEST_ID:** The ID of an investment type record.\n- **TREASURY_ID:** The ID of a treasury record.\n- **REF_ID:** The ID of a Real Estate Funds record.\n- **ETF_ID:** The ID of an ETF record.\n- **WALLET_ID:** The user wallet ID.\n    \n\nThese variables are automatically set when running certain routes but can be changed in the Variables tab.\n\nThis collection is organized with the following routes:\n\n## System\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /auth/login | POST | The route performs the system login. | None |\n| /auth/register | POST | The route performs the user registration. | ADMIN |\n| /auth/{ID} | DELETE | The route deletes a specific record. | ADMIN |\n\n## Investments\n\n| Route | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /assets | GET | The route retrieves all records. | Any |\n| /assets/register | POST | The route performs the registration. | Any |\n| /assets/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Stock\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /stocks | GET | The route retrieves all records. | Any |\n| /stocks/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /stocks | POST | The route performs the registration. | Any |\n| /stocks/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /stocks/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Treasury\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /treasury | GET | The route retrieves all records. | Any |\n| /treasury/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /treasury/register | POST | The route performs the registration. | Any |\n| /treasury/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /treasury/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Real Estates Investments Funds\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /ref | GET | The route retrieves all records. | Any |\n| /ref/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /ref/register | POST | The route performs the registration. | Any |\n| /ref/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /ref/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### ETF\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /etf | GET | The route retrieves all records. | Any |\n| /etf/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /etf/register | POST | The route performs the registration. | Any |\n| /etf/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /etf/{ID} | DELETE | The route deletes a specific record. | Any |\n\n## User\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /user/login | POST | The route performs user login. | None |\n| /user/register | POST | The route performs the registration. | Any |\n| /user/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /user/{ID} | DELETE | The route deletes a specific record. | Any |\n\n## User Wallet\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /wallet/{ID} | GET | The route retrieves all records of a user. | Any |\n| /wallet/type/{ID} | GET | The route retrieves all records of a user for a specific type. | Any |\n| /wallet/symbol/{ID}/{SYMBOL} | GET | The route retrieves the record of a specific symbol. | Any |\n| /wallet/add | POST | The route performs the registration. | Any |\n| /wallet/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /wallet/{ID} | DELETE | The route deletes a specific record. | Any |",
+		"description": "<img src=\"https://content.pstmn.io/0d7d7d00-7fc4-42c0-bdf8-5a1d5dbe5c9f/TGlua2VkSW4gY292ZXIgLSAxLnBuZw==\" width=\"1584\" height=\"378\">\n\nThis collection presents the available routes in the Mandacaru Broker API application.\n\nThe following variables are used:\n\n- **SYSTEM_TOKEN:** The token received upon logging into the system.\n- **STOCK_ID:** The ID of a stock record.\n- **USER_ID:** The ID of a user record.\n- **INVEST_ID:** The ID of an investment type record.\n- **TREASURY_ID:** The ID of a treasury record.\n- **REF_ID:** The ID of a Real Estate Funds record.\n- **ETF_ID:** The ID of an ETF record.\n- **WALLET_ID:** The user wallet ID.\n    \n\nThese variables are automatically set when running certain routes but can be changed in the Variables tab.\n\nThis collection is organized with the following routes:\n\n## System\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /auth/login | POST | The route performs the system login. | None |\n| /auth/register | POST | The route performs the user registration. | ADMIN |\n| /auth/{ID} | DELETE | The route deletes a specific record. | ADMIN |\n\n## Investments\n\n| Route | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /assets | GET | The route retrieves all records. | Any |\n| /assets/register | POST | The route performs the registration. | Any |\n| /assets/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Stock\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /stocks | GET | The route retrieves all records. | Any |\n| /stocks/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /stocks | POST | The route performs the registration. | Any |\n| /stocks/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /stocks/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Treasury\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /treasury | GET | The route retrieves all records. | Any |\n| /treasury/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /treasury/register | POST | The route performs the registration. | Any |\n| /treasury/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /treasury/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Real Estates Investments Funds\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /ref | GET | The route retrieves all records. | Any |\n| /ref/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /ref/register | POST | The route performs the registration. | Any |\n| /ref/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /ref/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### ETF\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /etf | GET | The route retrieves all records. | Any |\n| /etf/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /etf/register | POST | The route performs the registration. | Any |\n| /etf/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /etf/{ID} | DELETE | The route deletes a specific record. | Any |\n\n## User\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /user/login | POST | The route performs user login. | None |\n| /user/register | POST | The route performs the registration. | Any |\n| /user/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /user/deposti/{ID} | PUT | The route increase the balance. | Any |\n| /user/deposti/{ID} | PUT | The route decrease the balance. | Any |\n| /user/{ID} | DELETE | The route deletes a specific record. | Any |\n\n## User Wallet\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /wallet/{ID} | GET | The route retrieves all records of a user. | Any |\n| /wallet/type/{ID} | GET | The route retrieves all records of a user for a specific type. | Any |\n| /wallet/symbol/{ID}/{SYMBOL} | GET | The route retrieves the record of a specific symbol. | Any |\n| /wallet/add | POST | The route performs the registration. | Any |\n| /wallet/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /wallet/{ID} | DELETE | The route deletes a specific record. | Any |",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30235992"
 	},
@@ -645,7 +645,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"IPCA+ 2026\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"IPCA+\",\r\n    \"maturity_date\": 12341234122,\r\n    \"interest_rate\": 12.75 \r\n}",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2026\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"IPCA+\",\r\n    \"maturityDate\": 12341234122,\r\n    \"interestRate\": 12.75 \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -724,7 +724,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"IPCA+ 2028\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"IPCA+\",\r\n    \"maturity_date\": 12341234122,\r\n    \"interest_rate\": 12.75 \r\n}",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2028\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"IPCA+\",\r\n    \"maturityDate\": 12341234122,\r\n    \"interestRate\": 12.75 \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -979,7 +979,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"IPCA+ 2026\",\r\n    \"symbol\": \"Teste\",\r\n    \"company_name\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2026\",\r\n    \"symbol\": \"Teste\",\r\n    \"companyName\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1058,7 +1058,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"IPCA+ 2028\",\r\n    \"symbol\": \"Teste\",\r\n    \"company_name\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2028\",\r\n    \"symbol\": \"Teste\",\r\n    \"companyName\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1581,7 +1581,7 @@
 					"response": []
 				}
 			],
-			"description": "### Stock\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /stocks | GET | The route retrieves all records. | Any |\n| /stocks/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /stocks | POST | The route performs the registration. | Any |\n| /stocks/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /stocks/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Treasury\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /treasury | GET | The route retrieves all records. | Any |\n| /treasury/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /treasury/register | POST | The route performs the registration. | Any |\n| /treasury/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /treasury/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Real Estates Investments Funds\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /ref | GET | The route retrieves all records. | Any |\n| /ref/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /ref/register | POST | The route performs the registration. | Any |\n| /ref/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /ref/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### ETF\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /etf | GET | The route retrieves all records. | Any |\n| /etf/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /etf/register | POST | The route performs the registration. | Any |\n| /etf/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /etf/{ID} | DELETE | The route deletes a specific record. | Any |"
+			"description": "| Route | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /assets | GET | The route retrieves all records. | Any |\n| /assets/register | POST | The route performs the registration. | Any |\n| /assets/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Stock\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /stocks | GET | The route retrieves all records. | Any |\n| /stocks/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /stocks | POST | The route performs the registration. | Any |\n| /stocks/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /stocks/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Treasury\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /treasury | GET | The route retrieves all records. | Any |\n| /treasury/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /treasury/register | POST | The route performs the registration. | Any |\n| /treasury/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /treasury/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Real Estates Investments Funds\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /ref | GET | The route retrieves all records. | Any |\n| /ref/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /ref/register | POST | The route performs the registration. | Any |\n| /ref/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /ref/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### ETF\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /etf | GET | The route retrieves all records. | Any |\n| /etf/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /etf/register | POST | The route performs the registration. | Any |\n| /etf/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /etf/{ID} | DELETE | The route deletes a specific record. | Any |"
 		},
 		{
 			"name": "User",
@@ -1627,7 +1627,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"User_teste2\",\r\n    \"password\": \"1234\"\r\n}",
+							"raw": "{\r\n    \"username\": \"User_teste\",\r\n    \"password\": \"1234\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1684,7 +1684,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"User_teste2\",\r\n    \"password\": \"1234\",\r\n    \"email\": \"test@test.com\",\r\n    \"first_name\": \"User\",\r\n    \"last_name\": \"Test\",\r\n    \"birth_data\": 1267401924,\r\n    \"balance\": 1.00\r\n}",
+							"raw": "{\r\n    \"username\": \"User_teste\",\r\n    \"password\": \"1234\",\r\n    \"email\": \"test@test.com\",\r\n    \"firstName\": \"User\",\r\n    \"lastName\": \"Test\",\r\n    \"birthData\": 1267401924,\r\n    \"balance\": 1.00\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1762,7 +1762,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"User_teste3\",\r\n    \"password\": \"12345\",\r\n    \"email\": \"test@test.com\",\r\n    \"first_name\": \"User\",\r\n    \"last_name\": \"Test\",\r\n    \"birth_data\": 1267401924,\r\n    \"balance\": 1.00\r\n}",
+							"raw": "{\r\n    \"username\": \"User_teste3\",\r\n    \"password\": \"12345\",\r\n    \"email\": \"test@test.com\",\r\n    \"firstName\": \"User\",\r\n    \"lastName\": \"Test\",\r\n    \"birthData\": 1267401924,\r\n    \"balance\": 1.00\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1777,6 +1777,166 @@
 							"port": "8080",
 							"path": [
 								"user",
+								"{{USER_ID}}"
+							]
+						},
+						"description": "Returns the object with the sent data"
+					},
+					"response": []
+				},
+				{
+					"name": "Deposit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"\r",
+									"    if (body) {\r",
+									"        pm.test('Should have all the keys on the body', () => {\r",
+									"            const {\r",
+									"                id,\r",
+									"                symbol,\r",
+									"                companyName,\r",
+									"                price\r",
+									"            } = body;\r",
+									"\r",
+									"            pm.expect(id).is.string;\r",
+									"            pm.expect(id).is.length.greaterThan(4);\r",
+									"\r",
+									"            pm.expect(symbol).is.string;\r",
+									"            pm.expect(symbol).is.lengthOf(5);\r",
+									"\r",
+									"            pm.expect(companyName).is.string;\r",
+									"            pm.expect(companyName).is.length.greaterThan(2);\r",
+									"\r",
+									"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+									"        });\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/deposit/{{USER_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"deposit",
+								"{{USER_ID}}"
+							]
+						},
+						"description": "Returns the object with the sent data"
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"\r",
+									"    if (body) {\r",
+									"        pm.test('Should have all the keys on the body', () => {\r",
+									"            const {\r",
+									"                id,\r",
+									"                symbol,\r",
+									"                companyName,\r",
+									"                price\r",
+									"            } = body;\r",
+									"\r",
+									"            pm.expect(id).is.string;\r",
+									"            pm.expect(id).is.length.greaterThan(4);\r",
+									"\r",
+									"            pm.expect(symbol).is.string;\r",
+									"            pm.expect(symbol).is.lengthOf(5);\r",
+									"\r",
+									"            pm.expect(companyName).is.string;\r",
+									"            pm.expect(companyName).is.length.greaterThan(2);\r",
+									"\r",
+									"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+									"        });\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/withdraw/{{USER_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"withdraw",
 								"{{USER_ID}}"
 							]
 						},
@@ -1829,7 +1989,7 @@
 					"response": []
 				}
 			],
-			"description": "## User\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /user/login | POST | The route performs user login. | None |\n| /user/register | POST | The route performs the registration. | Any |\n| /user/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /user/{ID} | DELETE | The route deletes a specific record. | Any |"
+			"description": "## User\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /user/login | POST | The route performs user login. | None |\n| /user/register | POST | The route performs the registration. | Any |\n| /user/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /user/deposti/{ID} | PUT | The route increase the balance. | Any |\n| /user/deposti/{ID} | PUT | The route decrease the balance. | Any |\n| /user/{ID} | DELETE | The route deletes a specific record. | Any |"
 		},
 		{
 			"name": "User Wallet",
