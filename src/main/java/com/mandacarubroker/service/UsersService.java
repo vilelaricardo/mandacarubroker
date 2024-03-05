@@ -79,7 +79,7 @@ public class UsersService {
   }
 
   public Optional<Users> withdraw(String id, Double value, Users data) {
-    Double newBalance = data.getBalance() + value;
+    Double newBalance = data.getBalance() - value;
 
     return this.usersRepository.findById(id)
         .map(user -> {
@@ -96,7 +96,7 @@ public class UsersService {
   }
 
   public Optional<Users> deposit(String id, Double value, Users data) {
-    Double newBalance = data.getBalance() - value;
+    Double newBalance = data.getBalance() + value;
 
     return this.usersRepository.findById(id)
         .map(user -> {
