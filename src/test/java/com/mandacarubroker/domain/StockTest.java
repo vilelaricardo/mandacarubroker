@@ -1,6 +1,6 @@
 package com.mandacarubroker.domain;
 
-import com.mandacarubroker.domain.stock.RequestStockDTO;
+import com.mandacarubroker.dtos.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

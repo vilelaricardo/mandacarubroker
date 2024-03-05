@@ -1,7 +1,7 @@
 package com.mandacarubroker.service;
 
-import com.mandacarubroker.domain.user.RequestUserDTO;
-import com.mandacarubroker.domain.user.ResponseUserDTO;
+import com.mandacarubroker.dtos.RequestUserDTO;
+import com.mandacarubroker.dtos.ResponseUserDTO;
 import com.mandacarubroker.domain.user.User;
 import com.mandacarubroker.domain.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -26,6 +28,8 @@ class UserServiceTest {
     
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private BCryptPasswordEncoder mockBcrypt;
     @InjectMocks
     private UserService userService;
     private User user;
@@ -34,12 +38,15 @@ class UserServiceTest {
     
     @BeforeEach
     void setup(){
-        user = new User("1","peaga","123456","peaga@mail.com"
+        user = new User("peaga","password","peaga@mail.com"
                 ,"Paulo","Herbert", LocalDate.parse("2004-04-05"),500.0);
-        validRequestUserDto = new RequestUserDTO(user.getUsername(), user.getPassword()
+        user.setId("1");
+        validRequestUserDto = new RequestUserDTO(user.getUsername(),"password"
                 ,user.getEmail(), user.getFirstName(), user.getLastName(),user.getBirthDate(),user.getBalance());
         existingId = "1";
         nonExistingId = "null";
+        when(userRepository.save(any())).thenReturn(user);
+        when(mockBcrypt.encode(anyString())).thenReturn("password");
     }
 
     @Test
@@ -71,17 +78,13 @@ class UserServiceTest {
     @Test
     void getUserByIdShouldThrowEntityNotFoundWhenNonExistingId(){
         when(userRepository.findById(nonExistingId)).thenReturn(Optional.empty());
-
         assertThrows(EntityNotFoundException.class,()->userService.getUserById(nonExistingId));
         verify(userRepository,only()).findById(any());
     }
 
     @Test
     void createShouldReturnAResponseUserDTO(){
-        when(userRepository.save(any())).thenReturn(user);
-       
         ResponseUserDTO created = userService.createUser(validRequestUserDto);
-
         assertNotNull(created);
         assertNotNull(created.id());
         assertEquals(validRequestUserDto.username(),created.username());

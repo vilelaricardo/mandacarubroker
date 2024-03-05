@@ -1,5 +1,6 @@
 package com.mandacarubroker.domain.stock;
 
+import com.mandacarubroker.dtos.RequestStockDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -2,19 +2,28 @@ package com.mandacarubroker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mandacarubroker.controller.exceptions.StandardError;
-import com.mandacarubroker.domain.stock.RequestStockDTO;
+import com.mandacarubroker.domain.user.User;
+import com.mandacarubroker.domain.user.UserRepository;
+import com.mandacarubroker.dtos.RequestStockDTO;
 import com.mandacarubroker.domain.stock.Stock;
 import com.mandacarubroker.service.StockService;
+import com.mandacarubroker.service.TokenService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -26,8 +35,14 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(StockController.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
+@WebMvcTest(controllers = StockController.class,excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class StockControllerTest {
+
+    @MockBean
+    private TokenService tokenService;
+    @MockBean
+    private UserRepository userRepository;
     @Autowired
     private MockMvc mockMvc;
     @MockBean
