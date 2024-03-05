@@ -32,7 +32,7 @@ class StockServiceTest {
 
   @Test
   void createStock_ValidData_ReturnsStock() {
-    RequestStockDataTransferObject data = new RequestStockDataTransferObject("ABCD1", "Company Name", 10.5);
+    RequestStockDataTransferObject data = new RequestStockDataTransferObject("ABCD1", "Company Name", 10.5, 2);
 
     Stock savedStock = new Stock(data);
     when(stockRepository.save(any())).thenReturn(savedStock);
@@ -48,8 +48,8 @@ class StockServiceTest {
   @Test
   void updateStock_ValidData_ReturnsUpdatedStock() {
     String id = "1";
-    Stock existingStock = new Stock("1", "Test4", "Test s.a", 150.00);
-    Stock updatedStock = new Stock("1", "UPTD4", "Update Company s.a", 160.00);
+    Stock existingStock = new Stock("1", "Test4", "Test s.a", 150.00, 2);
+    Stock updatedStock = new Stock("1", "UPTD4", "Update Company s.a", 160.00, 3);
     when(stockRepository.findById(id)).thenReturn(Optional.of(existingStock));
     when(stockRepository.save(any())).thenAnswer((Answer<Stock>) invocation -> invocation.getArgument(0));
 
@@ -66,14 +66,14 @@ class StockServiceTest {
 
   @Test
   void validateRequestStockDataTransferObject_ValidData_NoExceptionThrown() {
-    RequestStockDataTransferObject data = new RequestStockDataTransferObject("ABCD1", "Company Name", 10.5);
+    RequestStockDataTransferObject data = new RequestStockDataTransferObject("ABCD1", "Company Name", 10.5, 3);
 
     assertDoesNotThrow(() -> StockService.validateRequestStockDataTransferObject(data));
   }
 
   @Test
   void validateRequestStockDataTransferObject_InvalidData_ConstraintViolationExceptionThrown() {
-    RequestStockDataTransferObject data = new RequestStockDataTransferObject("AB1", "", null);
+    RequestStockDataTransferObject data = new RequestStockDataTransferObject("AB1", "", null, 4);
 
     assertThrows(ConstraintViolationException.class, () -> StockService.validateRequestStockDataTransferObject(data));
   }

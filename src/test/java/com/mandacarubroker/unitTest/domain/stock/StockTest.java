@@ -4,10 +4,12 @@ import com.mandacarubroker.domain.stock.RequestStockDataTransferObject;
 import com.mandacarubroker.domain.stock.Stock;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class StockTest {
-  RequestStockDataTransferObject requestStock = new RequestStockDataTransferObject("ABCD1", "Company Name", 100.5);
+  RequestStockDataTransferObject requestStock = new RequestStockDataTransferObject("ABCD1", "Company Name", 100.5, 1);
   @Test
   void constructor_ValidRequestStockData_CreatesStockObject() {
 
