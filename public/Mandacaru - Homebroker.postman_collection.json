@@ -1,0 +1,2225 @@
+{
+	"info": {
+		"_postman_id": "1321c6eb-013a-44f0-8ef4-aad457ff2ae1",
+		"name": "Mandacaru - Homebroker",
+		"description": "<img src=\"https://content.pstmn.io/0d7d7d00-7fc4-42c0-bdf8-5a1d5dbe5c9f/TGlua2VkSW4gY292ZXIgLSAxLnBuZw==\" width=\"1584\" height=\"378\">\n\nThis collection presents the available routes in the Mandacaru Broker API application.\n\nThe following variables are used:\n\n- **SYSTEM_TOKEN:** The token received upon logging into the system.\n- **STOCK_ID:** The ID of a stock record.\n- **USER_ID:** The ID of a user record.\n- **INVEST_ID:** The ID of an investment type record.\n- **TREASURY_ID:** The ID of a treasury record.\n- **REF_ID:** The ID of a Real Estate Funds record.\n- **ETF_ID:** The ID of an ETF record.\n- **WALLET_ID:** The user wallet ID.\n    \n\nThese variables are automatically set when running certain routes but can be changed in the Variables tab.\n\nThis collection is organized with the following routes:\n\n## System\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /auth/login | POST | The route performs the system login. | None |\n| /auth/register | POST | The route performs the user registration. | ADMIN |\n| /auth/{ID} | DELETE | The route deletes a specific record. | ADMIN |\n\n## Investments\n\n| Route | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /assets | GET | The route retrieves all records. | Any |\n| /assets/register | POST | The route performs the registration. | Any |\n| /assets/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Stock\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /stocks | GET | The route retrieves all records. | Any |\n| /stocks/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /stocks | POST | The route performs the registration. | Any |\n| /stocks/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /stocks/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Treasury\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /treasury | GET | The route retrieves all records. | Any |\n| /treasury/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /treasury/register | POST | The route performs the registration. | Any |\n| /treasury/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /treasury/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Real Estates Investments Funds\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /ref | GET | The route retrieves all records. | Any |\n| /ref/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /ref/register | POST | The route performs the registration. | Any |\n| /ref/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /ref/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### ETF\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /etf | GET | The route retrieves all records. | Any |\n| /etf/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /etf/register | POST | The route performs the registration. | Any |\n| /etf/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /etf/{ID} | DELETE | The route deletes a specific record. | Any |\n\n## User\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /user/login | POST | The route performs user login. | None |\n| /user/register | POST | The route performs the registration. | Any |\n| /user/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /user/{ID} | DELETE | The route deletes a specific record. | Any |\n\n## User Wallet\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /wallet/{ID} | GET | The route retrieves all records of a user. | Any |\n| /wallet/type/{ID} | GET | The route retrieves all records of a user for a specific type. | Any |\n| /wallet/symbol/{ID}/{SYMBOL} | GET | The route retrieves the record of a specific symbol. | Any |\n| /wallet/add | POST | The route performs the registration. | Any |\n| /wallet/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /wallet/{ID} | DELETE | The route deletes a specific record. | Any |",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30235992"
+	},
+	"item": [
+		{
+			"name": "Sytem",
+			"item": [
+				{
+					"name": "System Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"\r",
+									"    if (body) pm.collectionVariables.set('SYSTEM_TOKEN', body.token);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"adminUser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "System Register",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin2\",\r\n    \"password\": \"adminUser\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "System Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/auth/b1f7aee6-e047-40f7-89a2-00f13cdff896",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"b1f7aee6-e047-40f7-89a2-00f13cdff896"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /auth/login | POST | The route performs the system login. | None |\n| /auth/register | POST | The route performs the user registration. | ADMIN |\n| /auth/{ID} | DELETE | The route deletes a specific record. |"
+		},
+		{
+			"name": "Investments",
+			"item": [
+				{
+					"name": "Stock",
+					"item": [
+						{
+							"name": "Get all registers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"\r",
+											"    if (body.length) pm.collectionVariables.set('STOCK_ID', body['0'].id);\r",
+											"\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/stocks",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"stocks"
+									]
+								},
+								"description": "Returns an array of objects with all records in the table."
+							},
+							"response": []
+						},
+						{
+							"name": "Get register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.not.null;\r",
+											"        });\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/stocks/{{STOCK_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"stocks",
+										"{{STOCK_ID}}"
+									]
+								},
+								"description": "Returns the specified record object."
+							},
+							"response": []
+						},
+						{
+							"name": "Create register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test('Should have a body', () => {",
+											"    const body = pm.response.json();",
+											"    pm.response.to.have.jsonBody();",
+											"",
+											"    if (body) {",
+											"        pm.test('Should have all the keys on the body', () => {",
+											"            const { id, symbol, companyName, price } = body;",
+											"",
+											"            pm.expect(id).is.string;",
+											"            pm.expect(id).is.length.greaterThan(4);",
+											"",
+											"            pm.expect(symbol).is.string;",
+											"            pm.expect(symbol).is.lengthOf(5);",
+											"",
+											"            pm.expect(companyName).is.string;",
+											"            pm.expect(companyName).is.length.greaterThan(2);",
+											"",
+											"            pm.expect(price).is.not.null;",
+											"        });",
+											"    }",
+											"})",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"symbol\": \"TEST4\",\r\n    \"companyName\": \"Test s.a\",\r\n    \"price\": 56.97,\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/stocks",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"stocks"
+									]
+								},
+								"description": "Returns the object with the sent data."
+							},
+							"response": []
+						},
+						{
+							"name": "Update register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+											"        });\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"symbol\": \"BBAS3\",\r\n  \"companyName\": \"Banco do Brasil\",\r\n  \"price\": 56.93,\r\n  \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/stocks/{{STOCK_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"stocks",
+										"{{STOCK_ID}}"
+									]
+								},
+								"description": "Returns the object with the sent data"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/stocks/{{STOCK_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"stocks",
+										"{{STOCK_ID}}"
+									]
+								},
+								"description": "No return."
+							},
+							"response": []
+						}
+					],
+					"description": "| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /stocks | GET | The route retrieves all records. | Any |\n| /stocks/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /stocks | POST | The route performs the registration. | Any |\n| /stocks/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /stocks/{ID} | DELETE | The route deletes a specific record. | Any |"
+				},
+				{
+					"name": "Treasury",
+					"item": [
+						{
+							"name": "Get all registers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"\r",
+											"    if (body) {\r",
+											"        const data = body.data;\r",
+											"\r",
+											"        pm.collectionVariables.set('TREASURY_ID', data['0'].id);\r",
+											"    }\r",
+											"\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/treasury",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"treasury"
+									]
+								},
+								"description": "Returns an array of objects with all records in the table."
+							},
+							"response": []
+						},
+						{
+							"name": "Get register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.not.null;\r",
+											"        });\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/treasury/{{TREASURY_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"treasury",
+										"{{TREASURY_ID}}"
+									]
+								},
+								"description": "Returns the specified record object."
+							},
+							"response": []
+						},
+						{
+							"name": "Create register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test('Should have a body', () => {",
+											"    const body = pm.response.json();",
+											"    pm.response.to.have.jsonBody();",
+											"",
+											"    if (body) {",
+											"        const data = body.data;",
+											"        pm.collectionVariables.set('TREASURY_ID', data.id);",
+											"        ",
+											"        pm.test('Should have all the keys on the body', () => {",
+											"            const { id, symbol, companyName, price } = body;",
+											"",
+											"            pm.expect(id).is.string;",
+											"            pm.expect(id).is.length.greaterThan(4);",
+											"",
+											"            pm.expect(symbol).is.string;",
+											"            pm.expect(symbol).is.lengthOf(5);",
+											"",
+											"            pm.expect(companyName).is.string;",
+											"            pm.expect(companyName).is.length.greaterThan(2);",
+											"",
+											"            pm.expect(price).is.not.null;",
+											"        });",
+											"    }",
+											"})",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2026\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"IPCA+\",\r\n    \"maturity_date\": 12341234122,\r\n    \"interest_rate\": 12.75 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/treasury/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"treasury",
+										"register"
+									]
+								},
+								"description": "Returns the object with the sent data."
+							},
+							"response": []
+						},
+						{
+							"name": "Update register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+											"        });\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2028\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"IPCA+\",\r\n    \"maturity_date\": 12341234122,\r\n    \"interest_rate\": 12.75 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/treasury/{{TREASURY_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"treasury",
+										"{{TREASURY_ID}}"
+									]
+								},
+								"description": "Returns the object with the sent data"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/treasury/{{TREASURY_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"treasury",
+										"{{TREASURY_ID}}"
+									]
+								},
+								"description": "No return."
+							},
+							"response": []
+						}
+					],
+					"description": "| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /treasury | GET | The route retrieves all records. | Any |\n| /treasury/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /treasury/register | POST | The route performs the registration. | Any |\n| /treasury/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /treasury/{ID} | DELETE | The route deletes a specific record. | Any |"
+				},
+				{
+					"name": "Real Estates Investment Funds",
+					"item": [
+						{
+							"name": "Get all registers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"\r",
+											"    if (body) {\r",
+											"        const data = body.data;\r",
+											"\r",
+											"        pm.collectionVariables.set('REF_ID', data['0'].id);\r",
+											"    }\r",
+											"\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/ref",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ref"
+									]
+								},
+								"description": "Returns an array of objects with all records in the table."
+							},
+							"response": []
+						},
+						{
+							"name": "Get register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.not.null;\r",
+											"        });\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/ref/{{REF_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ref",
+										"{{REF_ID}}"
+									]
+								},
+								"description": "Returns the specified record object."
+							},
+							"response": []
+						},
+						{
+							"name": "Create register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test('Should have a body', () => {",
+											"    const body = pm.response.json();",
+											"    pm.response.to.have.jsonBody();",
+											"",
+											"    if (body) {",
+											"        const data = body.data;",
+											"        pm.collectionVariables.set('REF_ID', data.id);",
+											"        ",
+											"        pm.test('Should have all the keys on the body', () => {",
+											"            const { id, symbol, companyName, price } = body;",
+											"",
+											"            pm.expect(id).is.string;",
+											"            pm.expect(id).is.length.greaterThan(4);",
+											"",
+											"            pm.expect(symbol).is.string;",
+											"            pm.expect(symbol).is.lengthOf(5);",
+											"",
+											"            pm.expect(companyName).is.string;",
+											"            pm.expect(companyName).is.length.greaterThan(2);",
+											"",
+											"            pm.expect(price).is.not.null;",
+											"        });",
+											"    }",
+											"})",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2026\",\r\n    \"symbol\": \"Teste\",\r\n    \"company_name\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/ref/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ref",
+										"register"
+									]
+								},
+								"description": "Returns the object with the sent data."
+							},
+							"response": []
+						},
+						{
+							"name": "Update register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+											"        });\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2028\",\r\n    \"symbol\": \"Teste\",\r\n    \"company_name\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/ref/{{REF_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ref",
+										"{{REF_ID}}"
+									]
+								},
+								"description": "Returns the object with the sent data"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/ref/{{REF_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"ref",
+										"{{REF_ID}}"
+									]
+								},
+								"description": "No return."
+							},
+							"response": []
+						}
+					],
+					"description": "| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /ref | GET | The route retrieves all records. | Any |\n| /ref/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /ref/register | POST | The route performs the registration. | Any |\n| /ref/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /ref/{ID} | DELETE | The route deletes a specific record. | Any |"
+				},
+				{
+					"name": "ETF",
+					"item": [
+						{
+							"name": "Get all registers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"\r",
+											"    if (body) {\r",
+											"        const data = body.data;\r",
+											"\r",
+											"        pm.collectionVariables.set('ETF_ID', data['0'].id);\r",
+											"    }\r",
+											"\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/etf",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"etf"
+									]
+								},
+								"description": "Returns an array of objects with all records in the table."
+							},
+							"response": []
+						},
+						{
+							"name": "Get register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.not.null;\r",
+											"        });\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/etf/{{ETF_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"etf",
+										"{{ETF_ID}}"
+									]
+								},
+								"description": "Returns the specified record object."
+							},
+							"response": []
+						},
+						{
+							"name": "Create register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {",
+											"    pm.response.to.have.status(200);",
+											"})",
+											"",
+											"pm.test('Should have a body', () => {",
+											"    const body = pm.response.json();",
+											"    pm.response.to.have.jsonBody();",
+											"",
+											"    if (body) {",
+											"        const data = body.data;",
+											"        pm.collectionVariables.set('REF_ID', data.id);",
+											"        ",
+											"        pm.test('Should have all the keys on the body', () => {",
+											"            const { id, symbol, companyName, price } = body;",
+											"",
+											"            pm.expect(id).is.string;",
+											"            pm.expect(id).is.length.greaterThan(4);",
+											"",
+											"            pm.expect(symbol).is.string;",
+											"            pm.expect(symbol).is.lengthOf(5);",
+											"",
+											"            pm.expect(companyName).is.string;",
+											"            pm.expect(companyName).is.length.greaterThan(2);",
+											"",
+											"            pm.expect(price).is.not.null;",
+											"        });",
+											"    }",
+											"})",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2026\",\r\n    \"symbol\": \"Teste\",\r\n    \"company_name\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/etf/register",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"etf",
+										"register"
+									]
+								},
+								"description": "Returns the object with the sent data."
+							},
+							"response": []
+						},
+						{
+							"name": "Update register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test('Should have a body', () => {\r",
+											"    const body = pm.response.json();\r",
+											"    pm.response.to.have.jsonBody();\r",
+											"\r",
+											"    if (body) {\r",
+											"        pm.test('Should have all the keys on the body', () => {\r",
+											"            const {\r",
+											"                id,\r",
+											"                symbol,\r",
+											"                companyName,\r",
+											"                price\r",
+											"            } = body;\r",
+											"\r",
+											"            pm.expect(id).is.string;\r",
+											"            pm.expect(id).is.length.greaterThan(4);\r",
+											"\r",
+											"            pm.expect(symbol).is.string;\r",
+											"            pm.expect(symbol).is.lengthOf(5);\r",
+											"\r",
+											"            pm.expect(companyName).is.string;\r",
+											"            pm.expect(companyName).is.length.greaterThan(2);\r",
+											"\r",
+											"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+											"        });\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"IPCA+ 2022\",\r\n    \"symbol\": \"Teste\",\r\n    \"company_name\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/etf/{{ETF_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"etf",
+										"{{ETF_ID}}"
+									]
+								},
+								"description": "Returns the object with the sent data"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete register",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Should have status 200', () => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{SYSTEM_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/etf/{{ETF_ID}}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"etf",
+										"{{ETF_ID}}"
+									]
+								},
+								"description": "No return."
+							},
+							"response": []
+						}
+					],
+					"description": "| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /etf | GET | The route retrieves all records. | Any |\n| /etf/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /etf/register | POST | The route performs the registration. | Any |\n| /etf/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /etf/{ID} | DELETE | The route deletes a specific record. | Any |"
+				},
+				{
+					"name": "Get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"\r",
+									"    if (body) {\r",
+									"        const data = body.data;\r",
+									"\r",
+									"        pm.collectionVariables.set('INVEST_ID', data['0'].id);\r",
+									"    }\r",
+									"\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/assets",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/assets/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assets",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/assets/{{INVEST_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"assets",
+								"{{INVEST_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "### Stock\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /stocks | GET | The route retrieves all records. | Any |\n| /stocks/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /stocks | POST | The route performs the registration. | Any |\n| /stocks/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /stocks/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Treasury\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /treasury | GET | The route retrieves all records. | Any |\n| /treasury/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /treasury/register | POST | The route performs the registration. | Any |\n| /treasury/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /treasury/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### Real Estates Investments Funds\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /ref | GET | The route retrieves all records. | Any |\n| /ref/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /ref/register | POST | The route performs the registration. | Any |\n| /ref/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /ref/{ID} | DELETE | The route deletes a specific record. | Any |\n\n### ETF\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /etf | GET | The route retrieves all records. | Any |\n| /etf/{ID} | GET | The route retrieves data from a specific record. | Any |\n| /etf/register | POST | The route performs the registration. | Any |\n| /etf/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /etf/{ID} | DELETE | The route deletes a specific record. | Any |"
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"\r",
+									"    const data = body.data;\r",
+									"\r",
+									"    if (body) pm.collectionVariables.set('USER_ID', data.id);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"User_teste2\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"User_teste2\",\r\n    \"password\": \"1234\",\r\n    \"email\": \"test@test.com\",\r\n    \"first_name\": \"User\",\r\n    \"last_name\": \"Test\",\r\n    \"birth_data\": 1267401924,\r\n    \"balance\": 1.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"\r",
+									"    if (body) {\r",
+									"        pm.test('Should have all the keys on the body', () => {\r",
+									"            const {\r",
+									"                id,\r",
+									"                symbol,\r",
+									"                companyName,\r",
+									"                price\r",
+									"            } = body;\r",
+									"\r",
+									"            pm.expect(id).is.string;\r",
+									"            pm.expect(id).is.length.greaterThan(4);\r",
+									"\r",
+									"            pm.expect(symbol).is.string;\r",
+									"            pm.expect(symbol).is.lengthOf(5);\r",
+									"\r",
+									"            pm.expect(companyName).is.string;\r",
+									"            pm.expect(companyName).is.length.greaterThan(2);\r",
+									"\r",
+									"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+									"        });\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"User_teste3\",\r\n    \"password\": \"12345\",\r\n    \"email\": \"test@test.com\",\r\n    \"first_name\": \"User\",\r\n    \"last_name\": \"Test\",\r\n    \"birth_data\": 1267401924,\r\n    \"balance\": 1.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/{{USER_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{USER_ID}}"
+							]
+						},
+						"description": "Returns the object with the sent data"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/user/{{USER_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"{{USER_ID}}"
+							]
+						},
+						"description": "No return."
+					},
+					"response": []
+				}
+			],
+			"description": "## User\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /user/login | POST | The route performs user login. | None |\n| /user/register | POST | The route performs the registration. | Any |\n| /user/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /user/{ID} | DELETE | The route deletes a specific record. | Any |"
+		},
+		{
+			"name": "User Wallet",
+			"item": [
+				{
+					"name": "Get all registers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"\r",
+									"    if (body) {\r",
+									"        pm.test('Should have all the keys on the body', () => {\r",
+									"            const {\r",
+									"                id,\r",
+									"                symbol,\r",
+									"                companyName,\r",
+									"                price\r",
+									"            } = body;\r",
+									"\r",
+									"            pm.expect(id).is.string;\r",
+									"            pm.expect(id).is.length.greaterThan(4);\r",
+									"\r",
+									"            pm.expect(symbol).is.string;\r",
+									"            pm.expect(symbol).is.lengthOf(5);\r",
+									"\r",
+									"            pm.expect(companyName).is.string;\r",
+									"            pm.expect(companyName).is.length.greaterThan(2);\r",
+									"\r",
+									"            pm.expect(price).is.not.null;\r",
+									"        });\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/wallet/{{USER_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"wallet",
+								"{{USER_ID}}"
+							]
+						},
+						"description": "Returns the specified record object."
+					},
+					"response": []
+				},
+				{
+					"name": "Get by type",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/wallet/{{INVEST_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"wallet",
+								"{{INVEST_ID}}"
+							]
+						},
+						"description": "Returns an array of objects with all records in the table."
+					},
+					"response": []
+				},
+				{
+					"name": "Create register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test('Should have a body', () => {",
+									"    const body = pm.response.json();",
+									"    pm.response.to.have.jsonBody();",
+									"",
+									"    if (body) {",
+									"        const data = body.data;",
+									"        pm.collectionVariables.set('WALLET_ID', data.id);",
+									"        ",
+									"        pm.test('Should have all the keys on the body', () => {",
+									"            const { id, symbol, companyName, price } = body;",
+									"",
+									"            pm.expect(id).is.string;",
+									"            pm.expect(id).is.length.greaterThan(4);",
+									"",
+									"            pm.expect(symbol).is.string;",
+									"            pm.expect(symbol).is.lengthOf(5);",
+									"",
+									"            pm.expect(companyName).is.string;",
+									"            pm.expect(companyName).is.length.greaterThan(2);",
+									"",
+									"            pm.expect(price).is.not.null;",
+									"        });",
+									"    }",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": {{USER_ID}},\r\n    \"investmentTypeId\": {{INVEST_ID}},\r\n    \"symbol\": \"Teste\",\r\n    \"amount\": 2,\r\n    \"mediumPrice\": 56.97,\r\n    \"createdAt\": 16253421\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/wallet/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"wallet",
+								"add"
+							]
+						},
+						"description": "Returns the object with the sent data."
+					},
+					"response": []
+				},
+				{
+					"name": "Update register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Should have a body', () => {\r",
+									"    const body = pm.response.json();\r",
+									"    pm.response.to.have.jsonBody();\r",
+									"\r",
+									"    if (body) {\r",
+									"        pm.test('Should have all the keys on the body', () => {\r",
+									"            const {\r",
+									"                id,\r",
+									"                symbol,\r",
+									"                companyName,\r",
+									"                price\r",
+									"            } = body;\r",
+									"\r",
+									"            pm.expect(id).is.string;\r",
+									"            pm.expect(id).is.length.greaterThan(4);\r",
+									"\r",
+									"            pm.expect(symbol).is.string;\r",
+									"            pm.expect(symbol).is.lengthOf(5);\r",
+									"\r",
+									"            pm.expect(companyName).is.string;\r",
+									"            pm.expect(companyName).is.length.greaterThan(2);\r",
+									"\r",
+									"            pm.expect(price).is.greaterThan(0); // Adicionado com base no erro identicado\r",
+									"        });\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"IPCA+ 2028\",\r\n    \"symbol\": \"Teste\",\r\n    \"company_name\": \" Teste s.a\",\r\n    \"amount\": 2,\r\n    \"price\": 56.97,\r\n    \"type\": \"Papel\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/wallet/{{WALLET_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"wallet",
+								"{{WALLET_ID}}"
+							]
+						},
+						"description": "Returns the object with the sent data"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Should have status 200', () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{SYSTEM_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/wallet/{{WALLET_ID}}",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"wallet",
+								"{{WALLET_ID}}"
+							]
+						},
+						"description": "No return."
+					},
+					"response": []
+				}
+			],
+			"description": "## User Wallet\n\n| **Route** | **Type** | **Description** | **Token** |\n| --- | --- | --- | --- |\n| /wallet/{ID} | GET | The route retrieves all records of a user. | Any |\n| /wallet/type/{ID} | GET | The route retrieves all records of a user for a specific type. | Any |\n| /wallet/symbol/{ID}/{SYMBOL} | GET | The route retrieves the record of a specific symbol. | Any |\n| /wallet/add | POST | The route performs the registration. | Any |\n| /wallet/{ID} | PUT | The route updates the data of a specific record. | Any |\n| /wallet/{ID} | DELETE | The route deletes a specific record. | Any |"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "SYSTEM_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "STOCK_ID",
+			"value": "72cc1f13-7da8-436e-82bb-a98b990d3433",
+			"type": "string"
+		},
+		{
+			"key": "USER_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "INVEST_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "TREASURY_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "REF_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ETF_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "WALLET_ID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
