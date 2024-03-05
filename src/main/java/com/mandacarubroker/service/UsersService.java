@@ -61,18 +61,52 @@ public class UsersService {
    * @param updatedData user data
    *
    **/
-  public Optional<Users> update(String id, Users updatedData) {
-    String encryptedPassword = new BCryptPasswordEncoder().encode(updatedData.getPassword());
+  public Optional<Users> update(String id, RegisterDataTransferObject updatedData) {
+    String encryptedPassword = new BCryptPasswordEncoder().encode(updatedData.password());
 
     return this.usersRepository.findById(id)
         .map(user -> {
-          user.setUsername(updatedData.getUsername());
+          user.setUsername(updatedData.username());
           user.setPassword(encryptedPassword);
-          user.setEmail(updatedData.getEmail());
-          user.setFirstName(updatedData.getFirstName());
-          user.setLastName(updatedData.getLastName());
-          user.setBirthData(updatedData.getBirthData());
-          user.setBalance(updatedData.getBalance());
+          user.setEmail(updatedData.email());
+          user.setFirstName(updatedData.firstName());
+          user.setLastName(updatedData.lastName());
+          user.setBirthData(updatedData.birthData());
+          user.setBalance(updatedData.balance());
+
+          return this.usersRepository.save(user);
+        });
+  }
+
+  public Optional<Users> withdraw(String id, Double value, Users data) {
+    Double newBalance = data.getBalance() + value;
+
+    return this.usersRepository.findById(id)
+        .map(user -> {
+          user.setUsername(data.getUsername());
+          user.setPassword(data.getPassword());
+          user.setEmail(data.getEmail());
+          user.setFirstName(data.getFirstName());
+          user.setLastName(data.getLastName());
+          user.setBirthData(data.getBirthData());
+          user.setBalance(newBalance);
+
+          return this.usersRepository.save(user);
+        });
+  }
+
+  public Optional<Users> deposit(String id, Double value, Users data) {
+    Double newBalance = data.getBalance() - value;
+
+    return this.usersRepository.findById(id)
+        .map(user -> {
+          user.setUsername(data.getUsername());
+          user.setPassword(data.getPassword());
+          user.setEmail(data.getEmail());
+          user.setFirstName(data.getFirstName());
+          user.setLastName(data.getLastName());
+          user.setBirthData(data.getBirthData());
+          user.setBalance(newBalance);
 
           return this.usersRepository.save(user);
         });

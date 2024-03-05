@@ -8,5 +8,5 @@ package com.mandacarubroker.domain.users;
  * @param data response data
  *
  * */
-public record LoginResponseDataTransferObject(Boolean success, String message, Object data) {
+public record ResponseDataTransferObject(Boolean success, String message, Object data) {
 }
