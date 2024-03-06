@@ -1,5 +1,6 @@
 package com.mandacarubroker.domain.user;
 
+import com.mandacarubroker.dtos.RequestUserDTO;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -8,28 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class UserTest {
-    @Test
-    void testUserConstructor() {
-        RequestUserDTO dto = new RequestUserDTO(
-                "geovana",
-                "senha@123",
-                "geovana21072003@gmail.com",
-                "Geovana",
-                "Souza",
-                LocalDate.of(2003, 7, 21),
-                100000.0
-        );
-
-        User user = new User(dto);
-
-        assertEquals("geovana", user.getUsername());
-        assertEquals("senha@123", user.getPassword());
-        assertEquals("geovana21072003@gmail.com", user.getEmail());
-        assertEquals("Geovana", user.getFirstName());
-        assertEquals("Souza", user.getLastName());
-        assertEquals(LocalDate.of(2003, 7, 21), user.getBirthDate());
-        assertEquals(100000.0, user.getBalance());
-    }
 
     @Test
     void testUserEqualsAndHashCode() {

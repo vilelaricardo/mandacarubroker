@@ -5,6 +5,7 @@ import com.mandacarubroker.dtos.ResponseUserDTO;
 import com.mandacarubroker.domain.user.User;
 import com.mandacarubroker.domain.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Validator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,10 +14,13 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,6 +34,8 @@ class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private BCryptPasswordEncoder mockBcrypt;
+    @Mock
+    private Validator validator;
     @InjectMocks
     private UserService userService;
     private User user;
@@ -37,7 +43,7 @@ class UserServiceTest {
     private String existingId,nonExistingId;
     
     @BeforeEach
-    void setup(){
+    void setup() throws IOException, SAXException {
         user = new User("peaga","password","peaga@mail.com"
                 ,"Paulo","Herbert", LocalDate.parse("2004-04-05"),500.0);
         user.setId("1");
@@ -47,6 +53,7 @@ class UserServiceTest {
         nonExistingId = "null";
         when(userRepository.save(any())).thenReturn(user);
         when(mockBcrypt.encode(anyString())).thenReturn("password");
+        when(validator.validate(any())).thenReturn(Set.of());
     }
 
     @Test
@@ -100,9 +107,7 @@ class UserServiceTest {
     void updateShouldReturnAResponseUserDTOWhenExistingId(){
         when(userRepository.findById(existingId)).thenReturn(Optional.ofNullable(user));
         when(userRepository.save(any())).thenReturn(user);
-
         ResponseUserDTO updatedUser = userService.updateUser(existingId,validRequestUserDto);
-
         assertNotNull(updatedUser);
         assertNotNull(updatedUser.id());
         assertEquals(validRequestUserDto.username(),updatedUser.username());
