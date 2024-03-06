@@ -42,8 +42,8 @@ public class TreasuryService {
           item.setType(data.type());
           item.setAmount(data.amount());
           item.setPrice(data.price());
-          item.setInterest_rate(data.interest_rate());
-          item.setMaturity_date(data.maturity_date());
+          item.setInterestRate(data.interestRate());
+          item.setMaturityDate(data.maturityDate());
 
           return repository.save(item);
         });

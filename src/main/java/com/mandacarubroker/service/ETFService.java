@@ -39,7 +39,7 @@ public class ETFService {
         .map(item -> {
           item.setName(data.name());
           item.setSymbol(data.symbol());
-          item.setCompany_name(data.company_name());
+          item.setCompanyName(data.companyName());
           item.setAmount(data.amount());
           item.setPrice(data.price());
 
