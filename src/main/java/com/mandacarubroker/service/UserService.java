@@ -6,10 +6,11 @@ import com.mandacarubroker.domain.user.UserRepository;
 import com.mandacarubroker.dtos.RequestUserDTO;
 import com.mandacarubroker.dtos.ResponseUserDTO;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import java.util.List;
 import java.util.Set;
-
-import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -66,7 +67,7 @@ public class UserService implements UserDetailsService {
                     user.setLastName(updatedUser.lastName());
                     user.setBirthDate(updatedUser.birthDate());
                     user.setBalance(updatedUser.balance());
-                    return userRepository.save(user);
+                     return userRepository.save(user);
                 }).orElseThrow(()->new EntityNotFoundException(NOT_FOUND_MSG));
         return new ResponseUserDTO(updatedUserEntity);
     }
