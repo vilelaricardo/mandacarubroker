@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
-@Tag(name = "Portfólio de Ativos", description = "Operações relacionadas com portfólios de ativos")
+@Tag(name = "Portfólio de Ativos", description = "Operações relacionadas com portfólios de ativos. User role: user")
 @RestController
 @RequestMapping("/portfolio")
 public class PortfolioController {
