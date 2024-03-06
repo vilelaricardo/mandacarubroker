@@ -12,6 +12,8 @@ public class UniqueValidator implements ConstraintValidator<UniqueValidate, Stri
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value != null && (userRepository.findByUsername(value).isEmpty());
+        return value != null
+                && (userRepository.findByUsername(value).isEmpty())
+                && (userRepository.findByEmail(value).isEmpty());
     }
 }
