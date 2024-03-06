@@ -59,7 +59,7 @@ public class InvestmentsController {
         .ok()
         .body(new ResponseDataTransferObject(
           true,
-          "successfully registered",
+          null,
           response
         ));
   }
@@ -75,7 +75,7 @@ public class InvestmentsController {
         .ok()
         .body(new ResponseDataTransferObject(
             true,
-            "successfully deleted",
+            null,
             null
         ));
   }
