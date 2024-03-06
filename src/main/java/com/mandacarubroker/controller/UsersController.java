@@ -78,6 +78,100 @@ public class UsersController {
 
     return ResponseEntity.ok().build();
   }
+  @PutMapping("/deposit/{id}")
+  public ResponseEntity<ResponseDataTransferObject> deposit(
+    @PathVariable String id,
+    @RequestBody @Valid BalanceDataTransferObject data
+  ) {
+    var user = this.usersRepository.findUsersById(id);
+
+    if(user == null) {
+      return ResponseEntity
+          .badRequest()
+          .body(new ResponseDataTransferObject(
+              false,
+              "There was an error",
+              null
+          ));
+    }
+
+    if (data.value() < 0) {
+      return ResponseEntity
+          .badRequest()
+          .body(new ResponseDataTransferObject(
+              false,
+              "Invalid value",
+              null
+          ));
+    }
+
+    var response = this.usersService.deposit(id, data.value(), user);
+    if (response.isEmpty()) {
+      return ResponseEntity
+          .status(500)
+          .body(new ResponseDataTransferObject(
+              false,
+              "There was an error",
+              null
+          ));
+    }
+
+    return ResponseEntity
+        .ok()
+        .body(new ResponseDataTransferObject(
+            true,
+            null,
+            response
+        ));
+  }
+
+  @PutMapping("/withdraw/{id}")
+  public ResponseEntity<ResponseDataTransferObject> withdraw(
+      @PathVariable String id,
+      @RequestBody @Valid BalanceDataTransferObject data
+  ) {
+    var user = this.usersRepository.findUsersById(id);
+
+    if(user == null) {
+      return ResponseEntity
+          .badRequest()
+          .body(new ResponseDataTransferObject(
+              false,
+              "There was an error",
+              null
+          ));
+    }
+
+    if (data.value() < 0) {
+      return ResponseEntity
+          .badRequest()
+          .body(new ResponseDataTransferObject(
+              false,
+              "Invalid value",
+              null
+          ));
+    }
+
+    var response = this.usersService.withdraw(id, data.value(), user);
+    if (response.isEmpty()) {
+      return ResponseEntity
+          .status(500)
+          .body(new ResponseDataTransferObject(
+              false,
+              "There was an error",
+              null
+          ));
+    }
+
+    return ResponseEntity
+        .ok()
+        .body(new ResponseDataTransferObject(
+            true,
+            null,
+            response
+        ));
+  }
+
 
   @PutMapping("/deposit/{id}")
   public ResponseEntity<ResponseDataTransferObject> deposit(
