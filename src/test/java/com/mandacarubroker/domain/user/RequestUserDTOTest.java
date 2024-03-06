@@ -1,5 +1,6 @@
 package com.mandacarubroker.domain.user;
 
+import com.mandacarubroker.dtos.RequestUserDTO;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
