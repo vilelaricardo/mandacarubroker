@@ -1,36 +1,41 @@
 package com.mandacarubroker.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mandacarubroker.UserFactory;
 import com.mandacarubroker.controller.exceptions.StandardError;
-import com.mandacarubroker.domain.user.RequestUserDTO;
-import com.mandacarubroker.domain.user.ResponseUserDTO;
 import com.mandacarubroker.domain.user.User;
+import com.mandacarubroker.domain.user.UserRepository;
+import com.mandacarubroker.dtos.RequestUserDTO;
+import com.mandacarubroker.dtos.ResponseUserDTO;
+import com.mandacarubroker.service.TokenService;
 import com.mandacarubroker.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
-
 import static org.hamcrest.Matchers.blankOrNullString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(controllers = UserController.class,excludeAutoConfiguration = SecurityAutoConfiguration.class)
+//@ExtendWith({SpringExtension.class, MockitoExtension.class})
 class UserControllerTest {
 
+    @MockBean
+    private TokenService tokenService;
+    @MockBean
+    private UserRepository userRepository;
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -45,8 +50,8 @@ class UserControllerTest {
     private StandardError errorNotFound;
     @BeforeEach
     void setup(){
-        User user = new User("1", "peaga", "123456", "peaga@mail.com"
-                , "Paulo", "Herbert", LocalDate.parse("2004-04-05"), 500.0);
+        User user = UserFactory.createUserDTO("123456");
+        user.setId("1");
         validRequestUserDto = new RequestUserDTO(user.getUsername(), user.getPassword()
                 , user.getEmail(), user.getFirstName(), user.getLastName(), user.getBirthDate(), user.getBalance());
         validResponseUserDto = new ResponseUserDTO(user);

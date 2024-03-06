@@ -12,5 +12,6 @@ CREATE TABLE tb_user(
                         first_name VARCHAR NOT NULL,
                         last_name VARCHAR NOT NULL,
                         birth_date DATE NOT NULL,
-                        balance FLOAT NOT NULL
+                        balance FLOAT NOT NULL,
+                        role VARCHAR(50) NOT NULL
 );
