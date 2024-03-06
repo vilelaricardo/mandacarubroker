@@ -6,6 +6,9 @@ import com.mandacarubroker.domain.treasury.ResponseDataTransferObject;
 import com.mandacarubroker.domain.treasury.Treasury;
 import com.mandacarubroker.repository.TreasuryRepository;
 import com.mandacarubroker.service.TreasuryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,10 @@ public class TreasuryController {
     this.repository = treasuryRepository;
   }
 
+  @Operation(summary = "Get all assets", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @GetMapping
   public ResponseEntity<GetResponseDataTransferObject> getAll() {
     List<Treasury> response = treasuryService.getAll();
@@ -47,6 +54,10 @@ public class TreasuryController {
         ));
   }
 
+  @Operation(summary = "Get a specific asset", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @GetMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> get(@PathVariable String id) {
     var response = treasuryService.get(id);
@@ -69,6 +80,10 @@ public class TreasuryController {
         ));
   }
 
+  @Operation(summary = "Register a asset", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PostMapping("/register")
   public ResponseEntity<ResponseDataTransferObject> register(
       @RequestBody
@@ -95,7 +110,10 @@ public class TreasuryController {
             response
         ));
   }
-
+  @Operation(summary = "Update a asset", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PutMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> update(
       @PathVariable String id,
@@ -120,7 +138,10 @@ public class TreasuryController {
             response
         ));
   }
-
+  @Operation(summary = "Delete a asset", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @DeleteMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> delete(
       @PathVariable String id

@@ -7,6 +7,9 @@ import com.mandacarubroker.domain.realestatesfunds.RegisterDataTransferObject;
 import com.mandacarubroker.domain.realestatesfunds.ResponseDataTransferObject;
 import com.mandacarubroker.repository.RealEstatesFundsRepository;
 import com.mandacarubroker.service.RealEstatesFundsService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,10 @@ public class RealEstatesFundsController {
     this.repository = realEstatesFundsRepository;
   }
 
+  @Operation(summary = "Get all real estate funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @GetMapping
   public ResponseEntity<GetResponseDataTransferObject> getAll() {
     List<RealEstatesFunds> response = service.getAll();
@@ -46,7 +53,10 @@ public class RealEstatesFundsController {
             response
         ));
   }
-
+  @Operation(summary = "Get a specific real estate funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @GetMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> get(@PathVariable String id) {
     var response = service.get(id);
@@ -68,7 +78,10 @@ public class RealEstatesFundsController {
             response
         ));
   }
-
+  @Operation(summary = "Register a specific real estate funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PostMapping("/register")
   public ResponseEntity<ResponseDataTransferObject> register(
       @RequestBody
@@ -95,7 +108,10 @@ public class RealEstatesFundsController {
             response
         ));
   }
-
+  @Operation(summary = "Update a specific real estate funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PutMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> update(
       @PathVariable String id,
@@ -120,7 +136,10 @@ public class RealEstatesFundsController {
             response
         ));
   }
-
+  @Operation(summary = "Delete a specific real estate funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @DeleteMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> delete(
       @PathVariable String id
