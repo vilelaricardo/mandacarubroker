@@ -23,8 +23,9 @@ public class RequestStockDataTransferObjectTest {
     String symbol = "ABCD1";
     String companyName = "Company Name";
     Double price = 10.50;
+    Integer amount = 1;
 
-    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price);
+    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price, amount);
     var violations = validator.validate(stockDTO);
 
     assertTrue(violations.isEmpty());
@@ -35,8 +36,9 @@ public class RequestStockDataTransferObjectTest {
     String symbol = "AB1";
     String companyName = "Company Name";
     Double price = 10.5;
+    Integer amount = 1;
 
-    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price);
+    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price, amount);
     var violations = validator.validate(stockDTO);
 
     assertEquals(1, violations.size());
@@ -47,8 +49,9 @@ public class RequestStockDataTransferObjectTest {
     String symbol = "ABCD3";
     String companyName = "";
     Double price = 10.5;
+    Integer amount = 1;
 
-    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price);
+    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price, amount);
     var violations = validator.validate(stockDTO);
 
     assertEquals(1, violations.size());
@@ -59,8 +62,9 @@ public class RequestStockDataTransferObjectTest {
     String symbol = "ABCD3";
     String companyName = "Company Name";
     Double price = null;
+    Integer amount = 1;
 
-    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price);
+    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price, amount);
     var violations = validator.validate(stockDTO);
 
     assertEquals(1, violations.size());
@@ -71,8 +75,9 @@ public class RequestStockDataTransferObjectTest {
     String symbol = null;
     String companyName = null;
     Double price = null;
+    Integer amount = 1;
 
-    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price);
+    RequestStockDataTransferObject stockDTO = new RequestStockDataTransferObject(symbol, companyName, price, amount);
     var violations = validator.validate(stockDTO);
 
     assertEquals(3, violations.size());

@@ -3,6 +3,7 @@ package com.mandacarubroker.unitTest.controller;
 import com.mandacarubroker.controller.StockController;
 import com.mandacarubroker.domain.stock.RequestStockDataTransferObject;
 import com.mandacarubroker.domain.stock.Stock;
+import com.mandacarubroker.repository.StockRepository;
 import com.mandacarubroker.service.StockService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class StockControllerTest {
-
   @Mock
   private StockService stockService;
 
@@ -33,14 +33,14 @@ class StockControllerTest {
     MockitoAnnotations.initMocks(this);
   }
 
-  private final Stock stock = new Stock("1", "Test4", "Test s.a", 150.00);
-  private final Stock updatedStockData =  new Stock("1", "TEST4", "Test s.a", 200.00);
+  private final Stock stock = new Stock("1", "Test4", "Test s.a", 150.00, 1);
+  private final Stock updatedStockData =  new Stock("1", "TEST4", "Test s.a", 200.00, 2);
 
   @Test
   void testGetAllStocks() {
     List<Stock> expectedStocks = new ArrayList<>();
     expectedStocks.add(stock);
-    expectedStocks.add(new Stock("2", "GOOG3", "Google s.a", 500.00));
+    expectedStocks.add(new Stock("2", "GOOG3", "Google s.a", 500.00, 3));
     when(stockService.getAllStocks()).thenReturn(expectedStocks);
 
     List<Stock> actualStocks = stockController.getAllStocks();
@@ -63,10 +63,13 @@ class StockControllerTest {
     RequestStockDataTransferObject requestData = new RequestStockDataTransferObject(
         "Test4",
         "Test s.a",
-        150.00
+        150.00,
+        4
     );
+
     Stock expectedStock = stock;
     when(stockService.createStock(requestData)).thenReturn(expectedStock);
+
 
     ResponseEntity<Stock> responseEntity = stockController.createStock(requestData);
 
