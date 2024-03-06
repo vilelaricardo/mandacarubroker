@@ -1,5 +1,7 @@
 # Mandacaru Broker API
 
+###### Don't speak portuguese? <a href="https://github.com/I-Lima/Mandacaru-Broker-API/blob/main/README-en.md">Click here</a> to view this pagae in English
+
 ## Sumário
 
 - [Mandacaru Broker API](#mandacaru-broker-api)
@@ -8,12 +10,38 @@
     - [O que é um Home Broker ?](#o-que-é-um-home-broker-)
   - [Desenvolvedores](#desenvolvedores)
   - [Recursos](#recursos)
-    - [Listar Todas as Ações](#listar-todas-as-ações)
-    - [Obter uma Ação por ID](#obter-uma-ação-por-id)
-    - [Criar uma Nova Ação](#criar-uma-nova-ação)
-    - [Atualizar uma Ação por ID](#atualizar-uma-ação-por-id)
-    - [Excluir uma Ação por ID](#excluir-uma-ação-por-id)
+    - [Login no sistema](#login-no-sistema)
+    - [Registro no sistema](#registro-no-sistema)
+    - [Excluir registro no sistema](#excluir-registro-no-sistema)
+    - [Obter todos os Exchange Traded Funds](#obter-todos-os-exchange-traded-funds)
+    - [Obter um Exchange Traded Fund específico](#obter-um-exchange-traded-fund-específico)
+    - [Registrar um Exchange Traded Fund](#registrar-um-exchange-traded-fund)
+    - [Atualizar um Exchange Traded Fund](#atualizar-um-exchange-traded-fund-específico)
+    - [Excluir um Exchange Traded Fund](#excluir-um-exchange-traded-fund)
+    - [Listar todos os investimentos](#listar-todos-os-investimentos)
+    - [Registrar um novo investimento](#registrar-um-novo-investimento)
+    - [Excluir um investimento](#excluir-um-investimento)
+    - [Listar todos os fundos imobiliários](#listar-todos-os-fundos-imobiliários)
+    - [Obter um fundo imobiliário específico](#obter-um-fundo-imobiliário-específico)
+    - [Registrar um novo fundo imobiliário](#registrar-um-novo-fundo-imobiliário)
+    - [Atualizar um fundo imobiliário específico](#atualizar-um-fundo-imobiliário-específico)
+    - [Excluir um fundo imobiliário específico](#excluir-um-fundo-imobiliário-específico)
+    - [Listar todas os registros](#listar-todos-os-registros)
+    - [Listar um Registro](#listar-um-registro)
+    - [Criar um novo registro](#criar-um-novo-registro)
+    - [Atualizar um registro por ID](#atualizar-um-registro)
+    - [Excluir um registro](#excluir-um-registro)
+    - [Listar todos os ativos](#listar-todos-os-ativos)
+    - [Obter um ativo específico](#obter-um-ativo-específico)
+    - [Registrar um ativo](#registrar-um-ativo)
+    - [Atualizar um ativo](#atualizar-um-ativo)
+    - [Excluir um ativo](#excluir-um-ativo)
+    - [Login do usuário no sistema](#login-do-usuário-no-sistema)
+    - [Cadastro de usuário no sistema](#cadastro-de-usuário-no-sistema)
+    - [Atualizar usuário no sistema](#atualizar-usuário-no-sistema)
+    - [Exclusão de usuário no sistema](#exclusão-de-usuário-no-sistema)
   - [Collection do Postman](#collection-do-postman)
+  - [Swagger](#swagger)
   - [Testes](#testes)
   - [Passo-a-passo de como configurar o ambiente](#passo-a-passo-de-como-configurar-o-ambiente)
   - [Requisitos](#requisitos)
@@ -43,19 +71,224 @@ O projeto foi elaborado em colaboração pelos seguintes desenvolvedores:
   <a href="https://github.com/I-Lima">
     <img src="https://avatars.githubusercontent.com/u/83174653?s=400&u=515b4de4d50855ea8a8dea0d554e3ed0d87bca9d&v=4"  width="80px"/>
   </a>
-
-  <div style="margin: 20px"></div>
-
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <a href="https://github.com/uezili">
     <img src="https://avatars.githubusercontent.com/u/40150125?s=48&v=4"  width="80px"/>
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/jaopaulomilitao">
+    <img src="https://avatars.githubusercontent.com/u/143536750?v=4"  width="80px"/>
+  </a>  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://github.com/moisesocosta">
+    <img src="https://avatars.githubusercontent.com/u/60359281?v=4"  width="80px"/>
   </a>
 </div>
 
 ## Recursos
 
-### Listar Todas as Ações
+### Login no sistema
 
-Retorna um array de objetos contendo todas as ações disponíveis.
+Efetua o login no sistema.
+
+**Endpoint:**
+
+```http
+POST /auth/login
+```
+
+**Respostas:**
+
+```http
+200: Login bem-sucedido
+400: Credenciais inválidas
+401: Usuário não registrado
+```
+
+### Registro no sistema
+
+Efetua o registro no sistema.
+
+**Endpoint:**
+
+```http
+POST /auth/register
+```
+
+**Respostas:**
+
+```http
+200: Registro bem-sucedido
+409: Usuário já registrado
+```
+
+### Excluir registro no sistema
+
+Exclui o registro no sistema.
+
+**Endpoint:**
+
+```http
+DELETE /auth/{id}
+```
+
+**Respostas:**
+
+```http
+200: Exclusão bem-sucedida
+```
+
+### Obter todos os Exchange Traded Funds
+
+Retorna todos os Exchange Traded Funds disponíveis.
+
+**Endpoint:**
+
+```http
+GET /etf
+```
+
+### Obter um Exchange Traded Fund específico
+
+Retorna os detalhes de um Exchange Traded Fund específico com base no ID fornecido.
+
+**Endpoint:**
+
+```http
+GET /etf/{id}
+```
+
+### Registrar um Exchange Traded Fund
+
+Registra um novo Exchange Traded Fund com base nos dados fornecidos.
+
+**Endpoint:**
+
+```http
+POST /etf/register
+```
+
+### Atualizar um Exchange Traded Fund
+
+Atualiza os detalhes de um Exchange Traded Fund específico com base no ID fornecido.
+
+**Endpoint:**
+
+```http
+PUT /etf/{id}
+```
+
+### Excluir um Exchange Traded Fund
+
+Exclui um Exchange Traded Fund específico com base no ID fornecido.
+
+**Endpoint:**
+
+```http
+DELETE /etf/{id}
+```
+
+### Listar todos os investimentos
+
+Retorna uma lista de todos os tipos de investimentos disponíveis.
+
+**Endpoint:**
+
+```http
+GET /assets
+```
+
+### Registrar um novo investimento
+
+Cria um novo investimento com base nos dados fornecidos.
+
+**Endpoint:**
+
+```http
+POST /assets/register
+```
+
+**Respostas:**
+
+```http
+200: Registro bem-sucedido
+```
+
+### Excluir um investimento
+
+Exclui um investimento específico com base no ID fornecido.
+
+**Endpoint:**
+
+```http
+DELETE /assets/{id}
+```
+
+**Respostas:**
+
+```http
+200: Exclusão bem-sucedida
+```
+
+### Listar todos os fundos imobiliários
+
+Obtém todos os fundos imobiliários cadastrados.
+
+**Endpoint:**
+
+```http
+GET /ref
+```
+
+### Obter um fundo imobiliário específico
+
+Obtém os detalhes de um fundo imobiliário específico com base no ID.
+
+**Endpoint:**
+
+```http
+GET /ref/{id}
+```
+
+### Registrar um novo fundo imobiliário
+
+Registra um novo fundo imobiliário com base nos dados fornecidos.
+
+**Endpoint:**
+
+```http
+POST /ref/register
+```
+
+### Atualizar um fundo imobiliário específico
+
+Atualiza os detalhes de um fundo imobiliário específico com base no ID.
+
+**Endpoint:**
+
+```http
+PUT /ref/{id}
+```
+
+### Excluir um fundo imobiliário específico
+
+Exclui um fundo imobiliário específico com base no ID.
+
+**Endpoint:**
+
+```http
+DELETE /ref/{id}
+```
+
+**Respostas:**
+
+```http
+200: Exclusão bem-sucedida
+```
+
+### Listar todos os registros
+
+Retorna um array de objetos com todos os registros disponíveis.
 
 **Endpoint:**
 
@@ -63,9 +296,9 @@ Retorna um array de objetos contendo todas as ações disponíveis.
 GET /stocks
 ```
 
-### Obter uma Ação por ID
+### Listar um registro
 
-Retorna os detalhes de uma ação específica com base no ID.
+Retorna os detalhes de um registro específico com base no ID.
 
 **Endpoint:**
 
@@ -73,9 +306,9 @@ Retorna os detalhes de uma ação específica com base no ID.
 GET /stocks/{id}
 ```
 
-### Criar uma Nova Ação
+### Criar um novo registro
 
-Cria uma nova ação com base nos dados fornecidos.
+Cria um novo registro com base nos dados fornecidos.
 
 **Endpoint:**
 
@@ -94,9 +327,9 @@ POST /stocks
 
 ```
 
-### Atualizar uma Ação por ID
+### Atualizar um registro
 
-Atualiza os detalhes de uma ação específica com base no ID.
+Atualiza os detalhes de um registro específico com base no ID.
 
 **Endpoint:**
 
@@ -110,14 +343,14 @@ PUT /stocks/{id}
 {
   "symbol": "BBAS3",
   "companyName": "Banco do Brasil SA",
-  "price": 59.97
+  "price": 56.97
 }
 
 ```
 
-### Excluir uma Ação por ID
+### Excluir um registro
 
-Exclui uma ação específica com base no ID.
+Exclui um registro específico com base no ID.
 
 **Endpoint:**
 
@@ -125,11 +358,136 @@ Exclui uma ação específica com base no ID.
 DELETE /stocks/{id}
 ```
 
+### Listar todos os ativos
+
+Obtém todos os ativos.
+
+**Endpoint:**
+
+```http
+GET /treasury
+```
+
+### Obter um ativo específico
+
+Obtém detalhes de um ativo específico com base no ID.
+
+**Endpoint:**
+
+```http
+GET /treasury/{id}
+```
+
+### Registrar um ativo
+
+Registra um novo ativo com base no dados fornecidos
+
+**Endpoint:**
+
+```http
+POST /treasury/register
+```
+
+### Atualizar um ativo
+
+Atualiza os detalhes de um ativo específico com base no ID.
+
+**Endpoint:**
+
+```http
+PUT /treasury
+```
+
+### Excluir um ativo
+
+Exclui um ativo específico com base no ID.
+
+**Endpoint:**
+
+```http
+DELETE /treasury/{id}
+```
+
+### Login do usuário no sistema
+
+Realiza o login de um usuário com base nas informações fornecidas.
+
+**Endpoint:**
+
+```http
+POST /user/login
+```
+
+**Respostas:**
+
+```http
+200: Login bem-sucedido
+400: Usuário não registrado
+401: Credenciais inválidas
+```
+
+### Cadastro de usuário no sistema
+
+Registra um novo usuário com base nas informações fornecidas.
+
+**Endpoint:**
+
+```http
+POST /user/register
+```
+
+**Respostas:**
+
+```http
+200: Cadastro bem-sucedida
+409: Username já está em uso
+```
+
+### Atualizar usuário no sistema
+
+Atualiza as informações de um usuário específico com base no ID fornecido.
+
+**Endpoint:**
+
+```http
+PUT /user/{id}
+```
+
+**Respostas:**
+
+```http
+200: Atualização bem-sucedida
+404: Usuário não encontrado
+```
+
+### Exclusão de usuário no sistema
+
+Exclui um usuário específico com base no ID fornecido.
+
+**Endpoint:**
+
+```http
+DELETE /user/{id}
+```
+
+**Respostas:**
+
+```http
+200: Exclusão bem-sucedida
+404: Usuário não encontrado
+```
+
 ## Collection do Postman
 
 A coleção a seguir compreende todas as rotas configuradas, juntamente com seus testes de API correspondentes já implementados.
 
 [Link para download](https://drive.google.com/file/d/1G9hVXLiOBNB_Zi5lONOyz7CmCpJ7u6J_/view?usp=sharing)
+
+## Swagger
+O Swagger é uma ferramenta de código aberto que permite documentar APIs de forma clara e interativa.
+Esta interface facilita a compreensão e integração com a Mandacaru Broker API.
+
+`http://localhost:8080/swagger-ui/index.html#/`
 
 ## Testes
 
