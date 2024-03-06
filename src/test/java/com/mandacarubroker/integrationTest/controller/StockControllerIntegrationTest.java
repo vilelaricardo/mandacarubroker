@@ -106,26 +106,26 @@ class StockControllerIntegrationTest {
         .andExpect(MockMvcResultMatchers.jsonPath("$.amount").value(savedStock.getAmount()));
   }
 
-//  @Test
-//  @Order(4)
-//  @WithMockUser(username = "admin", roles = "ADMIN")
-//  void updateStock() throws Exception {
-//    RequestStockDataTransferObject requestBody = new RequestStockDataTransferObject("UPST3", "Updated Stock", 20.0, 2);
-//    Stock updatedStock = new Stock(requestBody);
-//
-//    mockMvc.perform(MockMvcRequestBuilders.put("/stocks/" + savedStock.getId())
-//            .content("{\"symbol\":\"UPST3\", \"companyName\":\"Updated Stock\", \"price\": 20.0. \"amount\":2}")
-//            .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(MockMvcResultMatchers.status().isOk())
-//        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(updatedStock.getId()))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$.symbol").value(updatedStock.getSymbol()))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value(updatedStock.getCompanyName()))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(updatedStock.getPrice()))
-//        .andExpect(MockMvcResultMatchers.jsonPath("$.amount").value(updatedStock.getAmount()));
-//  }
-
   @Test
   @Order(4)
+  @WithMockUser(username = "admin", roles = "ADMIN")
+  void updateStock() throws Exception {
+    RequestStockDataTransferObject requestBody = new RequestStockDataTransferObject("UPST3", "Updated Stock", 20.0, 2);
+    Stock updatedStock = new Stock(requestBody);
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/stocks/" + savedStock.getId())
+            .content("{\"symbol\":\"UPST3\", \"companyName\":\"Updated Stock\", \"price\": 20.0, \"amount\":2}")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(savedStock.getId()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.symbol").value(updatedStock.getSymbol()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.companyName").value(updatedStock.getCompanyName()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(updatedStock.getPrice()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.amount").value(updatedStock.getAmount()));
+  }
+
+  @Test
+  @Order(5)
   @WithMockUser(username = "admin", roles = "ADMIN")
   void deleteStock() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.delete("/stocks/" + savedStock.getId())
