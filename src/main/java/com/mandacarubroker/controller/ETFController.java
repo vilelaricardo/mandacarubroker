@@ -6,6 +6,9 @@ import com.mandacarubroker.domain.etf.RegisterDataTransferObject;
 import com.mandacarubroker.domain.etf.ResponseDataTransferObject;
 import com.mandacarubroker.repository.ETFRepository;
 import com.mandacarubroker.service.ETFService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +36,10 @@ public class ETFController {
     this.repository = etfRepository;
   }
 
+  @Operation(summary = "Get all exchange traded funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @GetMapping
   public ResponseEntity<GetResponseDataTransferObject> getAll() {
     List<ETF> response = service.getAll();
@@ -45,7 +52,10 @@ public class ETFController {
             response
         ));
   }
-
+  @Operation(summary = "Get a specific exchange traded funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @GetMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> get(@PathVariable String id) {
     var response = service.get(id);
@@ -67,7 +77,10 @@ public class ETFController {
             response
         ));
   }
-
+  @Operation(summary = "Register a exchange traded funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PostMapping("/register")
   public ResponseEntity<ResponseDataTransferObject> register(
       @RequestBody
@@ -94,7 +107,10 @@ public class ETFController {
             response
         ));
   }
-
+  @Operation(summary = "Update a specific exchange traded funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PutMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> update(
       @PathVariable String id,
@@ -119,7 +135,10 @@ public class ETFController {
             response
         ));
   }
-
+  @Operation(summary = "Delete a specific exchange traded funds", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @DeleteMapping("/{id}")
   public ResponseEntity<ResponseDataTransferObject> delete(
       @PathVariable String id

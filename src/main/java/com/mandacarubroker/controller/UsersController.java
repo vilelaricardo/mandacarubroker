@@ -7,19 +7,14 @@ import com.mandacarubroker.domain.users.ResponseDataTransferObject;
 import com.mandacarubroker.domain.users.Users;
 import com.mandacarubroker.repository.UsersRepository;
 import com.mandacarubroker.service.UsersService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("user")
@@ -35,7 +30,10 @@ public class UsersController {
     this.usersRepository = usersRepository;
     this.usersService = usersService;
   }
-
+  @Operation(summary = "Login a user", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @SuppressWarnings("checkstyle:MissingJavadocType")
   @PostMapping("/login")
   public ResponseEntity<ResponseDataTransferObject> login(
@@ -64,7 +62,10 @@ public class UsersController {
         .status(HttpStatus.UNAUTHORIZED)
         .body(new ResponseDataTransferObject(false, ex.getMessage(), null));
   }
-
+  @Operation(summary = "Register a user", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PostMapping("/register")
   public ResponseEntity<ResponseStatus> register(
       @RequestBody @Valid RegisterDataTransferObject data
@@ -77,6 +78,7 @@ public class UsersController {
 
     return ResponseEntity.ok().build();
   }
+
   @PutMapping("/deposit/{id}")
   public ResponseEntity<ResponseDataTransferObject> deposit(
     @PathVariable String id,
@@ -172,11 +174,18 @@ public class UsersController {
   }
 
 
+  @Operation(summary = "Update user data", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @PutMapping("/{id}")
   public Users update(@PathVariable String id, @RequestBody @Valid RegisterDataTransferObject data) {
     return usersService.update(id, data).orElse(null);
   }
-
+  @Operation(summary = "Delete a user", method = "POST")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "success"),
+  })
   @DeleteMapping("/{id}")
   public void delete(@PathVariable String id) {
     usersService.delete(id);
