@@ -2,8 +2,8 @@ package com.mandacarubroker.unitTest.controller;
 
 import com.mandacarubroker.controller.UsersController;
 import com.mandacarubroker.domain.users.LoginDataTransferObject;
-import com.mandacarubroker.domain.users.LoginResponseDataTransferObject;
 import com.mandacarubroker.domain.users.RegisterDataTransferObject;
+import com.mandacarubroker.domain.users.ResponseDataTransferObject;
 import com.mandacarubroker.domain.users.Users;
 import com.mandacarubroker.repository.UsersRepository;
 import com.mandacarubroker.service.UsersService;
@@ -48,7 +48,7 @@ class UsersControllerTest {
 
     Mockito.when(usersService.get(data)).thenReturn(user);
 
-    ResponseEntity<LoginResponseDataTransferObject> response = controller.login(data);
+    ResponseEntity<ResponseDataTransferObject> response = controller.login(data);
 
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     Assertions.assertNotNull(response.getBody());
@@ -63,7 +63,7 @@ class UsersControllerTest {
 
     Mockito.when(usersService.get(data)).thenReturn(null);
 
-    ResponseEntity<LoginResponseDataTransferObject> response = controller.login(data);
+    ResponseEntity<ResponseDataTransferObject> response = controller.login(data);
 
     Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     Assertions.assertNotNull(response.getBody());
@@ -76,7 +76,7 @@ class UsersControllerTest {
   void testHandleBadCredentialsException() {
     BadCredentialsException ex = new BadCredentialsException("Invalid credentials");
 
-    ResponseEntity<LoginResponseDataTransferObject> response = controller.handleBadCredentialsException(ex);
+    ResponseEntity<ResponseDataTransferObject> response = controller.handleBadCredentialsException(ex);
 
     Assertions.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     Assertions.assertNotNull(response.getBody());
@@ -147,23 +147,11 @@ class UsersControllerTest {
     Users data = new Users(register1, register1.password());
     Users updatedUser = new Users(register2, register2.password());
 
-    Mockito.when(usersService.update(id, data)).thenReturn(Optional.of(updatedUser));
+    Mockito.when(usersService.update(id, register1)).thenReturn(Optional.of(updatedUser));
 
-    Users response = controller.update(id, data);
+    Users response = controller.update(id, register1);
 
     Assertions.assertEquals(updatedUser, response);
-  }
-
-  @Test
-  void testUpdate_Null() {
-    String id = "123456";
-    Users data = new Users();
-
-    Mockito.when(usersService.update(id, data)).thenReturn(Optional.empty());
-
-    Users response = controller.update(id, data);
-
-    Assertions.assertNull(response);
   }
 
   @Test

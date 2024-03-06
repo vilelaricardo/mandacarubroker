@@ -86,15 +86,15 @@ class UsersServiceTest {
   @Test
   void testUpdate() {
     String id = "123456";
-    Users updatedData = new Users();
-    updatedData.setUsername("updateduser");
-    updatedData.setPassword("updatedpassword");
-    updatedData.setEmail("updated@example.com");
-    updatedData.setFirstName("Updated");
-    updatedData.setLastName("User");
-    Timestamp updatedTimestamp = new Timestamp(System.currentTimeMillis());
-    updatedData.setBirthData(updatedTimestamp);
-    updatedData.setBalance(2000.0);
+    RegisterDataTransferObject updatedData = new RegisterDataTransferObject(
+        "updateduser",
+        "updatedpassword",
+        "updated@example.com",
+        "Updated",
+        "User",
+        new Timestamp(System.currentTimeMillis()),
+        2000.0
+    );
 
     Users user = new Users();
     Mockito.when(usersRepository.findById(id)).thenReturn(Optional.of(user));
