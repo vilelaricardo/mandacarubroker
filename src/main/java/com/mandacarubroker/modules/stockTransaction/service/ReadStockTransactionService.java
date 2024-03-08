@@ -1,11 +1,13 @@
 package com.mandacarubroker.modules.stockTransaction.service;
 
+import com.mandacarubroker.exception.StockTransactionNotFoundException;
 import com.mandacarubroker.modules.stockTransaction.StockTransaction;
 import com.mandacarubroker.modules.stockTransaction.StockTransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReadStockTransactionService {
@@ -18,7 +20,12 @@ public class ReadStockTransactionService {
     }
 
     public StockTransaction findById(String transactionId) {
-        return stockTransactionRepository.findById(transactionId).orElse(null);
+        Optional<StockTransaction> optionalStockTransaction = stockTransactionRepository.findById(transactionId);
+
+        if (optionalStockTransaction.isEmpty()) {
+            throw new StockTransactionNotFoundException();
+        }
+        return optionalStockTransaction.get();
     }
 
     // Sugestões de melhoria:

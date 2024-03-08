@@ -12,7 +12,6 @@ public class CreateStockTransactionService {
     @Autowired
     private StockTransactionRepository stockTransactionRepository;
 
-    // Variável para verificar se o símbolo da ação existe
     public StockTransaction execute(StockTransaction stockTransaction) {
 
         this.stockTransactionRepository

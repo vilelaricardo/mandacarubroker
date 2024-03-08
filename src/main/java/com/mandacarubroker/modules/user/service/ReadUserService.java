@@ -1,9 +1,12 @@
 package com.mandacarubroker.modules.user.service;
 
+import com.mandacarubroker.exception.UserNotFoundException;
 import com.mandacarubroker.modules.user.User;
 import com.mandacarubroker.modules.user.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,11 @@ public class ReadUserService {
     }
 
     public User findById(String userId) {
-        return userRepository.findById(userId).orElse(null);
+        Optional<User> optionalUser = userRepository.findById(userId);
+
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return optionalUser.get();
     }
 }

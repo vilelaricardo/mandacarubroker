@@ -2,11 +2,24 @@ package com.mandacarubroker.modules.user.controller;
 
 import com.mandacarubroker.exception.UserNotFoundException;
 import com.mandacarubroker.modules.user.User;
-import com.mandacarubroker.modules.user.service.*;
+import com.mandacarubroker.modules.user.service.CreateUserService;
+import com.mandacarubroker.modules.user.service.DeleteUserService;
+import com.mandacarubroker.modules.user.service.ReadUserService;
+import com.mandacarubroker.modules.user.service.UpdateUserService;
+import com.mandacarubroker.modules.user.service.UserDepositService;
+import com.mandacarubroker.modules.user.service.UserWithdrawService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * Controller para gerenciar usuários.
@@ -47,8 +60,13 @@ public class UserController {
      * @return Usuário encontrado
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<Object> findUserById(@PathVariable("userId") String userId) {
-        return ResponseEntity.ok(readUserService.findById(userId));
+    public ResponseEntity<Object> findUserById(@PathVariable("userId") String userId) throws Exception {
+        try {
+            this.readUserService.findById(userId);
+            return ResponseEntity.ok().body(readUserService.findById(userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
@@ -59,7 +77,7 @@ public class UserController {
      * @return Usuário criada.
      */
     @PostMapping("/") // Vínculo do método "createUser" com o método "HTTP - POST"
-    public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody User user) throws Exception {
         try {
             var result = this.createUserService.execute(user);
             return ResponseEntity.ok().body(result);
@@ -110,7 +128,7 @@ public class UserController {
      * Realiza o depósito de um valor no saldo do usuário.
      *
      * @param userId identificador do usuário
-     * @param value valor a ser creditado
+     * @param value  valor a ser creditado
      * @return Saldo atualizado.
      */
     @PutMapping("/{userId}/deposit")
@@ -127,7 +145,7 @@ public class UserController {
      * Realiza o saque de um valor no saldo do usuário.
      *
      * @param userId identificador do usuário
-     * @param value valor a ser debitado
+     * @param value  valor a ser debitado
      * @return Saldo atualizado.
      */
     @PutMapping("/{userId}/withdraw")
