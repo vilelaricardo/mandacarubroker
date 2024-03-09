@@ -1,12 +1,17 @@
 package com.mandacarubroker.domain.stock;
 
-import jakarta.persistence.*;
+import com.mandacarubroker.dtos.RequestStockDTO;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Table(name ="stock")
+@Table(name ="tb_stock")
 @Entity(name="stock")
 @Data
 @NoArgsConstructor
@@ -16,7 +21,6 @@ public class Stock {
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     private String symbol;
     private String companyName;
     private double price;
@@ -24,23 +28,16 @@ public class Stock {
     public Stock(RequestStockDTO requestStockDTO){
         this.symbol = requestStockDTO.symbol();
         this.companyName = requestStockDTO.companyName();
-        this.price = changePrice(requestStockDTO.price(), true);
+        this.price = changePrice(requestStockDTO.price(),true);
     }
 
-    public double changePrice(double amount, boolean increase) {
+    public double changePrice(double amount,boolean increase) {
         if (increase) {
-            if (amount < this.price) {
-                return increasePrice(amount);
-            } else {
-                return decreasePrice(amount);
-            }
-        } else {
-            if (amount > this.price) {
-                return increasePrice(amount);
-            } else {
-                return this.decreasePrice(amount);
-            }
+            return increasePrice(amount);
+        } else if (this.price-amount>=0) {
+            return decreasePrice(amount);
         }
+        return this.price;
     }
 
     public double increasePrice(double amount) {
@@ -50,5 +47,4 @@ public class Stock {
     public double decreasePrice(double amount) {
         return this.price - amount;
     }
-
 }
