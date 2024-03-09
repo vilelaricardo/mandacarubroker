@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/stocks")
 public class StockController {
 
+
     // Vínculo CONTROLLER com SERVICES
     @Autowired
     private CreateStockService createStockService;

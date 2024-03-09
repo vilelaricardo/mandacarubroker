@@ -19,7 +19,7 @@ public class DeleteStockService {
     @Autowired
     private StockTransactionRepository stockTransactionRepository;
 
-    public void deleteStock(String stockId) throws Exception {
+    public void deleteStock(String stockId) {
         Optional<Stock> stockOptional = this.stockRepository.findById(stockId);
         if (stockOptional.isPresent()) {
             Stock stock = stockOptional.get();

@@ -25,3 +25,27 @@ Gsrc/main/java/com/mandacarubroker/exception/StockNotFoundException.java,5\0\50
 Osrc/main/java/com/mandacarubroker/exception/StockTransactionFoundException.java,0\6\067d735087e5ad9b1e8b489ed8d2607883c561eb
 }
 Msrc/test/java/com/mandacarubroker/modules/MandacarubrokerApplicationTest.java,5\d\5d1b0c294df8b7e768cd6c91d85207b3400a6ad4
+É
+Ssrc/test/java/com/mandacarubroker/modules/stock/controller/StockControllerTest.java,8\2\8218722d43aa6e506e4db8623bb294c91ae22f6d
+|
+Lsrc/test/java/com/mandacarubroker/modules/stock/controller/StockService.java,3\6\36f49c1357be128a8a4182388977a4223ab06cad
+
+Osrc/main/java/com/mandacarubroker/modules/stock/service/CreateStockService.java,8\b\8be3c7519ae3dd657e08a2f3c42599027c16f2c8
+
+Osrc/main/java/com/mandacarubroker/modules/stock/controller/StockController.java,e\e\eef27f93729967714d10f81d833648ff0c19895f
+}
+Msrc/main/java/com/mandacarubroker/modules/stock/service/ReadStockService.java,2\3\23c9716330f2f0bcc779a8041ed61702d1bc17db
+j
+:src/main/java/com/mandacarubroker/modules/stock/Stock.java,b\a\ba4cb6c3adf68bd2a2578da7411e248b0d0e3395
+t
+Dsrc/main/java/com/mandacarubroker/modules/stock/StockRepository.java,0\3\03aaed65d504be5c87f95baa7e3b7b6f6527b5af
+
+Osrc/main/java/com/mandacarubroker/modules/stock/service/DeleteStockService.java,5\9\5994dc49570f84efcf16b114b790c1a4de28c29a
+É
+Ssrc/test/java/com/mandacarubroker/modules/stock/service/CreateStockServiceTest.java,2\7\270c2715077dde255b6d84085024a9bfcd1a913a
+Å
+Qsrc/test/java/com/mandacarubroker/modules/stock/service/ReadStockServiceTest.java,3\4\3458f8ba865c16e949e13a1dcb298b8e04cab06f
+O
+src/test/java/package-info.java,c\1\c184bd1dce05d5e686a4d0315d72a17af829c211
+7
+pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
